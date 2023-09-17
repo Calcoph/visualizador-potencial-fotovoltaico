@@ -1,1 +1,4 @@
 /ignore
+/.vscode/
+/servidor/target
+/servidor/target-win

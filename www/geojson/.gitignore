@@ -1,0 +1,5 @@
+# Ignora todos los ficheros
+*
+
+# No ignora este fichero, para que git no ignore la carpeta entera
+!.gitignore
