@@ -2,3 +2,4 @@
 /.vscode/
 /servidor/target
 /servidor/target-win
+/env
