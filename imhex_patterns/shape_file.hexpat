@@ -138,7 +138,7 @@ struct MultiPatch {
     u32 num_parts;
     u32 num_points;
     u32 parts[num_parts];
-    u32 part_types[num_parts];
+    PartType part_types[num_parts];
     Point points[num_points];
     double z_range[2];
     double z_array[num_points];

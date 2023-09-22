@@ -18,9 +18,9 @@ async fn main() {
         // Hace la carpeta /geojson pública
         .route("/geojson/:fichero", get(obtener_geojson))
         // Hace la carpeta /css publica
-        .nest_service("/css", ServeDir::new(Path::new("..").join("www").join("css")))
+        .nest_service("/css", ServeDir::new(Path::new("www").join("css")))
         // Hace la carpeta /css publica
-        .nest_service("/js", ServeDir::new(Path::new("..").join("www").join("js")));
+        .nest_service("/js", ServeDir::new(Path::new("www").join("js")));
 
     // Iniciar servidor (en la ip: 127.0.0.1:3000)
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
@@ -36,8 +36,7 @@ async fn root() -> Redirect {
 }
 
 fn obtener_fichero(ruta: PathBuf) -> Result<String, StatusCode> {
-    let ruta = Path::new("..")
-        .join("www")
+    let ruta = Path::new("www")
         .join(ruta);
     tracing::info!("{ruta:?}");
     std::fs::read_to_string(ruta).map_err(|_| StatusCode::NOT_FOUND)
