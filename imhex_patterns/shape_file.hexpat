@@ -15,7 +15,135 @@ enum ShapeType: u32 {
     PolyLineM = 23,
     PolygonM = 25,
     MultiPointM = 28,
-    MultiPatch = 32, 
+    MultiPatch = 32,
+};
+
+struct NullShape {
+};
+
+struct Point {
+    double x;
+    double y;
+};
+
+struct MultiPoint {
+    double box[4];
+    u32 num_points;
+    Point points[num_point];
+};
+
+struct PolyLine {
+    double box[4];
+    u32 num_parts;
+    u32 num_points;
+    u32 parts[num_parts];
+    Point points[num_points];
+};
+
+struct Polygon {
+    double box[4];
+    u32 num_parts;
+    u32 num_points;
+    u32 parts[num_parts];
+    Point points[num_points];
+};
+
+struct PointM {
+    double x;
+    double y;
+    double m;
+};
+
+struct MultiPointM {
+    double box[4];
+    u32 num_points;
+    Point points[num_point];
+    double m_range[2];
+    double m_array[num_points];
+};
+
+struct PolyLineM {
+    double box[4];
+    u32 num_parts;
+    u32 num_points;
+    u32 parts[num_parts];
+    Point points[num_points];
+    double m_range[2];
+    double m_array[num_points];
+};
+
+struct PolygonM {
+    double box[4];
+    u32 num_parts;
+    u32 num_points;
+    u32 parts[num_parts];
+    Point points[num_points];
+    double m_range[2];
+    double m_array[num_points];
+};
+
+
+struct PointZ {
+    double x;
+    double y;
+    double z;
+    double m;
+};
+
+struct MultiPointZ {
+    double box[4];
+    u32 num_points;
+    Point points[num_point];
+    double z_range[2];
+    double z_array[num_points];
+    double m_range[2];
+    double m_array[num_points];
+};
+
+struct PolyLineZ {
+    double box[4];
+    u32 num_parts;
+    u32 num_points;
+    u32 parts[num_parts];
+    Point points[num_points];
+    double z_range[2];
+    double z_array[num_points];
+    double m_range[2];
+    double m_array[num_points];
+};
+
+struct PolygonZ {
+    double box[4];
+    u32 num_parts;
+    u32 num_points;
+    u32 parts[num_parts];
+    Point points[num_points];
+    double z_range[2];
+    double z_array[num_points];
+    double m_range[2];
+    double m_array[num_points];
+};
+
+enum PartType: u32 {
+    TriangleStrip = 0,
+    TriangleFan = 1,
+    OuterRing = 2,
+    InnerRing = 3,
+    FirstRing = 4,
+    Ring = 5,
+};
+
+struct MultiPatch {
+    double box[4];
+    u32 num_parts;
+    u32 num_points;
+    u32 parts[num_parts];
+    u32 part_types[num_parts];
+    Point points[num_points];
+    double z_range[2];
+    double z_array[num_points];
+    double m_range[2];
+    double m_array[num_points];
 };
 
 struct Header {
@@ -40,10 +168,31 @@ struct RecordHeader {
     be u32 content_length; // in 16-bit words
 };
 
-struct ShapeFile {
-    Header;
+
+struct Record {
     RecordHeader;
-    
+    ShapeType shape_type;
+    match (shape_type) {
+        (ShapeType::Null): NullShape;
+        (ShapeType::Point): Point;
+        (ShapeType::PolyLine): PolyLine;
+        (ShapeType::Polygon): Polygon;
+        (ShapeType::MultiPoint): MultiPoint;
+        (ShapeType::PointZ): PointZ;
+        (ShapeType::PolyLineZ): PolyLineZ;
+        (ShapeType::PolygonZ): PolygonZ;
+        (ShapeType::MultiPointZ): MultiPointZ;
+        (ShapeType::PointM): PointM;
+        (ShapeType::PolyLineM): PolyLineM;
+        (ShapeType::PolygonM): PolygonM;
+        (ShapeType::MultiPointM): MultiPointM;
+        (ShapeType::MultiPatch): MultiPatch;
+    }
 };
 
-Header header @ 0x00;
+struct ShapeFile {
+    Header header;
+    Record records[while ($ < (header.file_length * 2))];
+};
+
+ShapeFile file @ 0x00;
