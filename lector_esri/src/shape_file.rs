@@ -1,7 +1,8 @@
 use crate::{Double, Integer, Reader, Error};
 
 #[repr(i32)]
-enum ShapeType {
+#[derive(Debug, Clone, Copy)]
+pub enum ShapeType {
     Null = 0,
     Point = 1,
     PolyLine = 3,
@@ -20,6 +21,7 @@ enum ShapeType {
 
 trait TryRead {
     fn read(buffer: &[u8], cursor: &mut usize) -> Option<Self> where Self: Sized;
+    fn return_cursor(cursor: &mut usize);
 }
 
 impl TryFrom<Integer> for ShapeType {
@@ -50,11 +52,16 @@ impl TryRead for ShapeType {
     fn read(buffer: &[u8], cursor: &mut usize) -> Option<Self> where Self: Sized {
         Integer::read(buffer, cursor).try_into().ok()
     }
+
+    fn return_cursor(cursor: &mut usize) {
+        Integer::return_cursor(cursor)
+    }
 }
 
 
 #[repr(i32)]
-enum PartType {
+#[derive(Debug)]
+pub enum PartType {
     TriangleStrip = 0,
     TriangleFan = 1,
     OuterRing = 2,
@@ -63,14 +70,69 @@ enum PartType {
     Ring = 5,
 }
 
+impl PartType {
+    fn read(buffer: &[u8], cursor: &mut usize) -> Option<Self> {
+        Some(match Integer::read(buffer, cursor) {
+            0 => Self::TriangleStrip,
+            1 => Self::TriangleFan,
+            2 => Self::OuterRing,
+            3 => Self::InnerRing,
+            4 => Self::FirstRing,
+            5 => Self::Ring,
+            _ => {
+                eprintln!(r#"Uno de los "PartType" tiene un valor incorrecto, no se ha podido leer"#);
+                return None
+            }
+        })
+    }
+}
+
 type BoundingBox = [Double;4];
 
-struct Point {
+impl Reader for BoundingBox {
+    fn read(buffer: &[u8], cursor: &mut usize) -> Self {
+        let a = Double::read(buffer, cursor);
+        let b = Double::read(buffer, cursor);
+        let c = Double::read(buffer, cursor);
+        let d = Double::read(buffer, cursor);
+
+        [a,b,c,d]
+    }
+
+    fn read_be(buffer: &[u8], cursor: &mut usize) -> Self {
+        let a = Double::read_be(buffer, cursor);
+        let b = Double::read_be(buffer, cursor);
+        let c = Double::read_be(buffer, cursor);
+        let d = Double::read_be(buffer, cursor);
+
+        [a,b,c,d]
+    }
+
+    fn return_cursor(cursor: &mut usize) {
+        Double::return_cursor(cursor);
+        Double::return_cursor(cursor);
+        Double::return_cursor(cursor);
+        Double::return_cursor(cursor);
+    }
+}
+
+#[derive(Debug)]
+pub struct Point {        
     x: Double,
     y: Double
 }
 
-enum Shape {
+impl Point {
+    fn read(buffer: &[u8], cursor: &mut usize) -> Self {
+        let x = Double::read(buffer, cursor);
+        let y = Double::read(buffer, cursor);
+
+        Point { x, y }
+    }
+}
+
+#[derive(Debug)]
+pub enum Shape {
     Null,
     Point(Point),
     MultiPoint {
@@ -164,7 +226,7 @@ enum Shape {
         num_parts: Integer,
         num_points: Integer,
         parts: Vec<Integer>,
-        part_types: Vec<PartType>,
+        part_types: Vec<Option<PartType>>,
         points: Vec<Point>,
         z_range: [Double;2],
         z_array: Vec<Double>,
@@ -173,20 +235,280 @@ enum Shape {
     }
 }
 
-struct Record {
+#[derive(Debug)]
+pub struct Record {
     record_number: Integer,
     content_length: Integer,
-    shape_type: ShapeType,
-    shape: Shape
+    pub shape_type: ShapeType,
+    pub shape: Shape
+}
+
+impl Shape {
+    fn read(buffer: &[u8], cursor: &mut usize, shape_type: ShapeType) -> Self {
+        match shape_type {
+            ShapeType::Null => Shape::Null,
+            ShapeType::Point => {
+                Shape::Point(Point::read(buffer, cursor))
+            },
+            ShapeType::PolyLine => {
+                let PolygonAttrs {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points
+                } = PolygonAttrs::read(buffer, cursor);
+
+                Shape::PolyLine {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points
+                }
+            },
+            ShapeType::Polygon => {
+                let PolygonAttrs {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points
+                } = PolygonAttrs::read(buffer, cursor);
+
+                Shape::Polygon {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points
+                }
+            },
+            ShapeType::MultiPoint => {
+                let MultiPointAttrs {
+                    bbox,
+                    num_points,
+                    points
+                } = MultiPointAttrs::read(buffer, cursor);
+
+                Shape::MultiPoint {
+                    bbox,
+                    num_points,
+                    points
+                }
+            },
+            ShapeType::PointZ => {
+                let x = Double::read(buffer, cursor);
+                let y = Double::read(buffer, cursor);
+                let z = Double::read(buffer, cursor);
+                let m = Double::read(buffer, cursor);
+
+                Shape::PointZ {
+                    x,
+                    y,
+                    z,
+                    m,
+                }
+            },
+            ShapeType::PolyLineZ => {
+                let PolygonAttrs {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points
+                } = PolygonAttrs::read(buffer, cursor);
+                let (z_range, z_array) = read_z(buffer, cursor, num_points);
+                let (m_range, m_array) = read_z(buffer, cursor, num_points);
+
+                Shape::PolyLineZ {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points,
+                    z_range,
+                    z_array,
+                    m_range,
+                    m_array,
+                }
+            },
+            ShapeType::PolygonZ => {
+                let PolygonAttrs {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points
+                } = PolygonAttrs::read(buffer, cursor);
+                let (z_range, z_array) = read_z(buffer, cursor, num_points);
+                let (m_range, m_array) = read_z(buffer, cursor, num_points);
+
+                Shape::PolygonZ {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points,
+                    z_range,
+                    z_array,
+                    m_range,
+                    m_array,
+                }
+            },
+            ShapeType::MultiPointZ => {
+                let MultiPointAttrs {
+                    bbox,
+                    num_points,
+                    points
+                } = MultiPointAttrs::read(buffer, cursor);
+                let (z_range, z_array) = read_z(buffer, cursor, num_points);
+                let (m_range, m_array) = read_z(buffer, cursor, num_points);
+
+                Shape::MultiPointZ {
+                    bbox,
+                    num_points,
+                    points,
+                    z_range,
+                    z_array,
+                    m_range,
+                    m_array,
+                }
+            },
+            ShapeType::PointM => {
+                let x = Double::read(buffer, cursor);
+                let y = Double::read(buffer, cursor);
+                let m = Double::read(buffer, cursor);
+
+                Shape::PointM {
+                    x,
+                    y,
+                    m,
+                }  
+            },
+            ShapeType::PolyLineM => {
+                let PolygonAttrs {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points
+                } = PolygonAttrs::read(buffer, cursor);
+                let (m_range, m_array) = read_z(buffer, cursor, num_points);
+
+                Shape::PolyLineM {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points,
+                    m_range,
+                    m_array,
+                }
+            },
+            ShapeType::PolygonM => {
+                let PolygonAttrs {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points
+                } = PolygonAttrs::read(buffer, cursor);
+                let (m_range, m_array) = read_z(buffer, cursor, num_points);
+
+                Shape::PolygonM {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    points,
+                    m_range,
+                    m_array,
+                }
+            },
+            ShapeType::MultiPointM => {
+                let MultiPointAttrs {
+                    bbox,
+                    num_points,
+                    points
+                } = MultiPointAttrs::read(buffer, cursor);
+                let (m_range, m_array) = read_z(buffer, cursor, num_points);
+
+                Shape::MultiPointM {
+                    bbox,
+                    num_points,
+                    points,
+                    m_range,
+                    m_array,
+                }
+            },
+            ShapeType::MultiPatch => {
+                let bbox = BoundingBox::read(buffer, cursor);
+                let num_parts = Integer::read(buffer, cursor);
+                let num_points = Integer::read(buffer, cursor);
+
+                let mut parts = Vec::new();
+                for _ in 0..num_parts {
+                    parts.push(Integer::read(buffer, cursor))
+                }
+
+                let mut part_types = Vec::new();
+                for _ in 0..num_parts {
+                    part_types.push(PartType::read(buffer, cursor))
+                }
+
+                let mut points = Vec::new();
+                for _ in 0..num_points {
+                    points.push(Point::read(buffer, cursor))
+                }
+                let (z_range, z_array) = read_z(buffer, cursor, num_points);
+                let (m_range, m_array) = read_z(buffer, cursor, num_points);
+
+                Shape::MultiPatch {
+                    bbox,
+                    num_parts,
+                    num_points,
+                    parts,
+                    part_types,
+                    points,
+                    z_range,
+                    z_array,
+                    m_range,
+                    m_array
+                }
+            },
+        }
+    }
 }
 
 impl TryRead for Record {
     fn read(buffer: &[u8], cursor: &mut usize) -> Option<Self> where Self: Sized {
-        todo!()
+        let record_number = Integer::read_be(buffer, cursor);
+        let content_length = Integer::read_be(buffer, cursor);
+        let shape_type = ShapeType::read(buffer, cursor).or_else(|| {
+            eprintln!(r#"No se ha podido leer un "Record" ya que su "ShapeType" tiene un valor incorrecto"#);
+            Integer::return_cursor(cursor);
+            Integer::return_cursor(cursor);
+            ShapeType::return_cursor(cursor);
+            None
+        })?;
+        let shape = Shape::read(buffer, cursor, shape_type);
+
+        Some(Record {
+            record_number,
+            content_length,
+            shape_type,
+            shape,
+        })
+    }
+
+    // Al fallar de leer un Record se debe avanzar el cursor, no atrasarlo
+    fn return_cursor(cursor: &mut usize) {
+        unimplemented!()
     }
 }
 
-pub(crate) fn read_shapefile(shapefile: &[u8]) {
+pub(crate) fn read_shapefile(shapefile: &[u8]) -> Vec<Option<Record>> {
     let mut cursor = 0;
     let header = Header::read(shapefile, &mut cursor);
     let bytes_totales = shapefile.len();
@@ -199,8 +521,10 @@ pub(crate) fn read_shapefile(shapefile: &[u8]) {
 
     let mut records = Vec::new();
     while cursor < bytes_totales {
-
+        records.push(Record::read(shapefile, &mut cursor))
     }
+
+    records
 }
 
 struct Header {
@@ -272,4 +596,75 @@ impl TryRead for Header {
             bb_mmax,
         })
     }
+
+    fn return_cursor(cursor: &mut usize) {
+        *cursor -= 100;
+    }
+}
+
+struct PolygonAttrs {
+    bbox: BoundingBox,
+    num_parts: Integer,
+    num_points: Integer,
+    parts: Vec<Integer>,
+    points: Vec<Point>
+}
+
+impl PolygonAttrs {
+    fn read(buffer: &[u8], cursor: &mut usize) -> PolygonAttrs {
+        let bbox = BoundingBox::read(buffer, cursor);
+        let num_parts = Integer::read(buffer, cursor);
+        let num_points = Integer::read(buffer, cursor);
+    
+        let mut parts = Vec::new();
+        for _ in 0..num_parts {
+            parts.push(Integer::read(buffer, cursor))
+        }
+    
+        let mut points = Vec::new();
+        for _ in 0..num_points {
+            points.push(Point::read(buffer, cursor))
+        }
+    
+        PolygonAttrs { bbox, num_parts, num_points, parts, points }
+    }
+}
+
+struct MultiPointAttrs {
+    bbox: BoundingBox,
+    num_points: Integer,
+    points: Vec<Point>
+}
+
+impl MultiPointAttrs {
+    fn read(buffer: &[u8], cursor: &mut usize) -> Self {
+        let bbox = BoundingBox::read(buffer, cursor);
+        let num_parts = Integer::read(buffer, cursor);
+        let num_points = Integer::read(buffer, cursor);
+    
+        let mut parts = Vec::new();
+        for _ in 0..num_parts {
+            parts.push(Integer::read(buffer, cursor))
+        }
+    
+        let mut points = Vec::new();
+        for _ in 0..num_points {
+            points.push(Point::read(buffer, cursor))
+        }
+    
+        MultiPointAttrs { bbox, num_points, points }   
+    }
+}
+
+/// Aunque se llame "read_z" también sirve para leer la parte "m" ya que son idénticas
+fn read_z(buffer: &[u8], cursor: &mut usize, num_points: Integer) -> ([Double;2], Vec<Double>) {
+    let a = Double::read(buffer, cursor);
+    let b = Double::read(buffer, cursor);
+
+    let mut z_array = Vec::new();
+    for _ in 0..num_points {
+        z_array.push(Double::read(buffer, cursor))
+    }
+
+    ([a,b], z_array)
 }
