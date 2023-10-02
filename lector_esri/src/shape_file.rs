@@ -116,10 +116,10 @@ impl Reader for BoundingBox {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Point {        
-    x: Double,
-    y: Double
+    pub x: Double,
+    pub y: Double
 }
 
 impl Point {

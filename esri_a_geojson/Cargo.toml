@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 lector_esri = { path="../lector_esri" }
+json = "0.12.4"

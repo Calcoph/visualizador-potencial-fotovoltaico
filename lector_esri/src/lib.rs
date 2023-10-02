@@ -1,7 +1,8 @@
-use std::{path::Path, io::Error as IoError};
+use std::{path::Path, io::{Error as IoError, Cursor}};
 
 use dbase::{Error as DBError, Record as DBRecord};
-use shape_file::{read_shapefile, Record};
+pub use shape_file::{Record, Shape, ShapeType, Point};
+use shape_file::read_shapefile;
 
 mod shape_file;
 mod index_file;
@@ -40,7 +41,7 @@ impl Reader for Integer {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Double {
     Data(f64),
     NoData
@@ -92,6 +93,15 @@ impl From<f64> for Double {
     }
 }
 
+impl Into<f64> for Double {
+    fn into(self) -> f64 {
+        match self {
+            Double::Data(data) => data,
+            Double::NoData => DOUBLE_DATA_THRESHOLD,
+        }
+    }
+}
+
 #[derive(Debug)]
 pub enum Error {
     Io(IoError),
@@ -113,10 +123,19 @@ impl From<IoError> for Error {
 
 pub fn read(shape_file_path: &Path, index_file_path: &Path, dbase_file_path: &Path) -> Result<Vec<Option<Record>>, Error> {
     let shape_file = std::fs::read(shape_file_path)?;
-    //index_file = std::fs::read(index_file_path);
-    let dbase = dbase::read(dbase_file_path)?;
+    let index_file = std::fs::read(index_file_path)?;
+    let dbase_bytes = std::fs::read(dbase_file_path);
 
     let shapes = read_shapefile(&shape_file);
+
+    Ok(shapes)
+}
+
+pub fn read_bytes(shape_file: &[u8], index_file: &[u8], dbase_file: &[u8]) -> Result<Vec<Option<Record>>, Error> {
+    let shapes = read_shapefile(shape_file);
+
+    let dbase_file = Cursor::new(dbase_file);
+    let dbase_records = dbase::Reader::new(dbase_file);
 
     Ok(shapes)
 }
