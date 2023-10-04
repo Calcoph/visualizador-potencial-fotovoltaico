@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     qgs.initQgis()
 
-    main(qgs, "ignore/output_20220503_eraikin bi_1/EIB_epv_year_filt.shp")
+    main(qgs, "file_path")
 
     qgs.exitQgis()
 
