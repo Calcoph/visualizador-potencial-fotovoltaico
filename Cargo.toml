@@ -1,6 +1,4 @@
 [workspace]
 members = [
     "servidor",
-    "lector_esri",
-    "esri_a_geojson"
 ]
