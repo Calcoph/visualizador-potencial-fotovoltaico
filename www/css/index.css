@@ -1,0 +1,16 @@
+#map { height: 800px; flex-grow: 2; }
+.interface {
+    display: flex;
+}
+.attribute-select {
+    display: flex;
+    flex-direction: column;
+}
+.header {
+    text-align: right;
+}
+.login-section {
+    margin-left: 5%;
+    display: inline-block;
+}
+

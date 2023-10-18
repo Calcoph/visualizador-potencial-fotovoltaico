@@ -15,10 +15,41 @@
         crossorigin=""></script>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
 </head>
-<body>
-    <div id="map"></div>
+<body onload="init()">
+    <header class="header">
+        <button>another</button>
+        <button>another</button>
+        <button>another</button>
+        <a href="addbuilding.html"><button>add building</button></a>
+        <div class="login-section">
+            <a href="login.html"><button>login</button></a>
+            <a href="register.html"><button>register</button></a>
+        </div>
+    </header>
+    <div class="interface">
+        <div id="tab-select" class="attribute-select">
+            <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)">Atributos</label>
+            <label><input type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)">Marcadores</label>
+            <label><input type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)">Mis edificios</label>
+        </div>
+        <div id="tab" class="attribute-select">
+            <label><input type="radio" name="a">count</label>
+            <label><input type="radio" name="a">sum</label>
+            <label><input type="radio" name="a">mean</label>
+            <label><input type="radio" name="a">median</label>
+            <label><input type="radio" name="a">stdev</label>
+            <label><input type="radio" name="a">min</label>
+            <label><input type="radio" name="a">max</label>
+            <label><input type="radio" name="a">range</label>
+            <label><input type="radio" name="a">minority</label>
+            <label><input type="radio" name="a">majority</label>
+            <label><input type="radio" name="a">variety</label>
+            <label><input type="radio" name="a">variance</label>
+        </div>
+        <div id="map"></div>
+    </div>
     <script src="js/map.js"></script>
 </body>
 </html>

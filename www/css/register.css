@@ -1,0 +1,4 @@
+.field-array {
+    display: flex;
+    flex-direction: column;
+}
