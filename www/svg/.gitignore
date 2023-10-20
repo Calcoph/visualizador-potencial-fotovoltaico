@@ -3,3 +3,5 @@
 
 # No ignora este fichero, para que git no ignore la carpeta entera
 !.gitignore
+!green.svg
+!red.svg

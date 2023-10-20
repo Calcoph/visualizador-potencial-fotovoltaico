@@ -19,8 +19,10 @@ async fn main() {
         .route("/geojson/:fichero", get(obtener_geojson))
         // Hace la carpeta /css publica
         .nest_service("/css", ServeDir::new(Path::new("www").join("css")))
-        // Hace la carpeta /css publica
-        .nest_service("/js", ServeDir::new(Path::new("www").join("js")));
+        // Hace la carpeta /js publica
+        .nest_service("/js", ServeDir::new(Path::new("www").join("js")))
+        // Hace la carpeta /svg publica
+        .nest_service("/svg", ServeDir::new(Path::new("www").join("svg")));
 
     // Iniciar servidor (en la ip: 127.0.0.1:3000)
     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
