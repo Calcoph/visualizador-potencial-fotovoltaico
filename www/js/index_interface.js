@@ -19,6 +19,9 @@ function change_tab(tab) {
         case "mis edificios":
             tab_mis_edificios(tab_html)
             break
+        case "capas":
+            console.log(4)
+            break
         default:
             tab_html.innerHTML = ""
             break

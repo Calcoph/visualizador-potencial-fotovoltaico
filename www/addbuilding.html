@@ -9,12 +9,35 @@
 <body>
     <h1>ADD BUILDING</h1>
     <a href="index.html">Go back</a>
-
-    <div class="field-array">
-        <textarea name="aa" id="t_area" cols="30" rows="10"></textarea>
-        <input type="file">
-        <button>validar</button>
-        <button>subir</button>
+    <div class="row">
+        <div class="field-array">
+            <h3>Capas</h3>
+            <div>
+                <label><input type="radio" name="capa">capa1</label>
+                <img src="svg/green.svg">
+            </div>
+            <div>
+                <label><input type="radio" name="capa">capa2</label>
+                <img src="svg/red.svg">
+            </div>
+            <div>
+                <label><input type="radio" name="capa">capa3</label>
+                <img src="svg/red.svg">
+            </div>
+        </div>
+        <div class="field-array">
+            <div>
+                <label><input type="radio" name="filetype">.geojson</label>
+                <label title=".prj, .dbf, .shx y .shp"><input type="radio" name="filetype">ficheros ESRI</label>
+            </div>
+            <textarea name="aa" id="t_area" cols="30" rows="10"></textarea>
+            <label>.prj<input type="file"></label>
+            <label>.dbf<input type="file"></label>
+            <label>.shx<input type="file"></label>
+            <label>.shp<input type="file"></label>
+            <button>validar (o no)</button>
+            <button>subir</button>
+        </div>
     </div>
 </body>
 </html>
