@@ -20,7 +20,7 @@ function change_tab(tab) {
             tab_mis_edificios(tab_html)
             break
         case "capas":
-            console.log(4)
+            tab_capas(tab_html)
             break
         default:
             tab_html.innerHTML = ""
@@ -77,5 +77,25 @@ function tab_mis_edificios(tab) {
         button.appendChild(nombre);
 
         tab.appendChild(button)
+    })
+}
+
+/**
+ * @param {HTMLElement} tab
+ * 
+ * @returns {String}
+ */
+function tab_capas(tab) {
+    let inputs = ["capa1", "capa2", "capa3", "capa4", "capa5", "capa6"]
+    inputs.forEach(function(nombre_capa) {
+        let label = document.createElement("label");
+        let input = document.createElement("input")
+        input.setAttribute("type", "radio")
+        input.setAttribute("name", "a")
+        label.appendChild(input)
+        let nombre = document.createTextNode(nombre_capa);
+        label.appendChild(nombre)
+
+        tab.appendChild(label)
     })
 }
