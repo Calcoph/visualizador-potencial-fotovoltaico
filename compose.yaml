@@ -1,0 +1,22 @@
+services:
+  apachedjango:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./www:/var/www/map
+    command: apachectl -D FOREGROUND
+  mariadatabase:
+    image: mariadb:11.2.2
+    ports:
+      - "11306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: /run/secrets/db_root_password
+    secrets:
+      - db_root_password
+    volumes:
+      - ./mariadb-data:/var/lib/mysql
+
+secrets:
+  db_root_password:
+    file: ./.secrets/db_root_password.txt
