@@ -3,5 +3,9 @@
 /servidor/target
 /servidor/target-win
 /env
+/linenv
 /documentación/EDT.svg
 /documentación/EDT.png
+__pycache__/
+/.secrets/
+/mariadb-data/
