@@ -15,17 +15,17 @@
         crossorigin=""></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" href="/map/css/index.css"/>
 </head>
 <body onload="init()">
     <header class="header">
-        <a href="app-admin.html"><button>Administrar app</button></a>
-        <a href="proyect-admin.html"><button>Administrar proyecto</button></a>
-        <a href="proyect-list.html"><button>Elegir proyecto</button></a>
-        <a href="addbuilding.html"><button>add building</button></a>
+        <a href="/map/app-admin.html"><button>Administrar app</button></a>
+        <a href="/map/proyect-admin.html"><button>Administrar proyecto</button></a>
+        <a href="/map/proyect-list.html"><button>Elegir proyecto</button></a>
+        <a href="/map/addbuilding.html"><button>add building</button></a>
         <div class="login-section">
-            <a href="login.html"><button>login</button></a>
-            <a href="register.html"><button>register</button></a>
+            <a href="/map/login.html"><button>login</button></a>
+            <a href="/map/register.html"><button>register</button></a>
         </div>
     </header>
     <div class="interface">
@@ -35,11 +35,11 @@
             <label><input type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)">Marcadores</label>
             <label><input type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)">Mis edificios</label>
         </div>
-        <div id="tab" class="attribute-select">            
+        <div id="tab" class="attribute-select">
         </div>
         <div id="map"></div>
     </div>
-    <script src="js/map.js"></script>
-    <script src="js/index_interface.js"></script>
+    <script src="/map/js/map.js"></script>
+    <script src="/map/js/index_interface.js"></script>
 </body>
 </html>
