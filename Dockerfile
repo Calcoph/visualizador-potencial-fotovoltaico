@@ -21,6 +21,7 @@ RUN apt-get install pkg-config --assume-yes
 RUN pip3 install mysqlclient
 
 # Install qgis
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install python3-qgis --assume-yes
 
 # Install apache
