@@ -30,7 +30,7 @@ function change_tab(tab) {
 
 /**
  * @param {HTMLElement} tab
- * 
+ *
  * @returns {String}
  */
 function tab_atributos(tab) {
@@ -38,8 +38,9 @@ function tab_atributos(tab) {
     inputs.forEach(function(atributo) {
         let label = document.createElement("label");
         let input = document.createElement("input")
-        input.setAttribute("type", "radio")
-        input.setAttribute("name", "a")
+        input.setAttribute("type", "checkbox")
+        input.setAttribute("name", atributo)
+        input.setAttribute("checked", "")
         label.appendChild(input)
         let att = document.createTextNode(atributo);
         label.appendChild(att)
@@ -50,7 +51,7 @@ function tab_atributos(tab) {
 
 /**
  * @param {HTMLElement} tab
- * 
+ *
  * @returns {String}
  */
 function tab_marcadores(tab) {
@@ -66,7 +67,7 @@ function tab_marcadores(tab) {
 
 /**
  * @param {HTMLElement} tab
- * 
+ *
  * @returns {String}
  */
 function tab_mis_edificios(tab) {
@@ -82,20 +83,22 @@ function tab_mis_edificios(tab) {
 
 /**
  * @param {HTMLElement} tab
- * 
+ *
  * @returns {String}
  */
 function tab_capas(tab) {
-    let inputs = ["capa1", "capa2", "capa3", "capa4", "capa5", "capa6"]
-    inputs.forEach(function(nombre_capa) {
+    for (layer_key in LAYERS) {
+        /** @type {AttributeLayer} */
+        let layer = LAYERS[layer_key]
+
         let label = document.createElement("label");
         let input = document.createElement("input")
         input.setAttribute("type", "radio")
         input.setAttribute("name", "a")
         label.appendChild(input)
-        let nombre = document.createTextNode(nombre_capa);
+        let nombre = document.createTextNode(layer.display_name);
         label.appendChild(nombre)
 
         tab.appendChild(label)
-    })
+    }
 }
