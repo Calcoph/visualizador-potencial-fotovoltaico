@@ -6,6 +6,9 @@ services:
     volumes:
       - ./www:/var/www/map
     command: apachectl -D FOREGROUND
+    environment:
+      QT_QPA_PLATFORM: offscreen
+      TZ: Europe/Madrid
   mariadatabase:
     image: mariadb:11.2.2
     ports:

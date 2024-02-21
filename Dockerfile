@@ -15,11 +15,13 @@ RUN apt-get install python3-pip --assume-yes
 # Install Django
 RUN pip3 install Django
 RUN pip3 install tzdata
-
 # Install mysql drivers
 RUN apt-get install default-libmysqlclient-dev --assume-yes
 RUN apt-get install pkg-config --assume-yes
 RUN pip3 install mysqlclient
+
+# Install qgis
+RUN apt-get install python3-qgis --assume-yes
 
 # Install apache
 RUN apt-get install apache2 --assume-yes
@@ -42,7 +44,6 @@ COPY apache2/sites-available /etc/apache2/sites-available
 
 # Add the server source code
 COPY ./servidor /var/www
-COPY ./www/ /var/www/map
 
 RUN a2dissite 000-default.conf
 
