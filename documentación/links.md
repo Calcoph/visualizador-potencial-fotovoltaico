@@ -13,3 +13,5 @@ https://hub.docker.com/_/mariadb
 https://docs.djangoproject.com/en/5.0/howto/deployment/wsgi/apache-auth/
 
 https://docs.djangoproject.com/en/5.0/intro/tutorial01/
+
+https://gis.stackexchange.com/questions/362636/qgis-on-docker-container-could-not-connect-to-any-x-display
