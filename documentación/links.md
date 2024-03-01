@@ -15,3 +15,5 @@ https://docs.djangoproject.com/en/5.0/howto/deployment/wsgi/apache-auth/
 https://docs.djangoproject.com/en/5.0/intro/tutorial01/
 
 https://gis.stackexchange.com/questions/362636/qgis-on-docker-container-could-not-connect-to-any-x-display
+
+https://serverfault.com/questions/949991/how-to-install-tzdata-on-a-ubuntu-docker-image

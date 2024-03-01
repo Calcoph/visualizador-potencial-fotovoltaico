@@ -72,12 +72,17 @@ WSGI_APPLICATION = 'ehuvpf.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+with open("/etc/secrets/db_django_password.txt", "r") as f:
+    db_pass = f.read()
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': "mariadb",
+        "USER": "django",
+        "PASSWORD": db_pass,
         "PORT": "11306",
+        "HOST": "127.0.0.1",
         "OPTIONS": {
             "read_default_file": "/etc/secrets/mariadb.cnf"
         }

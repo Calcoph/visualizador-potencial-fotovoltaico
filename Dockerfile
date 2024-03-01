@@ -3,6 +3,7 @@ FROM ubuntu:22.04
 # Remove /var/www/
 RUN rm -rf /var/www/
 
+COPY ./.secrets/db_django_password.txt /etc/secrets/db_django_password.txt
 COPY ./.secrets/mariadb.cnf /etc/secrets/mariadb.cnf
 
 RUN apt-get update
