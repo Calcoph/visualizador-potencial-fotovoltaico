@@ -5,20 +5,21 @@ services:
       - "8080:80"
     volumes:
       - ./www:/var/www/map
+      - ./servidor/ehuvpf:/var/www/ehuvpf
+      - ./ehuvpf-projects:/var/lib/ehuvpf/ehuvpf-projects
     command: apachectl -D FOREGROUND
     environment:
       QT_QPA_PLATFORM: offscreen
       TZ: Europe/Madrid
-  mariadatabase:
-    image: mariadb:11.2.2
-    ports:
-      - "11306:3306"
+  db:
+    image: mysql:8.3.0
+    user: root
     environment:
-      MARIADB_ROOT_PASSWORD: /run/secrets/db_root_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
     secrets:
       - db_root_password
     volumes:
-      - ./mariadb-data:/var/lib/mysql
+      - ~/db-data:/var/lib/mysql
 
 secrets:
   db_root_password:

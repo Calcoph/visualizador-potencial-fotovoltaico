@@ -10,6 +10,8 @@ https://aws.amazon.com/compare/the-difference-between-mariadb-vs-mysql/
 
 https://hub.docker.com/_/mariadb
 
+https://hub.docker.com/_/mysql
+
 https://docs.djangoproject.com/en/5.0/howto/deployment/wsgi/apache-auth/
 
 https://docs.djangoproject.com/en/5.0/intro/tutorial01/

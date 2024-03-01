@@ -8,4 +8,5 @@
 /documentación/EDT.png
 __pycache__/
 /.secrets/
-/mariadb-data/
+/db-data/
+*.code-workspace

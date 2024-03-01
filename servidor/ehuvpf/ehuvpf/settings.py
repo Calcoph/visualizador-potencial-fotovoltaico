@@ -78,13 +78,13 @@ with open("/etc/secrets/db_django_password.txt", "r") as f:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "mariadb",
+        'NAME': "ehuvpf",
         "USER": "django",
         "PASSWORD": db_pass,
-        "PORT": "11306",
-        "HOST": "127.0.0.1",
+        "PORT": "3306",
+        "HOST": "db",
         "OPTIONS": {
-            "read_default_file": "/etc/secrets/mariadb.cnf"
+            "read_default_file": "/etc/secrets/db.cnf"
         }
     }
 }

@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 RUN rm -rf /var/www/
 
 COPY ./.secrets/db_django_password.txt /etc/secrets/db_django_password.txt
-COPY ./.secrets/mariadb.cnf /etc/secrets/mariadb.cnf
+COPY ./.secrets/db.cnf /etc/secrets/db.cnf
 
 RUN apt-get update
 
@@ -44,11 +44,8 @@ RUN make install
 COPY apache2/apache2.conf /etc/apache2/apache2.conf
 COPY apache2/sites-available /etc/apache2/sites-available
 
-# Add the server source code
-COPY ./servidor /var/www
-
 RUN a2dissite 000-default.conf
 
 RUN apachectl stop
 
-WORKDIR /
+WORKDIR /var/www/ehuvpf/
