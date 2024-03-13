@@ -1,29 +1,26 @@
 /// <reference path="../../typings/index.d.ts" />
 
 /** @type {Number}  */
-const RESOLUTION = 0.1 // Each cunk is 0.1º wide square
+const RESOLUTION = 0.1 // Each cunk is 0.3º wide square
 /** @type {Array<Chunk>} */
 const LOADED_CHUNKS = []
 /** @type {L.Map} */
 var MAP = null;
+/** @type {number} */
+const MAX_ZOOMLEVEL = 12
+/** @type {boolean} */
+var UPDATES_ENABLED = true
+/** @type {Object.<string, L.GeoJSON>} */
 const LAYERS = {}
-
-class AttributeLayer {
-    constructor(display_name, layer) {
-        this.display_name = display_name
-        this.layer = layer
-    }
-}
 
 function init_map() {
     MAP = L.map('map').setView([43.2629, -2.95], 14);
     /** @type {L.GeoJSON} */
-    var geojson_layer = null;
 
     geojson_layer = L.geoJSON(null, {
         onEachFeature: init_building
     });
-    LAYERS["default"] = new AttributeLayer("default", geojson_layer)
+    LAYERS["geojson"] = geojson_layer
 
     geojson_layer.addTo(MAP)
     add_placeholder_data(geojson_layer)
@@ -32,11 +29,65 @@ function init_map() {
     /* L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map); */
+    }).addTo(MAP); */
 
     //var marker = L.marker([43.2629, -2.95]).addTo(map);
 
+    L.Control.LoadState  = L.Control.extend({
+        onAdd: function(map) {
+                var img = L.DomUtil.create("img");
+
+                img.id = "loader_svg"
+                img.src = "svg/green.svg";
+                img.style.width = "20px";
+
+                return img
+        },
+
+        onRemove: function(map) {
+
+        }
+    })
+
+    L.control.loadState = function(opts) {
+        return new L.Control.LoadState(opts)
+    }
+
+    L.control.loadState({ position: "bottomleft" }).addTo(MAP)
+
+    MAP.on("zoom", (event) => update_zoom(MAP, event))
     MAP.on("move", (event) => update_map(MAP, event))
+    update_zoom(MAP, null)
+    update_map(MAP, null)
+}
+
+/**
+ *
+ * @param {L.Map} map
+ * @param {L.Event} event
+ */
+function update_zoom(map, event) {
+    zlevel = MAP.getZoom()
+    console.log(`zoom level change: ${zlevel}`)
+    if (zlevel < MAX_ZOOMLEVEL) {
+        if (UPDATES_ENABLED) {
+            // Disable updates
+            console.log("Disabling updates")
+            UPDATES_ENABLED = false
+            var loader_svg = document.getElementById("loader_svg")
+            loader_svg.src = "svg/red.svg"
+            loader_svg.title = "No se muestran más edificios, haz zoom para que se empiecen a cargar"
+        }
+    } else {
+        if (!UPDATES_ENABLED) {
+            // Enable updates
+            console.log("Enabling updates")
+            UPDATES_ENABLED = true
+            var loader_svg = document.getElementById("loader_svg")
+            loader_svg.src = "svg/green.svg"
+            loader_svg.title = "Los edificios han sido cargados"
+        }
+    }
 }
 
 /**
@@ -56,7 +107,8 @@ function add_placeholder_data(layer) {
                     [-2.939, 43.264],
                     [-2.944, 43.265]
                 ]]
-            }
+            },
+            "mycomment": "adsad"
         },
     )
 
@@ -72,7 +124,8 @@ function add_placeholder_data(layer) {
                     [-2.939, 43.259],
                     [-2.944, 43.260]
                 ]]
-            }
+            },
+            "mycomment": "adsad"
         }
     )
 }
@@ -84,21 +137,24 @@ function add_placeholder_data(layer) {
  */
 function update_map(map, event) {
     // TODO: Volver al origen si el usuario se va demasiado lejos
-    console.log("Updating map")
-    let bounds = map.getBounds();
+    if (UPDATES_ENABLED) {
+        console.log("Updating map")
 
-    let chunks = get_chunk_list(
-        bounds.getNorth(),
-        bounds.getSouth(),
-        bounds.getEast(),
-        bounds.getWest(),
-    )
+        let bounds = map.getBounds();
 
-    if (chunks.length == 0) {
-        console.log({north,south,east,west})
+        let chunks = get_chunk_list(
+            bounds.getNorth(),
+            bounds.getSouth(),
+            bounds.getEast(),
+            bounds.getWest(),
+        )
+
+        if (chunks.length == 0) {
+            console.log({north,south,east,west})
+        }
+        update_loaded_chunk_list(chunks)
+        load_chunks(chunks)
     }
-    update_loaded_chunk_list(chunks)
-    load_chunks(chunks)
 }
 
 /**
@@ -221,11 +277,12 @@ function load_chunks(chunks) {
     for (chunk of chunks) {
         LOADED_CHUNKS.push(chunk)
 
-        fetch(`/api/getBuildings?lat=${chunk.lat}&lon=${chunk.lon}`)
+        fetch(`/api/getPlaceholderBuildings?lat=${chunk.lat}&lon=${chunk.lon}`)
             .then(response => response.json())
             .then((json) => {
+                let geojson_layer = LAYERS["geojson"]
                 for (building of json.buildings) {
-                    GEOJSON_LAYER.addData(building)
+                    geojson_layer.addData(building)
                 }
             })
     }
