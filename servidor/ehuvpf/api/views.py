@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from .utils.testing import generate_placeholder_building
+from .utils.esri_gjson import save_esri, convert_esri_to_geojson
 
 RESOLUTION = 0.1
 
@@ -28,3 +29,18 @@ def get_placeholder_buildings(request: HttpRequest):
     }
 
     return JsonResponse(json_buildings)
+
+def add_building(request: HttpRequest):
+    params = request.POST
+
+    prj = request.FILES["prj"]
+    dbf = request.FILES["dbf"]
+    shx = request.FILES["shx"]
+    shp = request.FILES["shp"]
+    layer_name = prj.name.split(".prj")[0]
+
+    save_esri(prj, dbf, shx, shp, layer_name)
+    # TODO: use esri_to_geojson instead and keep a qgis app open for longer
+    convert_esri_to_geojson(layer_name, f"/var/lib/ehuvpf/ehuvpf-projects/0/{layer_name}.geojson")
+
+    return HttpResponse("Successfully saved")

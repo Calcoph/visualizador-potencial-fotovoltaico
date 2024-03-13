@@ -10,3 +10,4 @@ __pycache__/
 /.secrets/
 /db-data/
 *.code-workspace
+/ehuvpf-projects

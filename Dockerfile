@@ -44,6 +44,12 @@ RUN make install
 COPY apache2/apache2.conf /etc/apache2/apache2.conf
 COPY apache2/sites-available /etc/apache2/sites-available
 
+# Make needed directories for django app to function
+RUN mkdir /tmp/django
+RUN mkdir /tmp/django/file_upload
+
+RUN chown -R www-data:www-data /tmp/django
+
 RUN a2dissite 000-default.conf
 
 RUN apachectl stop

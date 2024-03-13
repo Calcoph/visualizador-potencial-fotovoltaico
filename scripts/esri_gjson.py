@@ -2,8 +2,6 @@
 # (en powershell) $Env:PYTHONPATH="/usr/lib/python3/dist-packages"
 
 from qgis.core import QgsApplication, QgsProject, QgsVectorLayer, QgsMapLayer, QgsVectorFileWriter, QgsCoordinateReferenceSystem
-
-
 def main(qgs: QgsApplication, layer_path: str):
     layer: QgsVectorLayer = QgsVectorLayer(layer_path, "name", "ogr")
     crs = QgsCoordinateReferenceSystem("EPSG:4326")
@@ -17,7 +15,6 @@ if __name__ == "__main__":
 
     qgs.initQgis()
 
-    main(qgs, "file_path")
+    main(qgs, "file_path.shp")
 
     qgs.exitQgis()
-
