@@ -2,14 +2,32 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import render
 from .utils.testing import generate_placeholder_building
 from .utils.esri_gjson import save_esri, convert_esri_to_geojson
+from .models import Building
+
+from qgis.core import QgsApplication
+
+import json
 
 RESOLUTION = 0.1
+PROJECT_PATH = "/var/lib/ehuvpf/ehuvpf-projects/0/"
 
 def get_buildings(request: HttpRequest):
     params = request.GET
     lat = params.get("lat")
     lon = params.get("lon")
-    return HttpResponse(f"Has pedido los edificios de lat:{lat} lon:{lon}")
+
+    buildings = Building.objects.filter(lat=lat, lon=lon)
+    json_buildings = []
+    for building in buildings:
+        with open(building.path, "r") as f:
+            building = json.load(f)
+            json_buildings.append(building)
+
+    resp = {
+        "buildings": json_buildings
+    }
+
+    return JsonResponse(resp)
 
 def get_placeholder_buildings(request: HttpRequest):
     params = request.GET
@@ -31,8 +49,6 @@ def get_placeholder_buildings(request: HttpRequest):
     return JsonResponse(json_buildings)
 
 def add_building(request: HttpRequest):
-    params = request.POST
-
     prj = request.FILES["prj"]
     dbf = request.FILES["dbf"]
     shx = request.FILES["shx"]
@@ -40,7 +56,6 @@ def add_building(request: HttpRequest):
     layer_name = prj.name.split(".prj")[0]
 
     save_esri(prj, dbf, shx, shp, layer_name)
-    # TODO: use esri_to_geojson instead and keep a qgis app open for longer
-    convert_esri_to_geojson(layer_name, f"/var/lib/ehuvpf/ehuvpf-projects/0/{layer_name}.geojson")
+    convert_esri_to_geojson(layer_name, f"{PROJECT_PATH}{layer_name}.geojson")
 
     return HttpResponse("Successfully saved")

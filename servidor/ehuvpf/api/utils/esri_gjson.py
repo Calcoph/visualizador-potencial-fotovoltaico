@@ -1,10 +1,13 @@
 # (en bash) export PYTHONPATH=/usr/lib/python3/dist-packages
 # (en powershell) $Env:PYTHONPATH="/usr/lib/python3/dist-packages"
 
-from qgis.core import QgsApplication, QgsProject, QgsVectorLayer, QgsMapLayer, QgsVectorFileWriter, QgsCoordinateReferenceSystem
+from qgis.core import QgsVectorLayer, QgsVectorFileWriter, QgsCoordinateReferenceSystem, QgsRectangle, QgsCoordinateTransform, QgsCoordinateTransformContext
 from django.core.files.uploadedfile import UploadedFile
 
+from ..models import Building, Project
+
 TEMP_PATH = "/tmp/django/file_upload/"
+RESOLUTION = 0.1
 
 def save_esri(prj: UploadedFile, dbf: UploadedFile, shx: UploadedFile, shp: UploadedFile, layer_name: str):
     # TODO: potential vulnerability: unsanitized path
@@ -23,18 +26,41 @@ def save_esri(prj: UploadedFile, dbf: UploadedFile, shx: UploadedFile, shp: Uplo
         for chunk in shp.chunks():
             f.write(chunk)
 
-def esri_to_geojson(qgs: QgsApplication, layer_path: str, output_path: str):
+def esri_to_geojson(layer_path: str, output_path: str):
+    # Read the files in TEMP_PATH
     layer: QgsVectorLayer = QgsVectorLayer(layer_path, "", "ogr")
-    crs = QgsCoordinateReferenceSystem("EPSG:4326")
-    QgsVectorFileWriter.writeAsVectorFormat(layer, output_path, "utf-8", crs, "GeoJSON")
+
+
+    # Get the center of the layer
+    bounding_box = QgsRectangle()
+    destination_crs = QgsCoordinateReferenceSystem("EPSG:4326")# 4326 is the standard longitude/latitude, which is whate leaflet returns
+    # Save to geojson
+    QgsVectorFileWriter.writeAsVectorFormat(layer, output_path, "utf-8", destination_crs, "GeoJSON")
+
+    source_crs = layer.crs()
+    # Need to transform the coordinate system to lat/long since we don't know the layer's crs
+    # But we know what will leaflet use
+    crs_transform = QgsCoordinateTransform(source_crs, destination_crs, QgsCoordinateTransformContext())
+    for feature in layer.getFeatures():
+        geometry = feature.geometry()
+        geometry.transform(crs_transform)
+        new_bounding_box = geometry.boundingBox()
+        bounding_box.combineExtentWith(new_bounding_box)
+
+    center = bounding_box.center()
+    lat = int(center.x() / RESOLUTION)
+    lon = int(center.y() / RESOLUTION)
+
+    # Update database
+    # TODO: Select current project
+    project = Project.objects.all().first()
+    building = Building(project=project, path=output_path, lat=lat, lon=lon)
+    building.save()
 
 def convert_esri_to_geojson(layer_path: str, output_path: str):
+    # TODO: Is this function really needed?
     layer_path = f"{TEMP_PATH}{layer_path}.shp"
-    QgsApplication.setPrefixPath("/usr", True)
-    qgs = QgsApplication([], False)
-    qgs.initQgis()
-    esri_to_geojson(qgs, layer_path, output_path)
-    qgs.exitQgis()
+    esri_to_geojson(layer_path, output_path)
 
 if __name__ == "__main__":
     layer_path = "EIB_eroei_filt"

@@ -11,3 +11,4 @@ __pycache__/
 /db-data/
 *.code-workspace
 /ehuvpf-projects
+/servidor/ehuvpf/api/migrations

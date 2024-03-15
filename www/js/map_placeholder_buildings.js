@@ -14,9 +14,7 @@ var UPDATES_ENABLED = true
 const LAYERS = {}
 
 function init_map() {
-    MAP = L.map('map', {
-        "crs": L.CRS.EPSG3857 // Just to make sure the default never changes
-    }).setView([43.2629, -2.95], 14);
+    MAP = L.map('map').setView([43.2629, -2.95], 14);
     /** @type {L.GeoJSON} */
 
     geojson_layer = L.geoJSON(null, {
@@ -279,7 +277,7 @@ function load_chunks(chunks) {
     for (chunk of chunks) {
         LOADED_CHUNKS.push(chunk)
 
-        fetch(`/api/getBuildings?lat=${chunk.lat}&lon=${chunk.lon}`)
+        fetch(`/api/getPlaceholderBuildings?lat=${chunk.lat}&lon=${chunk.lon}`)
             .then(response => response.json())
             .then((json) => {
                 let geojson_layer = LAYERS["geojson"]
