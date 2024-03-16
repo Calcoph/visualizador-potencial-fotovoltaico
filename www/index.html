@@ -18,6 +18,12 @@
     <link rel="stylesheet" href="/map/css/index.css"/>
 </head>
 <body onload="init()">
+    <dialog id="leyenda-loader">
+        <p><b>Indicador de carga</b></p>
+        <p><img src="svg/red.svg" width="25px"> No se muestran edificios nuevos, haz zoom para cargar más</p>
+        <p><img src="svg/green.svg" width="25px"> Se cargan edificios nuevos correctamente</p>
+        <button autofocus id="leyenda-loader-close-button">Cerrar</button>
+    </dialog>
     <header class="header">
         <a href="/admin"><button>Administrar app</button></a>
         <a href="/map/proyect-admin.html"><button>Administrar proyecto</button></a>
@@ -30,7 +36,7 @@
     </header>
     <div class="interface">
         <div id="tab-select" class="attribute-select">
-            <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)">Atributos</label>
+            <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)" checked>Atributos</label>
             <label><input type="radio" name="tab" value="capas" onchange="change_tab(this.value)">Capas</label>
             <label><input type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)">Marcadores</label>
             <label><input type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)">Mis edificios</label>

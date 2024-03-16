@@ -12,6 +12,8 @@ const MAX_ZOOMLEVEL = 12
 var UPDATES_ENABLED = true
 /** @type {Object.<string, L.GeoJSON>} */
 const LAYERS = {}
+/** @type {Array<String>} */
+let SELECTED_ATTRIBUTES = []
 
 function init_map() {
     MAP = L.map('map', {
@@ -42,6 +44,9 @@ function init_map() {
                 img.id = "loader_svg"
                 img.src = "svg/green.svg";
                 img.style.width = "20px";
+                img.addEventListener("click", function() {
+                    document.getElementById("leyenda-loader").showModal()
+                })
 
                 return img
         },
@@ -49,6 +54,11 @@ function init_map() {
         onRemove: function(map) {
 
         }
+    })
+
+    // TODO: Mover esto a otra función (no tiene mucho que ver con la inicialización del mapa)
+    document.getElementById("leyenda-loader-close-button").addEventListener("click", function() {
+        document.getElementById("leyenda-loader").close()
     })
 
     L.control.loadState = function(opts) {
@@ -61,6 +71,7 @@ function init_map() {
     MAP.on("move", (event) => update_map(MAP, event))
     update_zoom(MAP, null)
     update_map(MAP, null)
+    update_selected_attributes()
 }
 
 /**
@@ -296,5 +307,42 @@ function load_chunks(chunks) {
  * @param {L.GeoJSON} layer The GeoJSON layer
  */
 function init_building(building, layer) {
-    layer.bindPopup(building.properties._sum.toString())
+    popup_string = get_popup_content(building)
+    layer.bindPopup(popup_string)
+}
+
+function get_popup_content(building) {
+    let popup_string = ""
+    for (const attribute of SELECTED_ATTRIBUTES) {
+        let properties = building.properties
+        let property = properties["_"+attribute]
+        if (property) {
+            popup_string += attribute + ": " + property.toString() + "<br>"
+        }
+    }
+
+    if (!popup_string) {
+        popup_string = "Selecciona al menos un atributo"
+    }
+
+    return popup_string
+}
+
+function update_building_popups() {
+    let geojson_layer = LAYERS["geojson"];
+    geojson_layer.eachLayer(function(layer) {
+        layer.setPopupContent(get_popup_content(layer.feature))
+    })
+}
+
+function update_selected_attributes() {
+    SELECTED_ATTRIBUTES = []
+    let tab_html = document.getElementById("tab");
+    for (const child of tab_html.children) {
+        let checkbox = child.children[0]
+        if (checkbox.checked) {
+            SELECTED_ATTRIBUTES.push(checkbox.getAttribute("name"))
+        }
+    }
+    update_building_popups()
 }

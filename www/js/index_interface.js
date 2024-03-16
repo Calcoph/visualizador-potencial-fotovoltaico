@@ -1,5 +1,6 @@
 
 function init() {
+    change_tab("atributos")
     init_map()
 }
 
@@ -40,7 +41,8 @@ function tab_atributos(tab) {
         let input = document.createElement("input")
         input.setAttribute("type", "checkbox")
         input.setAttribute("name", atributo)
-        input.setAttribute("checked", "")
+        input.checked = true
+        input.onclick = update_selected_attributes
         label.appendChild(input)
         let att = document.createTextNode(atributo);
         label.appendChild(att)
