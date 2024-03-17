@@ -2,7 +2,7 @@ function getCookie(cname) {
     return document.cookie
         .split("; ")
         .find(
-            (row) => row.startsWith("test2=")
+            (row) => row.startsWith(cname+"=")
         )
         ?.split("=")[1];
 }
