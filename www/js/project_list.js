@@ -21,6 +21,10 @@ function select_project(id) {
     }
 
     if (redirect) {
+        if (redirect[0] == '"') {
+            redirect = redirect.slice(1, -1) // remove wrapping "
+        }
+        console.log(redirect)
         window.location.href = redirect
     } else {
         window.location.href = "/"

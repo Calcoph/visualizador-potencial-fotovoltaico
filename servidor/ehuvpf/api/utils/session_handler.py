@@ -3,9 +3,12 @@ from ..models import Project
 
 SESSION_PROJECT_ID = "project_id"
 
-def get_project(request: HttpRequest) -> Project:
-    id = request.session[SESSION_PROJECT_ID]
-    return Project.objects.get(pk=id)
+def get_project(request: HttpRequest) -> Project | None:
+    if request.session.has_key(SESSION_PROJECT_ID):
+        id = request.session[SESSION_PROJECT_ID]
+        return Project.objects.get(pk=id)
+    else:
+        return None
 
 def set_project(request: HttpRequest, id):
     # TODO: Make sure that project_id is valid

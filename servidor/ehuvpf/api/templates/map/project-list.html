@@ -9,8 +9,17 @@
     <script src="/smap/js/project_list.js"></script>
     <h1>PROJECT LIST</h1>
     <a href="index.html">Go back</a>
+    {% if current_project is None %}
+        <p>You don't have any project selected. Please select one from below:</p>
+    {% else %}
+        <p>Currently selected project: {{ current_project.name }}</p>
+    {% endif %}
     {% for project in projects %}
-        <button onclick="select_project({{ project.pk }})">{{ project.name }}</button>
+        {% if current_project is not None and project.pk == current_project.pk %}
+            <button onclick="select_project({{ project.pk }})" disabled>{{ project.name }}</button><br>
+        {% else %}
+            <button onclick="select_project({{ project.pk }})">{{ project.name }}</button><br>
+        {% endif %}
     {% endfor %}
 </body>
 </html>
