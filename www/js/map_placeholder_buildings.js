@@ -38,7 +38,7 @@ function init_map() {
                 var img = L.DomUtil.create("img");
 
                 img.id = "loader_svg"
-                img.src = "svg/green.svg";
+                img.src = "/smap/svg/green.svg";
                 img.style.width = "20px";
 
                 return img
@@ -75,7 +75,7 @@ function update_zoom(map, event) {
             console.log("Disabling updates")
             UPDATES_ENABLED = false
             var loader_svg = document.getElementById("loader_svg")
-            loader_svg.src = "svg/red.svg"
+            loader_svg.src = "/smap/svg/red.svg"
             loader_svg.title = "No se muestran más edificios, haz zoom para que se empiecen a cargar"
         }
     } else {
@@ -84,7 +84,7 @@ function update_zoom(map, event) {
             console.log("Enabling updates")
             UPDATES_ENABLED = true
             var loader_svg = document.getElementById("loader_svg")
-            loader_svg.src = "svg/green.svg"
+            loader_svg.src = "/smap/svg/green.svg"
             loader_svg.title = "Los edificios han sido cargados"
         }
     }

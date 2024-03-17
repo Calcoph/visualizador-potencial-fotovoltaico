@@ -5,11 +5,11 @@ class Project(models.Model):
     name = models.TextField()
 
 class Building(models.Model):
-    project = models.OneToOneField(
-        Project,
-        on_delete=models.CASCADE,
-        primary_key=True
-    )
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     path = models.TextField()
     lat = models.IntegerField()
     lon = models.IntegerField()
+
+class Measure(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    name = models.TextField()

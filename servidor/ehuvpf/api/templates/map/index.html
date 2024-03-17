@@ -15,19 +15,19 @@
         crossorigin=""></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/map/css/index.css"/>
+    <link rel="stylesheet" href="/smap/css/index.css"/>
 </head>
 <body onload="init()">
     <dialog id="leyenda-loader">
         <p><b>Indicador de carga</b></p>
-        <p><img src="svg/red.svg" width="25px"> No se muestran edificios nuevos, haz zoom para cargar más</p>
-        <p><img src="svg/green.svg" width="25px"> Se cargan edificios nuevos correctamente</p>
+        <p><img src="/smap/svg/red.svg" width="25px"> No se muestran edificios nuevos, haz zoom para cargar más</p>
+        <p><img src="/smap/svg/green.svg" width="25px"> Se cargan edificios nuevos correctamente</p>
         <button autofocus id="leyenda-loader-close-button">Cerrar</button>
     </dialog>
     <header class="header">
         <a href="/admin"><button>Administrar app</button></a>
-        <a href="/map/proyect-admin.html"><button>Administrar proyecto</button></a>
-        <a href="/map/proyect-list.html"><button>Elegir proyecto</button></a>
+        <a href="/map/project-admin"><button>Administrar proyecto</button></a>
+        <a href="/map/project-list.html"><button>Elegir proyecto</button></a>
         <a href="/map/addbuilding.html"><button>add building</button></a>
         <div class="login-section">
             <a href="/map/login.html"><button>login</button></a>
@@ -45,7 +45,7 @@
         </div>
         <div id="map"></div>
     </div>
-    <script src="/map/js/map.js"></script>
-    <script src="/map/js/index_interface.js"></script>
+    <script src="/smap/js/map.js"></script>
+    <script src="/smap/js/index_interface.js"></script>
 </body>
 </html>

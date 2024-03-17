@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="/smap/js/project-admin.js"></script>
+    <h1>Administración del proyecto</h1>
+    <h3>Atributos de las capas:</h3>
+    <ul id="lista">
+        {% for attribute in attributes %}
+            <li>{{attribute.name}}</li>
+        {% endfor %}
+    </ul>
+    <p>Nuevo atributo:</p>
+    <input type="text" id="nuevo-nombre">
+    <button onclick="anadir_atributo()">Añadir</button>
+    <a href="/">Go back</a>
+</body>
+</html>
