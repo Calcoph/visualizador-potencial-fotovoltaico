@@ -6,11 +6,11 @@
     <title>Document</title>
 </head>
 <body>
+    <script src="/smap/js/project_list.js"></script>
     <h1>PROJECT LIST</h1>
     <a href="index.html">Go back</a>
-    <button>Project 1</button>
-    <button>Project 2</button>
-    <button>Project 3</button>
-    <button>Project 4</button>
+    {% for project in projects %}
+        <button onclick="select_project({{ project.pk }})">{{ project.name }}</button>
+    {% endfor %}
 </body>
 </html>

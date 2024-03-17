@@ -6,7 +6,7 @@ function anadir_atributo() {
 
     let xhttp = new XMLHttpRequest()
 
-    xhttp.open("POST", "/api/newAttribute", true)
+    xhttp.open("POST", "/map/api/newAttribute", true)
     xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded")
     let params = "name=" + encodeURIComponent(nuevo_nombre)
     xhttp.send(params)

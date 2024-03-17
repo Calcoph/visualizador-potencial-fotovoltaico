@@ -290,7 +290,7 @@ function load_chunks(chunks) {
     for (chunk of chunks) {
         LOADED_CHUNKS.push(chunk)
 
-        fetch(`/api/getBuildings?lat=${chunk.lat}&lon=${chunk.lon}`)
+        fetch(`/map/api/getBuildings?lat=${chunk.lat}&lon=${chunk.lon}`)
             .then(response => response.json())
             .then((json) => {
                 let geojson_layer = LAYERS["geojson"]

@@ -26,7 +26,7 @@ def save_esri(prj: UploadedFile, dbf: UploadedFile, shx: UploadedFile, shp: Uplo
         for chunk in shp.chunks():
             f.write(chunk)
 
-def esri_to_geojson(layer_path: str, output_path: str):
+def esri_to_geojson(layer_path: str, output_path: str) -> tuple[str, int, int]:
     # Read the files in TEMP_PATH
     layer: QgsVectorLayer = QgsVectorLayer(layer_path, "", "ogr")
 
@@ -51,16 +51,12 @@ def esri_to_geojson(layer_path: str, output_path: str):
     lat = int(center.x() / RESOLUTION)
     lon = int(center.y() / RESOLUTION)
 
-    # Update database
-    # TODO: Select current project
-    project = Project.objects.all().first()
-    building = Building(project=project, path=output_path, lat=lat, lon=lon)
-    building.save()
+    return (output_path, lat, lon)
 
-def convert_esri_to_geojson(layer_path: str, output_path: str):
+def convert_esri_to_geojson(layer_path: str, output_path: str) -> tuple[str, int, int]:
     # TODO: Is this function really needed?
     layer_path = f"{TEMP_PATH}{layer_path}.shp"
-    esri_to_geojson(layer_path, output_path)
+    return esri_to_geojson(layer_path, output_path)
 
 if __name__ == "__main__":
     layer_path = "EIB_eroei_filt"
