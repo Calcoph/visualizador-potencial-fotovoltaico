@@ -6,6 +6,7 @@ from . import views
 api_urls = [
     path("getBuildings", views.get_buildings, name="getBuildings"),
     path("getPlaceholderBuildings", views.get_placeholder_buildings, name="getPlaceholderBuildings"),
+    path("getAttributes", views.get_attributes, name="getAttributes"),
     path("addBuilding", views.add_building, name="addBuilding"),
     path("newAttribute", views.new_attribute, name="newAttribute"),
     path("selectProject", views.select_project, name="selectProject"),

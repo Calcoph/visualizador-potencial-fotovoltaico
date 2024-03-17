@@ -12,7 +12,7 @@ const MAX_ZOOMLEVEL = 12
 var UPDATES_ENABLED = true
 /** @type {Object.<string, L.GeoJSON>} */
 const LAYERS = {}
-/** @type {Array<String>} */
+/** @type {Array<{display_name: string, name: string}>} */
 let SELECTED_ATTRIBUTES = []
 
 function init_map() {
@@ -24,6 +24,7 @@ function init_map() {
     geojson_layer = L.geoJSON(null, {
         onEachFeature: init_building
     });
+    geojson_layer.display_name = "geojson"
     LAYERS["geojson"] = geojson_layer
 
     geojson_layer.addTo(MAP)
@@ -315,9 +316,9 @@ function get_popup_content(building) {
     let popup_string = ""
     for (const attribute of SELECTED_ATTRIBUTES) {
         let properties = building.properties
-        let property = properties["_"+attribute]
+        let property = properties[attribute.name]
         if (property) {
-            popup_string += attribute + ": " + property.toString() + "<br>"
+            popup_string += attribute.display_name + ": " + property.toString() + "<br>"
         }
     }
 
@@ -341,7 +342,10 @@ function update_selected_attributes() {
     for (const child of tab_html.children) {
         let checkbox = child.children[0]
         if (checkbox.checked) {
-            SELECTED_ATTRIBUTES.push(checkbox.getAttribute("name"))
+            SELECTED_ATTRIBUTES.push({
+                "name": checkbox.name,
+                "display_name": checkbox.value
+            })
         }
     }
     update_building_popups()

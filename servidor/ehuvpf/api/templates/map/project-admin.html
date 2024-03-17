@@ -11,11 +11,12 @@
     <h3>Atributos de las capas:</h3>
     <ul id="lista">
         {% for attribute in attributes %}
-            <li>{{ attribute.name }}</li>
+            <li>{{ attribute.display_name }} ({{ attribute.name }})</li>
         {% endfor %}
     </ul>
     <p>Nuevo atributo:</p>
-    <input type="text" id="nuevo-nombre">
+    <input type="text" id="name">
+    <input type="text" id="display_name">
     <button onclick="anadir_atributo()">Añadir</button>
     <a href="/">Go back</a>
 </body>

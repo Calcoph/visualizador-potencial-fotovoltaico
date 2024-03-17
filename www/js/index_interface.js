@@ -1,13 +1,28 @@
+let current_tab = undefined
 
 function init() {
-    change_tab("atributos")
     init_map()
+    set_current_tab()
+    change_tab(current_tab)
+    carga_atributos()
+}
+
+function set_current_tab() {
+    let tab_html = document.getElementById("tab-select")
+    for (const label of tab_html.children) {
+        let input = label.children[0]
+        if (input.checked) {
+            console.log(input.value)
+            current_tab = input.value
+        }
+    }
 }
 
 /**
  * @param {String} tab
  */
 function change_tab(tab) {
+    current_tab = tab
     let tab_html = document.getElementById("tab");
     tab_html.innerHTML = ""
     switch (tab) {
@@ -29,22 +44,36 @@ function change_tab(tab) {
     }
 }
 
+
+let available_attributes = []
+function carga_atributos() {
+    fetch("/map/api/getAttributes")
+        .then(response => response.json())
+        .then((json) => {
+            available_attributes = json.available_attributes
+
+            if (current_tab === "atributos") {
+                change_tab(current_tab)
+            }
+        })
+}
+
 /**
  * @param {HTMLElement} tab
- *
- * @returns {String}
  */
 function tab_atributos(tab) {
-    let inputs = ["count", "sum", "mean", "median", "stdev", "min", "max", "range", "minority", "majority", "variety", "variance"]
-    inputs.forEach(function(atributo) {
+    available_attributes.forEach(function(atributo) {
         let label = document.createElement("label");
         let input = document.createElement("input")
-        input.setAttribute("type", "checkbox")
-        input.setAttribute("name", atributo)
-        input.checked = true
+        input.type = "checkbox"
+        input.value = atributo.display_name
+        input.name = atributo.name
+        input.checked = SELECTED_ATTRIBUTES.find(function(selected_attribute) {
+            return selected_attribute.name == atributo.name
+        }) !== undefined
         input.onclick = update_selected_attributes
         label.appendChild(input)
-        let att = document.createTextNode(atributo);
+        let att = document.createTextNode(atributo.display_name);
         label.appendChild(att)
 
         tab.appendChild(label)
@@ -53,8 +82,6 @@ function tab_atributos(tab) {
 
 /**
  * @param {HTMLElement} tab
- *
- * @returns {String}
  */
 function tab_marcadores(tab) {
     let inputs = ["marcador1", "marcador2", "marcador3", "marcador4", "marcador5"]
@@ -69,8 +96,6 @@ function tab_marcadores(tab) {
 
 /**
  * @param {HTMLElement} tab
- *
- * @returns {String}
  */
 function tab_mis_edificios(tab) {
     let inputs = ["edificio1", "edificio2", "edificio3", "edificio4", "edificio5"]
@@ -85,8 +110,6 @@ function tab_mis_edificios(tab) {
 
 /**
  * @param {HTMLElement} tab
- *
- * @returns {String}
  */
 function tab_capas(tab) {
     for (layer_key in LAYERS) {

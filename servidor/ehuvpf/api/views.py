@@ -56,6 +56,23 @@ def get_placeholder_buildings(request: HttpRequest):
     return JsonResponse(json_buildings)
 
 @api_view
+def get_attributes(request: HttpRequest):
+    project = get_project(request)
+    measures = Measure.objects.filter(project=project)
+    measure_list = []
+    for measure in measures:
+        measure_list.append({
+            "name": measure.name,
+            "display_name": measure.display_name,
+        })
+
+    attributes = {
+        "available_attributes": measure_list
+    }
+
+    return JsonResponse(attributes)
+
+@api_view
 def add_building(request: HttpRequest):
     prj = request.FILES["prj"]
     dbf = request.FILES["dbf"]
@@ -76,9 +93,10 @@ def add_building(request: HttpRequest):
 @api_view
 def new_attribute(request: HttpRequest):
     new_name = request.POST["name"]
+    display_name = request.POST["display_name"]
     project = get_project(request)
 
-    new_measure = Measure(project=project, name=new_name)
+    new_measure = Measure(project=project, name=new_name, display_name=display_name)
     new_measure.save()
 
     return HttpResponse("Success")

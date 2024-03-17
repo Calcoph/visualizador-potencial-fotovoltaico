@@ -13,3 +13,4 @@ class Building(models.Model):
 class Measure(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.TextField()
+    display_name = models.TextField()
