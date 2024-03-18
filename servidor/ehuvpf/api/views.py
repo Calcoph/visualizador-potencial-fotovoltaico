@@ -4,9 +4,9 @@ from django.template import loader
 
 from .utils.testing import generate_placeholder_building
 from .utils.esri_gjson import save_esri, convert_esri_to_geojson
-from .utils.decorators import api_view, rendered_view
+from .utils.decorators import project_required_api, project_required
 from .utils.session_handler import get_project, set_project, default_project_if_undefined
-from .models import Building, Project, Measure
+from .models import Building, Layer, Project, Measure
 
 from qgis.core import QgsApplication
 
@@ -15,7 +15,7 @@ import json
 RESOLUTION = 0.1
 PROJECT_PATH = "/var/lib/ehuvpf/ehuvpf-projects/0/"
 
-@api_view
+@project_required_api
 def get_buildings(request: HttpRequest):
     params = request.GET
     lat = params.get("lat")
@@ -35,7 +35,7 @@ def get_buildings(request: HttpRequest):
 
     return JsonResponse(resp)
 
-@api_view
+@project_required_api
 def get_placeholder_buildings(request: HttpRequest):
     params = request.GET
     lat = int(params.get("lat")) * RESOLUTION
@@ -55,7 +55,7 @@ def get_placeholder_buildings(request: HttpRequest):
 
     return JsonResponse(json_buildings)
 
-@api_view
+@project_required_api
 def get_attributes(request: HttpRequest):
     project = get_project(request)
     measures = Measure.objects.filter(project=project)
@@ -72,7 +72,7 @@ def get_attributes(request: HttpRequest):
 
     return JsonResponse(attributes)
 
-@api_view
+@project_required_api
 def add_building(request: HttpRequest):
     prj = request.FILES["prj"]
     dbf = request.FILES["dbf"]
@@ -90,7 +90,7 @@ def add_building(request: HttpRequest):
 
     return HttpResponse("Successfully saved")
 
-@api_view
+@project_required_api
 def new_attribute(request: HttpRequest):
     new_name = request.POST["name"]
     display_name = request.POST["display_name"]
@@ -101,29 +101,101 @@ def new_attribute(request: HttpRequest):
 
     return HttpResponse("Success")
 
-@api_view
+@project_required_api
+def add_layer_api(request: HttpRequest):
+    # TODO: add validation
+    layer_name = request.POST["layer-name"]
+    attributes = request.POST["attributes"]
+    color_measure = request.POST["color-attribute"]
+    project = get_project(request)
+
+    measures = []
+    for attribute in attributes:
+        selected_measure = Measure.objects.get(pk=attribute)
+        measures.append(selected_measure)
+
+    color_measure = Measure.objects.get(pk=color_measure)
+
+    new_layer = Layer(project=project, color_measure=color_measure, name=layer_name)
+    new_layer.save()
+    new_layer.default_measures.set(measures)
+
+    return HttpResponse("Success")
+
 def select_project(request: HttpRequest):
     project_id = request.POST["project_id"]
     set_project(request, project_id)
 
     return HttpResponse("Success")
 
-@rendered_view
+@project_required
 def project_admin(request: HttpRequest):
+    project = get_project(request)
     template = loader.get_template("map/project-admin.html")
-    attributes = Measure.objects.filter(project=Project.objects.first())
+    attributes = Measure.objects.filter(project=project)
+    layers = Layer.objects.filter(project=project)
     context = {
-        "attributes": attributes
+        "project": project,
+        "attributes": attributes,
+        "layers": layers,
     }
     return HttpResponse(template.render(context, request))
 
-@rendered_view
+@project_required
+def edit_layers(request: HttpRequest):
+    project = get_project(request)
+    template = loader.get_template("map/edit-layers.html")
+    layers = Layer.objects.filter(project=project)
+    context = {
+        "project": project,
+        "layers": layers,
+    }
+    return HttpResponse(template.render(context, request))
+
+@project_required
+def edit_layer(request: HttpRequest):
+    layer_id = request.GET["layer"]
+    project = get_project(request)
+    template = loader.get_template("map/edit-layers.html")
+
+    layer = Layer.objects.get(pk=layer_id)
+    attributes = Measure.objects.filter(project=project)
+    default_measures = layer.default_measures
+    color_measure = layer.color_measure
+    context = {
+        "project": project,
+        "layer": layer,
+        "attributes": attributes,
+        "default_measures": default_measures,
+        "color_measure": color_measure
+    }
+
+    return HttpResponse(template.render(context, request))
+
+@project_required
+def add_layer(request: HttpRequest):
+    project = get_project(request)
+    template = loader.get_template("map/add-layer.html")
+
+    attributes = Measure.objects.filter(project=project)
+    context = {
+        "project": project,
+        "attributes": attributes,
+    }
+
+    return HttpResponse(template.render(context, request))
+
+
+@project_required
 def static_html(request: HttpRequest):
     file_name = request.path.split("/")[-1]
     template = loader.get_template(f"map/{file_name}")
     context = {
     }
-    return HttpResponse(template.render(context, request))
+    response = HttpResponse(template.render(context, request))
+    # Al ser estáticas se les puede indicar que se guarden en el caché
+    response.headers["Cache-Control"] = f"max-age={60*24*14}"
+    return response
 
 def project_list(request: HttpRequest):
     template = loader.get_template(f"map/project-list.html")

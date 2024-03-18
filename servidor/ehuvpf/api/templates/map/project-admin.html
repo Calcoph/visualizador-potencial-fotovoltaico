@@ -6,18 +6,29 @@
     <title>Document</title>
 </head>
 <body>
-    <script src="/smap/js/project-admin.js"></script>
-    <h1>Administración del proyecto</h1>
-    <h3>Atributos de las capas:</h3>
-    <ul id="lista">
-        {% for attribute in attributes %}
-            <li>{{ attribute.display_name }} ({{ attribute.name }})</li>
-        {% endfor %}
-    </ul>
-    <p>Nuevo atributo:</p>
-    <input type="text" id="name">
-    <input type="text" id="display_name">
-    <button onclick="anadir_atributo()">Añadir</button>
+    <h1>Administración del proyecto {{ project.name }}</h1>
+    <a href="project-list.html"><button>Cambiar de proyecto</button></a>
+
+    <details>
+        <summary>Atributos de las capas</summary>
+        <ul>
+            {% for attribute in attributes %}
+                <li>{{ attribute.display_name }} ({{ attribute.name }})</li>
+            {% endfor %}
+        </ul>
+    </details>
+    <a href="edit-attributes"><button>Modificar atributos</button></a>
+
+    <details>
+        <summary>Capas</summary>
+        <ul>
+            {% for layer in layers %}
+                <li>{{ layer.name }} <a href="edit-layer.html?layer={{ layer.name }}"><button></button></a></li>
+            {% endfor %}
+        </ul>
+    </details>
+    <a href="edit-layers"><button>Modificar capas</button></a>
+
     <a href="/">Go back</a>
 </body>
 </html>

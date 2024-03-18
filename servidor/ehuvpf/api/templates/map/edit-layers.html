@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Administración del proyecto {{ project.name }}</h1>
+    <h3>Capas</h3>
+    <ul>
+        {% for layer in layers %}
+            <li>{{ layer.name }} <a href="edit-layer?layer={{ layer.pk }}"><button>Editar</button></a></li>
+        {% endfor %}
+    </ul>
+    <a href="add-layer"><button>Añadir capa</button></a>
+
+    <a href="project-admin">Go back</a>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="/smap/js/edit-layer.js"></script>
+    <h1>Administración del proyecto {{ project.name }}</h1>
+    <h3>Modificando capa {{ layer.name }}</h3>
+    <h3>Atributos relevantes:</h3>
+    <ul id="atributos">
+        {% for measure in default_measures %}
+            <li>{{ measure.display_name }} ({{ measure.name }})</li>
+        {% endfor %}
+    </ul>
+    <details>
+        <summary>Añadir un atributo para mostrar en esta capa:</summary>
+        <ul>
+            {# TODO: hacer este fitro con un query en vez de manualmente #}
+            {% default_measures_pks = map(default_measures, lambda x: x.pk) %}
+            {% for measure in attributes %}
+                {% if measure.pk not in default_measures_pks %}
+                    <li>{{ measure.display_name }} ({{ measure.name }}) <button>Añadir</button></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </details>
+
+    <a href="edit-layers">Go back</a>
+</body>
+</html>

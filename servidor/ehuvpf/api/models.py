@@ -14,3 +14,9 @@ class Measure(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.TextField()
     display_name = models.TextField()
+
+class Layer(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    default_measures = models.ManyToManyField(Measure)
+    color_measure = models.ForeignKey(Measure, on_delete=models.CASCADE, related_name="color_measure")
+    name = models.TextField()
