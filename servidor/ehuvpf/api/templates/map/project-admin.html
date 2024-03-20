@@ -23,7 +23,7 @@
         <summary>Capas</summary>
         <ul>
             {% for layer in layers %}
-                <li>{{ layer.name }} <a href="edit-layer.html?layer={{ layer.name }}"><button></button></a></li>
+                <li>{{ layer.name }} <a href="edit-layer?layer={{ layer.pk }}"><button>Editar</button></a></li>
             {% endfor %}
         </ul>
     </details>

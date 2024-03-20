@@ -10,7 +10,7 @@
     <h3>Capas</h3>
     <ul>
         {% for layer in layers %}
-            <li>{{ layer.name }} <a href="edit-layer?layer={{ layer.pk }}"><button>Editar</button></a></li>
+            <li>{{ layer.name }}<a href="edit-layer?layer={{ layer.pk }}"><button>Editar</button></a></li>
         {% endfor %}
     </ul>
     <a href="add-layer"><button>Añadir capa</button></a>

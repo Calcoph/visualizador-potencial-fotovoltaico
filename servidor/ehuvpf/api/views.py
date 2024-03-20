@@ -102,6 +102,45 @@ def new_attribute(request: HttpRequest):
     return HttpResponse("Success")
 
 @project_required_api
+def add_attribute(request: HttpRequest):
+    layer_id = request.POST["layer"]
+    attribute_id = request.POST["attribute"]
+
+    layer = Layer.objects.get(pk=layer_id)
+    attribute = Measure.objects.get(pk=attribute_id)
+
+    # TODO: Validation
+    layer.default_measures.add(attribute)
+
+    return HttpResponse("Success")
+
+@project_required_api
+def hide_attribute(request: HttpRequest):
+    layer_id = request.POST["layer"]
+    attribute_id = request.POST["attribute"]
+
+    layer = Layer.objects.get(pk=layer_id)
+    attribute = Measure.objects.get(pk=attribute_id)
+
+    # TODO: Validation
+    layer.default_measures.remove(attribute)
+
+    return HttpResponse("Success")
+
+@project_required_api
+def change_color_attribute(request: HttpRequest):
+    layer_id = request.POST["layer"]
+    color_attribute_id = request.POST["color_attribute"]
+
+    layer = Layer.objects.get(pk=layer_id)
+    color_attribute = Measure.objects.get(pk=color_attribute_id)
+    # TODO: Validation
+    layer.color_measure = color_attribute
+    layer.save()
+
+    return HttpResponse("Success")
+
+@project_required_api
 def add_layer_api(request: HttpRequest):
     # TODO: add validation
     layer_name = request.POST["layer-name"]
@@ -156,17 +195,24 @@ def edit_layers(request: HttpRequest):
 def edit_layer(request: HttpRequest):
     layer_id = request.GET["layer"]
     project = get_project(request)
-    template = loader.get_template("map/edit-layers.html")
+    template = loader.get_template("map/edit-layer.html")
 
     layer = Layer.objects.get(pk=layer_id)
     attributes = Measure.objects.filter(project=project)
-    default_measures = layer.default_measures
+    default_measures = layer.default_measures.all()
+    # TODO: hacer este fitro con un query en vez de manualmente
+    default_measures_pks = list(map(lambda x: x.pk, default_measures))
+    unused_measures = []
+    for measure in attributes:
+        if measure.pk not in default_measures_pks:
+            unused_measures.append(measure)
     color_measure = layer.color_measure
     context = {
         "project": project,
         "layer": layer,
         "attributes": attributes,
         "default_measures": default_measures,
+        "unused_measures": unused_measures,
         "color_measure": color_measure
     }
 
@@ -185,6 +231,15 @@ def add_layer(request: HttpRequest):
 
     return HttpResponse(template.render(context, request))
 
+@project_required
+def edit_attributes(request: HttpRequest):
+    project = get_project(request)
+    template = loader.get_template("map/edit-attributes.html")
+    attributes = Measure.objects.filter(project=project)
+    context = {
+        "attributes": attributes,
+    }
+    return HttpResponse(template.render(context, request))
 
 @project_required
 def static_html(request: HttpRequest):

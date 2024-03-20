@@ -12,21 +12,28 @@
     <h3>Atributos relevantes:</h3>
     <ul id="atributos">
         {% for measure in default_measures %}
-            <li>{{ measure.display_name }} ({{ measure.name }})</li>
+            <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})">{{ measure.display_name }} ({{ measure.name }})<button onclick="quitar_atributo({{ measure.pk }})">Quitar</button></li>
         {% endfor %}
     </ul>
     <details>
         <summary>Añadir un atributo para mostrar en esta capa:</summary>
-        <ul>
-            {# TODO: hacer este fitro con un query en vez de manualmente #}
-            {% default_measures_pks = map(default_measures, lambda x: x.pk) %}
-            {% for measure in attributes %}
-                {% if measure.pk not in default_measures_pks %}
-                    <li>{{ measure.display_name }} ({{ measure.name }}) <button>Añadir</button></li>
-                {% endif %}
+        <ul id="atributos-disponibles">
+            {% for measure in unused_measures %}
+                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})">{{ measure.display_name }} ({{ measure.name }}) <button onclick="anadir_atributo({{ measure.pk }})">Añadir</button></li>
             {% endfor %}
         </ul>
     </details>
+    <h3>Atributo a colorear:</h3>
+    <select id="seleccion-atributo-color" onchange="cambiar_atributo_color()">
+        {% for measure in default_measures %}
+            {% if measure.pk == color_measure.pk %}
+                <option value="{{ measure.pk }}" selected>{{ measure.display_name }} ({{ measure.name}})</option>
+            {% else %}
+                <option value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name}})</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <input type="hidden" id="layer-id" value="{{ layer.pk }}">
 
     <a href="edit-layers">Go back</a>
 </body>
