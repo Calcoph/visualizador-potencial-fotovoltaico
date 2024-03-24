@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/smap/css/addbuilding.css"/>
+    <link rel="stylesheet" href="/smap/css/add-building.css"/>
 </head>
 <body>
     <h1>ADD BUILDING</h1>
@@ -36,6 +36,11 @@
                 <label>.dbf<input type="file" name="dbf"></label>
                 <label>.shx<input type="file" name="shx"></label>
                 <label>.shp<input type="file" name="shp"></label>
+                <select name="layer">
+                    {% for layer in layers %}
+                        <option value="{{ layer.pk }}">{{ layer.name }}</option>
+                    {% endfor %}
+                </select>
                 <button>validar (o no)</button>
                 <input type="submit" value="subir"/>
             </div>

@@ -2,8 +2,8 @@
 
 /** @type {Number}  */
 const RESOLUTION = 0.1 // Each cunk is 0.3º wide square
-/** @type {Array<Chunk>} */
-const LOADED_CHUNKS = []
+/** @type {Object.<string, Array<Chunk>>} */
+var LOADED_CHUNKS = {}
 /** @type {L.Map} */
 var MAP = null;
 /** @type {number} */
@@ -14,21 +14,16 @@ var UPDATES_ENABLED = true
 const LAYERS = {}
 /** @type {Array<{display_name: string, name: string}>} */
 let SELECTED_ATTRIBUTES = []
+/** @type {string} */
+let SELECTED_LAYER = undefined
 
 function init_map() {
     MAP = L.map('map', {
         "crs": L.CRS.EPSG3857 // Just to make sure the default never changes
     }).setView([43.2629, -2.95], 14);
-    /** @type {L.GeoJSON} */
 
-    geojson_layer = L.geoJSON(null, {
-        onEachFeature: init_building
-    });
-    geojson_layer.display_name = "geojson"
-    LAYERS["geojson"] = geojson_layer
-
-    geojson_layer.addTo(MAP)
-    add_placeholder_data(geojson_layer)
+    // layers won't automatically be added at this time, have to wait asyc AJAX
+    add_layers()
 
     /* TODO: Read https://operations.osmfoundation.org/policies/tiles/ */
     /* L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -67,12 +62,6 @@ function init_map() {
     }
 
     L.control.loadState({ position: "bottomleft" }).addTo(MAP)
-
-    MAP.on("zoom", (event) => update_zoom(MAP, event))
-    MAP.on("move", (event) => update_map(MAP, event))
-    update_zoom(MAP, null)
-    update_map(MAP, null)
-    update_selected_attributes()
 }
 
 /**
@@ -150,7 +139,6 @@ function add_placeholder_data(layer) {
  * @param {L.Event} event
  */
 function update_map(map, event) {
-    // TODO: Volver al origen si el usuario se va demasiado lejos
     if (UPDATES_ENABLED) {
         console.log("Updating map")
 
@@ -262,7 +250,7 @@ function update_loaded_chunk_list(chunks) {
     const removing_indices = []
     for ([index, chunk] of chunks.entries()) {
         // find if chunk is in LOADED_CHUNKS
-        const found_chunk = LOADED_CHUNKS.find((loaded_chunk) => {
+        const found_chunk = LOADED_CHUNKS[SELECTED_LAYER].find((loaded_chunk) => {
             return loaded_chunk.eq(chunk)
         });
 
@@ -275,8 +263,6 @@ function update_loaded_chunk_list(chunks) {
     for(i of removing_indices.reverse()) {
         chunks.splice(i, 1)
     }
-
-    LOADED_CHUNKS
 }
 
 /**
@@ -289,14 +275,14 @@ function update_loaded_chunk_list(chunks) {
  */
 function load_chunks(chunks) {
     for (chunk of chunks) {
-        LOADED_CHUNKS.push(chunk)
+        LOADED_CHUNKS[SELECTED_LAYER].push(chunk)
 
-        fetch(`/map/api/getBuildings?lat=${chunk.lat}&lon=${chunk.lon}`)
+        fetch(`/map/api/getBuildings?layer=${SELECTED_LAYER}&lat=${chunk.lat}&lon=${chunk.lon}`)
             .then(response => response.json())
             .then((json) => {
-                let geojson_layer = LAYERS["geojson"]
+                let destination_layer = LAYERS[json.layer]
                 for (building of json.buildings) {
-                    geojson_layer.addData(building)
+                    destination_layer.addData(building)
                 }
             })
     }
@@ -330,8 +316,7 @@ function get_popup_content(building) {
 }
 
 function update_building_popups() {
-    let geojson_layer = LAYERS["geojson"];
-    geojson_layer.eachLayer(function(layer) {
+    LAYERS[SELECTED_LAYER].eachLayer(function(layer) {
         layer.setPopupContent(get_popup_content(layer.feature))
     })
 }
@@ -349,4 +334,51 @@ function update_selected_attributes() {
         }
     }
     update_building_popups()
+}
+
+function add_layers() {
+    fetch("api/getLayers")
+        .then(response => response.json())
+        .then((json) => {
+            for (const layer of json.layers) {
+                let nueva_capa = L.geoJSON(null, {
+                    onEachFeature: init_building
+                })
+                LAYERS[layer.id] = nueva_capa
+
+                nueva_capa.display_name = layer.name
+                LOADED_CHUNKS[layer.id] = []
+                if (SELECTED_LAYER === undefined) {
+                    add_placeholder_data(nueva_capa)
+                    SELECTED_LAYER = layer.id.toString()
+                    on_first_layer_loaded()
+                    nueva_capa.addTo(MAP)
+                }
+            }
+
+            refrescar_tab()
+        })
+}
+
+function on_first_layer_loaded() {
+    on_layer_loaded()
+
+    MAP.on("zoom", (event) => update_zoom(MAP, event))
+    MAP.on("move", (event) => update_map(MAP, event))
+}
+
+function on_layer_loaded() {
+    update_selected_attributes()
+    update_zoom(MAP, null)
+    update_map(MAP, null)
+}
+
+function cambiar_capa(nombre_capa) {
+    let vieja_capa = LAYERS[SELECTED_LAYER]
+    vieja_capa.removeFrom(MAP)
+    SELECTED_LAYER = nombre_capa
+    let nueva_capa = LAYERS[SELECTED_LAYER]
+    nueva_capa.addTo(MAP)
+
+    on_layer_loaded()
 }

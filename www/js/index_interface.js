@@ -3,7 +3,7 @@ let current_tab = undefined
 function init() {
     init_map()
     set_current_tab()
-    change_tab(current_tab)
+    refrescar_tab()
     carga_atributos()
 }
 
@@ -12,9 +12,14 @@ function set_current_tab() {
     for (const label of tab_html.children) {
         let input = label.children[0]
         if (input.checked) {
-            console.log(input.value)
             current_tab = input.value
         }
+    }
+}
+
+function refrescar_tab() {
+    if (current_tab !== undefined) {
+        change_tab(current_tab)
     }
 }
 
@@ -113,13 +118,22 @@ function tab_mis_edificios(tab) {
  */
 function tab_capas(tab) {
     for (layer_key in LAYERS) {
-        /** @type {AttributeLayer} */
+        // Esta copia es necesaria, ya que layer_key cambia pero se le debe pasar
+        // Un valor constante a la función onclick
+        let layer_name = layer_key
+
         let layer = LAYERS[layer_key]
 
         let label = document.createElement("label");
-        let input = document.createElement("input")
+        let input = document.createElement("input");
+        if (layer_key === SELECTED_LAYER) {
+            input.checked = true
+        }
         input.setAttribute("type", "radio")
         input.setAttribute("name", "a")
+        input.onclick = function() {
+            cambiar_capa(layer_name)
+        }
         label.appendChild(input)
         let nombre = document.createTextNode(layer.display_name);
         label.appendChild(nombre)

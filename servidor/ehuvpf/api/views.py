@@ -1,3 +1,5 @@
+from os import makedirs
+
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.template import loader
@@ -12,17 +14,21 @@ from qgis.core import QgsApplication
 
 import json
 
+
 RESOLUTION = 0.1
-PROJECT_PATH = "/var/lib/ehuvpf/ehuvpf-projects/0/"
+PROJECT_PATH = "/var/lib/ehuvpf/ehuvpf-projects"
 
 @project_required_api
 def get_buildings(request: HttpRequest):
     params = request.GET
+    layer_id = params.get("layer")
     lat = params.get("lat")
     lon = params.get("lon")
+    # TODO: Make sure "layer" is of this project
     project = get_project(request)
+    layer = Layer.objects.get(pk=layer_id)
 
-    buildings = Building.objects.filter(project=project, lat=lat, lon=lon)
+    buildings = Building.objects.filter(layer=layer, lat=lat, lon=lon)
     json_buildings = []
     for building in buildings:
         with open(building.path, "r") as f:
@@ -30,6 +36,7 @@ def get_buildings(request: HttpRequest):
             json_buildings.append(building)
 
     resp = {
+        "layer": layer_id,
         "buildings": json_buildings
     }
 
@@ -73,19 +80,24 @@ def get_attributes(request: HttpRequest):
     return JsonResponse(attributes)
 
 @project_required_api
-def add_building(request: HttpRequest):
+def add_building_api(request: HttpRequest):
     prj = request.FILES["prj"]
     dbf = request.FILES["dbf"]
     shx = request.FILES["shx"]
     shp = request.FILES["shp"]
-    layer_name = prj.name.split(".prj")[0]
+    layer_id = request.POST.get("layer")
+    building_name = prj.name.split(".prj")[0]
+    project = get_project(request)
+    layer = Layer.objects.get(pk=layer_id)
 
-    save_esri(prj, dbf, shx, shp, layer_name)
-    (output_path, lat, lon) = convert_esri_to_geojson(layer_name, f"{PROJECT_PATH}{layer_name}.geojson")
+    save_esri(prj, dbf, shx, shp, building_name)
+    path = f"{PROJECT_PATH}/{project.pk}/{layer.name}"
+    makedirs(path, exist_ok=True)
+    path += f"/{building_name}.geojson"
+    (output_path, lat, lon) = convert_esri_to_geojson(building_name, path)
 
     # Update database
-    project = get_project(request)
-    building = Building(project=project, path=output_path, lat=lat, lon=lon)
+    building = Building(layer=layer, path=output_path, lat=lat, lon=lon)
     building.save()
 
     return HttpResponse("Successfully saved")
@@ -143,6 +155,7 @@ def change_color_attribute(request: HttpRequest):
 @project_required_api
 def add_layer_api(request: HttpRequest):
     # TODO: add validation
+    # TODO Make sure that no other layer exists with this name on this project
     layer_name = request.POST["layer-name"]
     attributes = request.POST["attributes"]
     color_measure = request.POST["color-attribute"]
@@ -160,6 +173,23 @@ def add_layer_api(request: HttpRequest):
     new_layer.default_measures.set(measures)
 
     return HttpResponse("Success")
+
+@project_required_api
+def get_layers(request: HttpRequest):
+    project = get_project(request)
+
+    layers = Layer.objects.filter(project=project)
+    json_layers = []
+    for layer in layers:
+        json_layers.append({
+            "name": layer.name,
+            "id": layer.pk
+        })
+
+    resp = {
+        "layers": json_layers
+    }
+    return JsonResponse(resp)
 
 def select_project(request: HttpRequest):
     project_id = request.POST["project_id"]
@@ -238,6 +268,16 @@ def edit_attributes(request: HttpRequest):
     attributes = Measure.objects.filter(project=project)
     context = {
         "attributes": attributes,
+    }
+    return HttpResponse(template.render(context, request))
+
+@project_required
+def add_building(request: HttpRequest):
+    project = get_project(request)
+    template = loader.get_template("map/add-building.html")
+    layers = Layer.objects.filter(project=project)
+    context = {
+        "layers": layers,
     }
     return HttpResponse(template.render(context, request))
 

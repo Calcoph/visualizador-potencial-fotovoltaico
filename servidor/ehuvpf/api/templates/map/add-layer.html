@@ -15,7 +15,7 @@
         <input type="text" name="layer-name"/>
         <p>Selecciona los atributos que se mostrarán en la nueva capa</p>
         <select id="seleccion-atributo" name="attributes" onchange="atributos_cambiados()" multiple>
-            {% for attribute in attributes%}
+            {% for attribute in attributes %}
                 <option value="{{ attribute.pk }}">{{ attribute.display_name }} ({{ attribute.name }})</option>
             {% endfor %}
         </select>
