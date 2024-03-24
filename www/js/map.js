@@ -342,7 +342,8 @@ function add_layers() {
         .then((json) => {
             for (const layer of json.layers) {
                 let nueva_capa = L.geoJSON(null, {
-                    onEachFeature: init_building
+                    onEachFeature: init_building,
+                    style: estilo
                 })
                 LAYERS[layer.id] = nueva_capa
 
@@ -381,4 +382,23 @@ function cambiar_capa(nombre_capa) {
     nueva_capa.addTo(MAP)
 
     on_layer_loaded()
+}
+
+function calcular_color(d) {
+    return d > 1000 ? '#800026' :
+           d > 500  ? '#BD0026' :
+           d > 200  ? '#E31A1C' :
+           d > 100  ? '#FC4E2A' :
+           d > 50   ? '#FD8D3C' :
+           d > 20   ? '#FEB24C' :
+           d > 10   ? '#FED976' :
+                      '#FFEDA0';
+}
+
+function estilo(edificio) {
+    return {
+        fillColor: calcular_color(edificio.properties._sum),
+        weight: 1,
+        color: "#000000"
+    }
 }
