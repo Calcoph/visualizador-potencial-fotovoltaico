@@ -181,8 +181,16 @@ def get_layers(request: HttpRequest):
     layers = Layer.objects.filter(project=project)
     json_layers = []
     for layer in layers:
+        measures = []
+        for measure in layer.default_measures.all():
+            measures.append({
+                "name": measure.name,
+                "display_name": measure.display_name
+            })
         json_layers.append({
             "name": layer.name,
+            "measures": measures,
+            "color_measure": layer.color_measure.name,
             "id": layer.pk
         })
 
