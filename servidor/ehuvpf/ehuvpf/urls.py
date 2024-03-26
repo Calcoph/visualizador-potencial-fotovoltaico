@@ -21,3 +21,32 @@ urlpatterns = [
     path("map/", include("api.urls")),
     path("admin/", admin.site.urls),
 ]
+
+from .settings import DEBUG
+if DEBUG:
+    from django.http import HttpRequest, HttpResponse
+    from django.template import loader
+    from django.urls import include, re_path
+    def serve_smap(request: HttpRequest):
+        file_name = request.path.split("smap/")[-1]
+        extension = request.path.split(".")[-1]
+        content_type = None
+        if extension == "js":
+            content_type = "text/javascript"
+        if extension == "css":
+            content_type = "text/css"
+        if extension == "svg":
+            content_type = "image/svg+xml"
+        print(f"/var/www/map/{file_name}")
+        with open(f"/var/www/map/{file_name}", "rb") as f:
+            static_file = f.read()
+        context = {
+        }
+        response = HttpResponse(static_file)
+        # Al ser estáticas se les puede indicar que se guarden en el caché
+        response.headers["Cache-Control"] = f"max-age={60*24*14}"
+        if content_type is not None:
+            response.headers["Content-Type"] = content_type
+            print(content_type)
+        return response
+    urlpatterns.append(re_path("smap/*", serve_smap))
