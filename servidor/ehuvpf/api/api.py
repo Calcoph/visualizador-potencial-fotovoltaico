@@ -2,9 +2,9 @@
 import json
 from os import makedirs
 from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.core.files.uploadedfile import UploadedFile
 
-
-from .utils.esri_gjson import convert_esri_to_geojson, save_esri
+from .utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
 from .utils.testing import generate_placeholder_building
 
 from .models import Layer, Building, Measure
@@ -75,28 +75,82 @@ def get_attributes(request: HttpRequest):
 
     return JsonResponse(attributes)
 
+class InputMethod:
+    SINGLE = "single"
+    MULTIPLE = "multiple"
+
+def get_files(request: HttpRequest) -> list[EsriFiles]:
+    input_method = request.POST["inputmethod"]
+    name = prj.name.split(".prj")[0]
+    files = []
+    if input_method == InputMethod.SINGLE:
+        files.append(
+            EsriFiles(
+                name,
+                request.FILES["prj"],
+                request.FILES["dbf"],
+                request.FILES["shx"],
+                request.FILES["shp"]
+            )
+        )
+    elif input_method == InputMethod.MULTIPLE:
+        multiple = request.FILES.getlist("multiple_files")
+        file_dict: dict[str, list[UploadedFile]] = {}
+        # Agrupa todos los ficheros según su nombre (en teoría cada nombre debe tener 4 ficheros)
+        for file in multiple:
+            file_name = file.name.split(".")[0]
+            if file_name in file_dict:
+                file_dict[file_name].append(file)
+            else:
+                file_dict[file_name] = [file]
+        for (file_name, file_list) in file_dict.items():
+            prj = None
+            dbf = None
+            shx = None
+            shp = None
+            for file in file_list:
+                # TODO: Asegurarse que "file.name" sólo tiene un "."
+                extension = file.name.split(".")[1]
+                if extension == "prj":
+                    prj = file
+                elif extension == "dbf":
+                    dbf = file
+                elif extension == "shx":
+                    shx = file
+                elif extension == "shp":
+                    shp = file
+            # Asegurarse de que los 4 ficheros han sido enviados
+            if (prj is not None
+                and dbf is not None
+                and shx is not None
+                and shp is not None
+            ):
+                files.append(EsriFiles(file_name, prj, dbf, shx, shp))
+            else:
+                # TODO: Notificar usuario
+                pass
+    else:
+        # TODO
+        raise Exception()
+
+    return files
+
 @project_required_api
 def add_building(request: HttpRequest):
-    multiple = request.FILES.getlist("multiple_files")
-    print(multiple)
-    prj = request.FILES["prj"]
-    dbf = request.FILES["dbf"]
-    shx = request.FILES["shx"]
-    shp = request.FILES["shp"]
     layer_id = request.POST.get("layer")
-    building_name = prj.name.split(".prj")[0]
+    files = get_files(request)
     project = get_project(request)
     layer = Layer.objects.get(pk=layer_id)
-
-    save_esri(prj, dbf, shx, shp, building_name)
     path = f"{PROJECT_PATH}/{project.pk}/{layer.name}"
     makedirs(path, exist_ok=True)
-    path += f"/{building_name}.geojson"
-    (output_path, lat, lon) = convert_esri_to_geojson(building_name, path)
+    for esri_files in files:
+        save_esri(esri_files)
+        new_path = path + f"/{esri_files.name}.geojson"
+        (output_path, lat, lon) = convert_esri_to_geojson(esri_files.name, new_path)
 
-    # Update database
-    building = Building(layer=layer, path=output_path, lat=lat, lon=lon)
-    building.save()
+        # Update database
+        building = Building(layer=layer, path=output_path, lat=lat, lon=lon)
+        building.save()
 
     return HttpResponse("Successfully saved")
 

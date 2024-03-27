@@ -9,27 +9,34 @@ from ..models import Building, Project
 TEMP_PATH = "/tmp/django/file_upload/"
 RESOLUTION = 0.1
 
-def save_esri(prj: UploadedFile, dbf: UploadedFile, shx: UploadedFile, shp: UploadedFile, layer_name: str):
+class EsriFiles:
+    def __init__(self, name: str, prj: UploadedFile, dbf: UploadedFile, shx: UploadedFile, shp: UploadedFile) -> None:
+        self.name = name
+        self.prj = prj
+        self.dbf = dbf
+        self.shx = shx
+        self.shp = shp
+
+def save_esri(esri_files: EsriFiles):
     # TODO: potential vulnerability: unsanitized path
     # TODO: potential vulnerability: 2 uploads with the same path name might conflict
-    path = f"{TEMP_PATH}{layer_name}"
+    path = f"{TEMP_PATH}{esri_files.name}"
     with open(path + ".prj", "wb+") as f:
-        for chunk in prj.chunks():
+        for chunk in esri_files.prj.chunks():
             f.write(chunk)
     with open(path + ".dbf", "wb+") as f:
-        for chunk in dbf.chunks():
+        for chunk in esri_files.dbf.chunks():
             f.write(chunk)
     with open(path + ".shx", "wb+") as f:
-        for chunk in shx.chunks():
+        for chunk in esri_files.shx.chunks():
             f.write(chunk)
     with open(path + ".shp", "wb+") as f:
-        for chunk in shp.chunks():
+        for chunk in esri_files.shp.chunks():
             f.write(chunk)
 
 def esri_to_geojson(layer_path: str, output_path: str) -> tuple[str, int, int]:
     # Read the files in TEMP_PATH
     layer: QgsVectorLayer = QgsVectorLayer(layer_path, "", "ogr")
-
 
     # Get the center of the layer
     bounding_box = QgsRectangle()

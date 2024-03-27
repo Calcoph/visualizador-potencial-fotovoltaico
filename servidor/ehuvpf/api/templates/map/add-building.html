@@ -10,24 +10,22 @@
     <h1>ADD BUILDING</h1>
     <a href="index.html">Go back</a>
     <form id="add-building-form" action="/map/api/addBuilding", method="post" enctype="multipart/form-data">
-        <div class="row">
-            <div class="field-array">
-                <div>
-                    <label><input type="radio" name="filetype" disabled>.geojson</label>
-                    <label title=".prj, .dbf, .shx y .shp"><input type="radio" name="filetype" checked>ficheros ESRI</label>
-                </div>
-                <textarea name="aa" id="t_area" cols="30" rows="10" disabled></textarea>
-                <label><input type="radio" name="inputmethod" value="single" checked onchange="select_input('single')">single</label>
-                <label><input type="radio" name="inputmethod" value="multiple" onchange="select_input('multiple')">multiple</label>
-                <div id="files" class="field-array"><!-- Va a ser rellenado por javascript --></div>
-                <select name="layer">
-                    {% for layer in layers %}
-                        <option value="{{ layer.pk }}">{{ layer.name }}</option>
-                    {% endfor %}
-                </select>
-                <button disabled>validar (o no)</button>
-                <input type="submit" value="subir"/>
+        <div class="row field-array">
+            <div>
+                <label><input type="radio" name="filetype" disabled>.geojson</label>
+                <label title=".prj, .dbf, .shx y .shp"><input type="radio" name="filetype" checked>ficheros ESRI</label>
             </div>
+            <textarea name="aa" id="t_area" cols="30" rows="10" disabled></textarea>
+            <label><input type="radio" name="inputmethod" value="single" checked onchange="select_input('single')">single</label>
+            <label><input type="radio" name="inputmethod" value="multiple" onchange="select_input('multiple')">multiple</label>
+            <div id="files" class="field-array"><!-- Va a ser rellenado por javascript --></div>
+            <select name="layer">
+                {% for layer in layers %}
+                    <option value="{{ layer.pk }}">{{ layer.name }}</option>
+                {% endfor %}
+            </select>
+            <button disabled>validar (o no)</button>
+            <input type="submit" value="subir"/>
         </div>
     </form>
 
