@@ -15,7 +15,7 @@
         <h3>Atributos relevantes:</h3>
         <ul id="atributos">
             {% for measure in default_measures %}
-                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="quitar_atributo({{ measure.pk }})" value="Quitar"></li>
+                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="quitar_atributo({{ measure.pk }})" value="Quitar"></li>
             {% endfor %}
         </ul>
         <details>
