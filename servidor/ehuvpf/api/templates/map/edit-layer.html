@@ -9,31 +9,74 @@
     <script src="/smap/js/edit-layer.js"></script>
     <h1>Administración del proyecto {{ project.name }}</h1>
     <h3>Modificando capa {{ layer.name }}</h3>
-    <h3>Atributos relevantes:</h3>
-    <ul id="atributos">
-        {% for measure in default_measures %}
-            <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})">{{ measure.display_name }} ({{ measure.name }})<button onclick="quitar_atributo({{ measure.pk }})">Quitar</button></li>
-        {% endfor %}
-    </ul>
-    <details>
-        <summary>Añadir un atributo para mostrar en esta capa:</summary>
-        <ul id="atributos-disponibles">
-            {% for measure in unused_measures %}
-                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})">{{ measure.display_name }} ({{ measure.name }}) <button onclick="anadir_atributo({{ measure.pk }})">Añadir</button></li>
+    <form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validar_formulario()">
+        <h3>Patrón en el nombre (para identificación automática de capa)</h3>
+        <input name="name_pattern" type="text" value="{{ layer.name_pattern }}">
+        <h3>Atributos relevantes:</h3>
+        <ul id="atributos">
+            {% for measure in default_measures %}
+                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="quitar_atributo({{ measure.pk }})" value="Quitar"></li>
             {% endfor %}
         </ul>
-    </details>
-    <h3>Atributo a colorear:</h3>
-    <select id="seleccion-atributo-color" onchange="cambiar_atributo_color()">
-        {% for measure in default_measures %}
-            {% if measure.pk == color_measure.pk %}
-                <option value="{{ measure.pk }}" selected>{{ measure.display_name }} ({{ measure.name}})</option>
-            {% else %}
-                <option value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name}})</option>
-            {% endif %}
-        {% endfor %}
-    </select>
-    <input type="hidden" id="layer-id" value="{{ layer.pk }}">
+        <details>
+            <summary>Añadir un atributo para mostrar en esta capa:</summary>
+            <ul id="atributos-disponibles">
+                {% for measure in unused_measures %}
+                    <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="anadir_atributo({{ measure.pk }})" value="Añadir"></li>
+                {% endfor %}
+            </ul>
+        </details>
+        <h3>Atributo a colorear:</h3>
+        <select id="seleccion-atributo-color" name="color_attribute">
+            {% for measure in default_measures %}
+                {% if measure.pk == color_measure.pk %}
+                    <option value="{{ measure.pk }}" selected>{{ measure.display_name }} ({{ measure.name}})</option>
+                {% else %}
+                    <option value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name}})</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <table>
+            <tr>
+                <th style="width:50px">Color</th>
+                <th>Valor mínimo</th>
+            </tr>
+            <tr>
+                <td style="background-color:#800026"></td>
+                <td><input type="text" disabled></td>
+            </tr>
+            <tr>
+                <td style="background-color:#BD0026"></td>
+                <td><input type="text" disabled></td>
+            </tr>
+            <tr>
+                <td style="background-color:#E31A1C"></td>
+                <td><input type="text" disabled></td>
+            </tr>
+            <tr>
+                <td style="background-color:#FC4E2A"></td>
+                <td><input type="text" disabled></td>
+            </tr>
+            <tr>
+                <td style="background-color:#FD8D3C"></td>
+                <td><input type="text" disabled></td>
+            </tr>
+            <tr>
+                <td style="background-color:#FEB24C"></td>
+                <td><input type="text" disabled></td>
+            </tr>
+            <tr>
+                <td style="background-color:#FED976"></td>
+                <td><input type="text" disabled></td>
+            </tr>
+            <tr>
+                <td style="background-color:#FFEDA0"></td>
+                <td>0</td>
+            </tr>
+        </table>
+        <input type="hidden" name="layer" value="{{ layer.pk }}">
+        <input type="submit" value="Confirmar cambios">
+    </form>
 
     <a href="edit-layers">Go back</a>
 </body>

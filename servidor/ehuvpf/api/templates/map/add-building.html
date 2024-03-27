@@ -9,42 +9,28 @@
 <body>
     <h1>ADD BUILDING</h1>
     <a href="index.html">Go back</a>
-    <form action="/map/api/addBuilding", method="post" enctype="multipart/form-data">
+    <form id="add-building-form" action="/map/api/addBuilding", method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="field-array">
-                <h3>Capas</h3>
                 <div>
-                    <label><input type="radio" name="capa">capa1</label>
-                    <img src="/smap/svg/green.svg">
+                    <label><input type="radio" name="filetype" disabled>.geojson</label>
+                    <label title=".prj, .dbf, .shx y .shp"><input type="radio" name="filetype" checked>ficheros ESRI</label>
                 </div>
-                <div>
-                    <label><input type="radio" name="capa">capa2</label>
-                    <img src="/smap/svg/red.svg">
-                </div>
-                <div>
-                    <label><input type="radio" name="capa">capa3</label>
-                    <img src="/smap/svg/red.svg">
-                </div>
-            </div>
-            <div class="field-array">
-                <div>
-                    <label><input type="radio" name="filetype">.geojson</label>
-                    <label title=".prj, .dbf, .shx y .shp"><input type="radio" name="filetype">ficheros ESRI</label>
-                </div>
-                <textarea name="aa" id="t_area" cols="30" rows="10"></textarea>
-                <label>.prj<input type="file" name="prj"></label>
-                <label>.dbf<input type="file" name="dbf"></label>
-                <label>.shx<input type="file" name="shx"></label>
-                <label>.shp<input type="file" name="shp"></label>
+                <textarea name="aa" id="t_area" cols="30" rows="10" disabled></textarea>
+                <label><input type="radio" name="inputmethod" value="single" checked onchange="select_input('single')">single</label>
+                <label><input type="radio" name="inputmethod" value="multiple" onchange="select_input('multiple')">multiple</label>
+                <div id="files" class="field-array"><!-- Va a ser rellenado por javascript --></div>
                 <select name="layer">
                     {% for layer in layers %}
                         <option value="{{ layer.pk }}">{{ layer.name }}</option>
                     {% endfor %}
                 </select>
-                <button>validar (o no)</button>
+                <button disabled>validar (o no)</button>
                 <input type="submit" value="subir"/>
             </div>
         </div>
     </form>
+
+    <script src="/smap/js/add-building.js"></script>
 </body>
 </html>

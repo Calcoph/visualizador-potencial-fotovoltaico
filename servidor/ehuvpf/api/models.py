@@ -14,6 +14,7 @@ class Layer(models.Model):
     default_measures = models.ManyToManyField(Measure)
     color_measure = models.ForeignKey(Measure, on_delete=models.CASCADE, related_name="color_measure")
     name = models.TextField()
+    name_pattern = models.TextField()
 
 class Building(models.Model):
     layer = models.ForeignKey(Layer, on_delete=models.CASCADE)

@@ -81,6 +81,8 @@ def get_attributes(request: HttpRequest):
 
 @project_required_api
 def add_building_api(request: HttpRequest):
+    multiple = request.FILES.getlist("multiple_files")
+    print(multiple)
     prj = request.FILES["prj"]
     dbf = request.FILES["dbf"]
     shx = request.FILES["shx"]
@@ -114,40 +116,24 @@ def new_attribute(request: HttpRequest):
     return HttpResponse("Success")
 
 @project_required_api
-def add_attribute(request: HttpRequest):
+def edit_layer_api(request: HttpRequest):
     layer_id = request.POST["layer"]
-    attribute_id = request.POST["attribute"]
-
-    layer = Layer.objects.get(pk=layer_id)
-    attribute = Measure.objects.get(pk=attribute_id)
-
-    # TODO: Validation
-    layer.default_measures.add(attribute)
-
-    return HttpResponse("Success")
-
-@project_required_api
-def hide_attribute(request: HttpRequest):
-    layer_id = request.POST["layer"]
-    attribute_id = request.POST["attribute"]
-
-    layer = Layer.objects.get(pk=layer_id)
-    attribute = Measure.objects.get(pk=attribute_id)
-
-    # TODO: Validation
-    layer.default_measures.remove(attribute)
-
-    return HttpResponse("Success")
-
-@project_required_api
-def change_color_attribute(request: HttpRequest):
-    layer_id = request.POST["layer"]
+    name_pattern = request.POST["name_pattern"]
+    attributes = request.POST.getlist("attribute")
     color_attribute_id = request.POST["color_attribute"]
 
     layer = Layer.objects.get(pk=layer_id)
+    layer.name_pattern = name_pattern
     color_attribute = Measure.objects.get(pk=color_attribute_id)
     # TODO: Validation
     layer.color_measure = color_attribute
+
+    measures = []
+    for attribute_id in attributes:
+        # TODO: Validation
+        measures.append(Measure.objects.get(pk=attribute_id))
+    layer.default_measures.set(measures)
+
     layer.save()
 
     return HttpResponse("Success")

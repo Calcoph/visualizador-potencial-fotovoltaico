@@ -10,9 +10,8 @@ api_urls = [
 
     path("getAttributes", views.get_attributes, name="getAttributes"),
     path("newAttribute", views.new_attribute, name="newAttribute"),
-    path("addAttribute", views.add_attribute, name="addAttribute"),
-    path("hideAttribute", views.hide_attribute, name="hideAttribute"),
-    path("changeColorAttribute", views.change_color_attribute, name="changeColorAttribute"),
+
+    path("editLayer", views.edit_layer_api, name="newAttribute"),
 
     path("selectProject", views.select_project, name="selectProject"),
 
