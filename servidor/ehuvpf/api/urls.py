@@ -1,22 +1,22 @@
 from django.urls import include, path, re_path
 
-from . import views
+from . import views, api
 
 # /map/api/*
 api_urls = [
-    path("getBuildings", views.get_buildings, name="getBuildings"),
-    path("getPlaceholderBuildings", views.get_placeholder_buildings, name="getPlaceholderBuildings"),
-    path("addBuilding", views.add_building_api, name="addBuilding"),
+    path("getBuildings", api.get_buildings, name="getBuildings"),
+    path("getPlaceholderBuildings", api.get_placeholder_buildings, name="getPlaceholderBuildings"),
+    path("addBuilding", api.add_building, name="addBuilding"),
 
-    path("getAttributes", views.get_attributes, name="getAttributes"),
-    path("newAttribute", views.new_attribute, name="newAttribute"),
+    path("getAttributes", api.get_attributes, name="getAttributes"),
+    path("newAttribute", api.new_attribute, name="newAttribute"),
 
-    path("editLayer", views.edit_layer_api, name="newAttribute"),
+    path("editLayer", api.edit_layer, name="newAttribute"),
 
-    path("selectProject", views.select_project, name="selectProject"),
+    path("selectProject", api.select_project, name="selectProject"),
 
-    path("addLayer", views.add_layer_api, name="addLayer"),
-    path("getLayers", views.get_layers, name="getLayers"),
+    path("addLayer", api.add_layer, name="addLayer"),
+    path("getLayers", api.get_layers, name="getLayers"),
 ]
 
 # /map/*
