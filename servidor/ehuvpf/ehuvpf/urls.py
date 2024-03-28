@@ -40,8 +40,6 @@ if DEBUG:
         print(f"/var/www/map/{file_name}")
         with open(f"/var/www/map/{file_name}", "rb") as f:
             static_file = f.read()
-        context = {
-        }
         response = HttpResponse(static_file)
         # Al ser estáticas se les puede indicar que se guarden en el caché
         response.headers["Cache-Control"] = f"max-age={60*24*14}"

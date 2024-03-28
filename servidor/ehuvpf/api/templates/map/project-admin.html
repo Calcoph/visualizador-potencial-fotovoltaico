@@ -27,6 +27,15 @@
             {% endfor %}
         </ul>
     </details>
+    <p>Colores del proyecto</p>
+    <table>
+        <tr>
+            {% for color in colors %}
+                <td style="width:50px;height:50px;background-color:{{ color.hex }}"></td>
+            {% endfor %}
+        </tr>
+    </table>
+    <a href="edit-colors"><button>Editar colores</button></a>
     <a href="edit-layers"><button>Modificar capas</button></a>
 
     <a href="/">Go back</a>

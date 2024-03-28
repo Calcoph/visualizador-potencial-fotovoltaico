@@ -7,12 +7,21 @@ from django.core.files.uploadedfile import UploadedFile
 from .utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
 from .utils.testing import generate_placeholder_building
 
-from .models import Layer, Building, Measure
+from .models import Layer, Building, Measure, Project
 from .utils.session_handler import get_project, set_project
 from .utils.decorators import project_required_api
 
 RESOLUTION = 0.1
 PROJECT_PATH = "/var/lib/ehuvpf/ehuvpf-projects"
+
+def create_project(request: HttpRequest):
+    name = request.POST["name"]
+
+    project = Project(name=name)
+    project.save()
+
+    return HttpResponse("Success")
+
 
 @project_required_api
 def get_buildings(request: HttpRequest):

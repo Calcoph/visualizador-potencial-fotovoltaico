@@ -8,7 +8,7 @@ from .utils.testing import generate_placeholder_building
 from .utils.esri_gjson import save_esri, convert_esri_to_geojson
 from .utils.decorators import project_required_api, project_required
 from .utils.session_handler import get_project, set_project, default_project_if_undefined
-from .models import Building, Layer, Project, Measure
+from .models import Building, Color, Layer, Project, Measure
 
 from qgis.core import QgsApplication
 
@@ -20,10 +20,12 @@ def project_admin(request: HttpRequest):
     template = loader.get_template("map/project-admin.html")
     attributes = Measure.objects.filter(project=project)
     layers = Layer.objects.filter(project=project)
+    colors = Color.objects.filter(project=project)
     context = {
         "project": project,
         "attributes": attributes,
         "layers": layers,
+        "colors": colors
     }
     return HttpResponse(template.render(context, request))
 
@@ -61,6 +63,20 @@ def edit_layer(request: HttpRequest):
         "default_measures": default_measures,
         "unused_measures": unused_measures,
         "color_measure": color_measure
+    }
+
+    return HttpResponse(template.render(context, request))
+
+@project_required
+def edit_colors(request: HttpRequest):
+    project = get_project(request)
+    template = loader.get_template("map/edit-colors.html")
+
+    # TODO: sort colors by strength
+    colors = Color.objects.filter(project=project)
+    context = {
+        "project": project,
+        "colors": enumerate(colors)
     }
 
     return HttpResponse(template.render(context, request))
