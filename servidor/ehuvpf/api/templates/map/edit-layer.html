@@ -11,7 +11,7 @@
     <h3>Modificando capa {{ layer.name }}</h3>
     <form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validar_formulario()">
         <h3>Patrón en el nombre (para identificación automática de capa)</h3>
-        <input name="name_pattern" type="text" value="{{ layer.name_pattern }}">
+        <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
         <h3>Atributos relevantes:</h3>
         <ul id="atributos">
             {% for measure in default_measures %}
@@ -27,7 +27,7 @@
             </ul>
         </details>
         <h3>Atributo a colorear:</h3>
-        <select id="seleccion-atributo-color" name="color_attribute">
+        <select id="seleccion-atributo-color" name="color-attribute">
             {% for measure in default_measures %}
                 {% if measure.pk == color_measure.pk %}
                     <option value="{{ measure.pk }}" selected>{{ measure.display_name }} ({{ measure.name}})</option>

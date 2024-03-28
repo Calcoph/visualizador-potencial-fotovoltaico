@@ -4,8 +4,6 @@
 from qgis.core import QgsVectorLayer, QgsVectorFileWriter, QgsCoordinateReferenceSystem, QgsRectangle, QgsCoordinateTransform, QgsCoordinateTransformContext
 from django.core.files.uploadedfile import UploadedFile
 
-from ..models import Building, Project
-
 TEMP_PATH = "/tmp/django/file_upload/"
 RESOLUTION = 0.1
 

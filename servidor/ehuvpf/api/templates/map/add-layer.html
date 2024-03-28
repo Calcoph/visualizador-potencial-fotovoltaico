@@ -11,6 +11,8 @@
     <h3>Creando capa nueva</h3>
     <form method="post" action="/map/api/addLayer">
         {# TODO: Hacer esto con un form y labels #}
+        <p>Patrón en el nombre (para identificación automática de capa)</p>
+        <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
         <p>Nombre de la capa</p>
         <input type="text" name="layer-name"/>
         <p>Selecciona los atributos que se mostrarán en la nueva capa</p>
