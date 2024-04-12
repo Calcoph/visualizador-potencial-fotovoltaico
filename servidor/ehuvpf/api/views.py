@@ -8,7 +8,7 @@ from .utils.testing import generate_placeholder_building
 from .utils.esri_gjson import save_esri, convert_esri_to_geojson
 from .utils.decorators import project_required_api, project_required
 from .utils.session_handler import get_project, set_project, default_project_if_undefined
-from .models import Building, Color, Layer, Project, Measure
+from .models import Building, Color, Layer, Project, Measure, ColorRule
 
 from qgis.core import QgsApplication
 
@@ -56,13 +56,28 @@ def edit_layer(request: HttpRequest):
         if measure.pk not in default_measures_pks:
             unused_measures.append(measure)
     color_measure = layer.color_measure
+
+    color_rules = list(layer.color_rules.all())
+    colors = list(Color.objects.filter(project=project))
+    if len(colors) != len(color_rules):
+        # Añade los nuevos colores a la capa (si los hay)
+        # TODO: Hacer esto desde /map/api/ al cambiar colores en vez de desde vista
+        colors.sort(key=lambda color: color.strength)
+        while len(colors) != len(color_rules):
+            strength = len(color_rules)
+            nuevo_color = ColorRule(color=colors[strength], minimum=0.0)
+            nuevo_color.save()
+            layer.color_rules.add(nuevo_color)
+            color_rules.append(nuevo_color)
+
     context = {
         "project": project,
         "layer": layer,
         "attributes": attributes,
         "default_measures": default_measures,
         "unused_measures": unused_measures,
-        "color_measure": color_measure
+        "color_measure": color_measure,
+        "color_rules": color_rules
     }
 
     return HttpResponse(template.render(context, request))
@@ -75,9 +90,6 @@ def edit_colors(request: HttpRequest):
     # TODO: sort colors by strength
     colors = list(Color.objects.filter(project=project))
     colors.sort(key=lambda color: color.strength)
-    for (index, color) in enumerate(colors):
-        print(index)
-        print(color.hex)
     context = {
         "project": project,
         "colors": enumerate(colors)

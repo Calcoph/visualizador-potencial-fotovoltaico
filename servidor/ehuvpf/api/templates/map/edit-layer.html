@@ -41,38 +41,12 @@
                 <th style="width:50px">Color</th>
                 <th>Valor mínimo</th>
             </tr>
-            <tr>
-                <td style="background-color:#800026"></td>
-                <td><input type="text" disabled></td>
-            </tr>
-            <tr>
-                <td style="background-color:#BD0026"></td>
-                <td><input type="text" disabled></td>
-            </tr>
-            <tr>
-                <td style="background-color:#E31A1C"></td>
-                <td><input type="text" disabled></td>
-            </tr>
-            <tr>
-                <td style="background-color:#FC4E2A"></td>
-                <td><input type="text" disabled></td>
-            </tr>
-            <tr>
-                <td style="background-color:#FD8D3C"></td>
-                <td><input type="text" disabled></td>
-            </tr>
-            <tr>
-                <td style="background-color:#FEB24C"></td>
-                <td><input type="text" disabled></td>
-            </tr>
-            <tr>
-                <td style="background-color:#FED976"></td>
-                <td><input type="text" disabled></td>
-            </tr>
-            <tr>
-                <td style="background-color:#FFEDA0"></td>
-                <td>0</td>
-            </tr>
+            {% for color_rule in color_rules %}
+                <tr>
+                    <td style="background-color:{{ color_rule.color.hex }}"></td>
+                    <td><input type="text" value="{{ color_rule.minimum }}" name="color_rule"></td>
+                </tr>
+            {% endfor %}
         </table>
         <input type="hidden" name="layer" value="{{ layer.pk }}">
         <input type="submit" value="Confirmar cambios">

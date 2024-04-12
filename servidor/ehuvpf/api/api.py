@@ -7,7 +7,7 @@ from django.core.files.uploadedfile import UploadedFile
 from .utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
 from .utils.testing import generate_placeholder_building
 
-from .models import Layer, Building, Measure, Project, Color
+from .models import Layer, Building, Measure, Project, Color, ColorRule
 from .utils.session_handler import get_project, set_project
 from .utils.decorators import project_required_api
 
@@ -190,8 +190,15 @@ def edit_layer(request: HttpRequest):
     name_pattern = request.POST["name-pattern"]
     attributes = request.POST.getlist("attribute")
     color_attribute_id = request.POST["color-attribute"]
+    new_color_rules = request.POST.getlist("color_rule")
 
     layer = Layer.objects.get(pk=layer_id)
+    for rule in layer.color_rules.all():
+        rule: ColorRule
+        new_minimum = float(new_color_rules[rule.color.strength].replace(",", "."))
+        rule.minimum = new_minimum
+        rule.save()
+
     # TODO: Asegurarse que name_pattern no es subset de otro patrón
     layer.name_pattern = name_pattern
     color_attribute = Measure.objects.get(pk=color_attribute_id)
