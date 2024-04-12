@@ -7,12 +7,21 @@ from django.core.files.uploadedfile import UploadedFile
 from .utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
 from .utils.testing import generate_placeholder_building
 
-from .models import Layer, Building, Measure
+from .models import Layer, Building, Measure, Project, Color
 from .utils.session_handler import get_project, set_project
 from .utils.decorators import project_required_api
 
 RESOLUTION = 0.1
 PROJECT_PATH = "/var/lib/ehuvpf/ehuvpf-projects"
+
+def create_project(request: HttpRequest):
+    name = request.POST["name"]
+
+    project = Project(name=name)
+    project.save()
+
+    return HttpResponse("Success")
+
 
 @project_required_api
 def get_buildings(request: HttpRequest):
@@ -248,6 +257,32 @@ def get_layers(request: HttpRequest):
         "layers": json_layers
     }
     return JsonResponse(resp)
+
+@project_required_api
+def update_colors(request: HttpRequest):
+    colors = request.POST.getlist("color")
+    project = get_project(request)
+
+    colores_proyecto = list(Color.objects.filter(project=project))
+    colores_proyecto.sort(key=lambda color: color.strength)
+    for (strength, color) in enumerate(colors):
+        if strength < len(colores_proyecto):
+            # Edita un color existente
+            color_existente = colores_proyecto[strength]
+            color_existente.hex = color
+            color_existente.save()
+        else:
+            # Añade un nuevo color
+            new_color = Color(project=project, hex=color, strength=strength)
+            new_color.save()
+
+    # Borra los colores con strength > len(colors) (no se ha enviado estos colores)
+    i = len(colors)
+    while i < len(colores_proyecto):
+        colores_proyecto[i].delete()
+        i += 1
+
+    return HttpResponse(colors)
 
 def select_project(request: HttpRequest):
     project_id = request.POST["project_id"]
