@@ -16,14 +16,30 @@ const LAYERS = {}
 let SELECTED_ATTRIBUTES = []
 /** @type {string} */
 let SELECTED_LAYER = undefined
+/** @type {{colors: Array<string>, minimums: Object.<string, Array<number>>}} */
+const COLOR_SET = {
+    colors: [],
+    minimums: {}
+}
+/** @type {{Array<number>}} */
+let CURRENT_MINIMUMS = []
 
 function init_map() {
+    // colorset won't automatically be initialized at this time, have to wait asyc AJAX
+    let colorset_promise = init_colorset()
     MAP = L.map('map', {
         "crs": L.CRS.EPSG3857 // Just to make sure the default never changes
     }).setView([43.2629, -2.95], 14);
 
     // layers won't automatically be added at this time, have to wait asyc AJAX
-    add_layers()
+    let layer_promise = add_layers()
+
+    // set CURRENT_MINIMUMS only if SELECTED_LAYER and COLOR_SET has been set
+    colorset_promise.then(
+        () => layer_promise.then(() => {
+            CURRENT_MINIMUMS = COLOR_SET.minimums[SELECTED_LAYER]
+        })
+    )
 
     /* TODO: Read https://operations.osmfoundation.org/policies/tiles/ */
     /* L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -33,7 +49,7 @@ function init_map() {
 
     //var marker = L.marker([43.2629, -2.95]).addTo(map);
 
-    L.Control.LoadState  = L.Control.extend({
+    L.Control.LoadState = L.Control.extend({
         onAdd: function(map) {
                 var img = L.DomUtil.create("img");
 
@@ -62,6 +78,19 @@ function init_map() {
     }
 
     L.control.loadState({ position: "bottomleft" }).addTo(MAP)
+}
+
+/**
+ *
+ * @returns {Promise<any>} promise
+ */
+function init_colorset() {
+    return fetch("/map/api/getColors")
+        .then(response => response.json())
+        .then((json) => {
+            COLOR_SET.colors = json.colors
+            COLOR_SET.minimums = json.minimums
+        })
 }
 
 /**
@@ -336,8 +365,12 @@ function update_selected_attributes() {
     update_building_popups()
 }
 
+/**
+ *
+ * @returns {Promise<any>} promise
+ */
 function add_layers() {
-    fetch("api/getLayers")
+    return fetch("api/getLayers")
         .then(response => response.json())
         .then((json) => {
             for (const layer of json.layers) {
@@ -384,6 +417,7 @@ function cambiar_capa(nombre_capa) {
     let vieja_capa = LAYERS[SELECTED_LAYER]
     vieja_capa.removeFrom(MAP)
     SELECTED_LAYER = nombre_capa
+    CURRENT_MINIMUMS = COLOR_SET.minimums[SELECTED_LAYER]
     let nueva_capa = LAYERS[SELECTED_LAYER]
     nueva_capa.addTo(MAP)
 

@@ -20,6 +20,7 @@ api_urls = [
     path("addLayer", api.add_layer, name="addLayer"),
     path("getLayers", api.get_layers, name="getLayers"),
 
+    path("getColors", api.get_colors, name="getColors"),
     path("updateColors", api.update_colors, name="updateColors")
 ]
 

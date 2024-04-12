@@ -266,6 +266,30 @@ def get_layers(request: HttpRequest):
     return JsonResponse(resp)
 
 @project_required_api
+def get_colors(request: HttpRequest):
+    project = get_project(request)
+    colors = list(Color.objects.filter(project=project))
+    colors.sort(key=lambda color: color.strength)
+    json_colors = []
+    for color in colors:
+        json_colors.append(color.hex)
+
+    minimums = {}
+    layers = Layer.objects.filter(project=project)
+    for layer in layers:
+        color_rules = list(layer.color_rules.all())
+        color_rules.sort(key=lambda color_rule: color_rule.color.strength)
+        layer_minimums = list(map(lambda color_rule: color_rule.minimum, color_rules))
+        minimums[str(layer.pk)] = layer_minimums
+
+    resp = {
+        "colors": json_colors,
+        "minimums": minimums
+    }
+
+    return JsonResponse(resp)
+
+@project_required_api
 def update_colors(request: HttpRequest):
     colors = request.POST.getlist("color")
     project = get_project(request)
