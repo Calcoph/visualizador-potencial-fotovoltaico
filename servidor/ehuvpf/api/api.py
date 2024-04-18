@@ -219,7 +219,7 @@ def edit_layer(request: HttpRequest):
     color_attribute_id = request.POST.get("color-attribute")
     new_color_rules = request.POST.getlist("color_rule")
 
-    new_color_rules = list(map(new_color_rules(lambda color_rule: float(color_rule.replace(",", ".")))))
+    new_color_rules = list(map(lambda color_rule: float(color_rule.replace(",", ".")), new_color_rules))
     layer = Layer.objects.get(pk=layer_id)
 
     edit_layer_impl(layer, name_pattern, attributes, color_attribute_id, new_color_rules)
