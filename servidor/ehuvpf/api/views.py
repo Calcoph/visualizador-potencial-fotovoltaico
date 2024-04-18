@@ -1,23 +1,22 @@
 from os import makedirs
 
-from django.http import HttpRequest, HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
+from django.http import HttpRequest, HttpResponse
 from django.template import loader
 
-from .utils.testing import generate_placeholder_building
-from .utils.esri_gjson import save_esri, convert_esri_to_geojson
-from .utils.decorators import project_required_api, project_required
-from .utils.session_handler import get_project, set_project, default_project_if_undefined
-from .models import Building, Color, Layer, Project, Measure, ColorRule
-
-from qgis.core import QgsApplication
-
-import json
+from .utils.decorators import project_required
+from .utils.session_handler import get_project, default_project_if_undefined
+from .models import Color, Layer, Project, Measure, ColorRule
 
 @project_required
 def project_admin(request: HttpRequest):
     project = get_project(request)
     template = loader.get_template("map/project-admin.html")
+
+    context = project_admin_impl(project)
+
+    return HttpResponse(template.render(context, request))
+
+def project_admin_impl(project: Project):
     attributes = Measure.objects.filter(project=project)
     layers = Layer.objects.filter(project=project)
     colors = Color.objects.filter(project=project)
@@ -27,7 +26,8 @@ def project_admin(request: HttpRequest):
         "layers": layers,
         "colors": colors
     }
-    return HttpResponse(template.render(context, request))
+
+    return context
 
 @project_required
 def edit_layers(request: HttpRequest):
@@ -42,11 +42,16 @@ def edit_layers(request: HttpRequest):
 
 @project_required
 def edit_layer(request: HttpRequest):
-    layer_id = request.GET["layer"]
-    project = get_project(request)
-    template = loader.get_template("map/edit-layer.html")
-
+    layer_id = request.GET.get("layer")
     layer = Layer.objects.get(pk=layer_id)
+    project = get_project(request)
+
+    template = loader.get_template("map/edit-layer.html")
+    context = edit_layer_impl(project, layer)
+
+    return HttpResponse(template.render(context, request))
+
+def edit_layer_impl(project: Project, layer: Layer) -> dict[str]:
     attributes = Measure.objects.filter(project=project)
     default_measures = layer.default_measures.all()
     # TODO: hacer este fitro con un query en vez de manualmente
@@ -80,7 +85,7 @@ def edit_layer(request: HttpRequest):
         "color_rules": color_rules
     }
 
-    return HttpResponse(template.render(context, request))
+    return context
 
 @project_required
 def edit_colors(request: HttpRequest):

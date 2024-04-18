@@ -15,24 +15,32 @@ RESOLUTION = 0.1
 PROJECT_PATH = "/var/lib/ehuvpf/ehuvpf-projects"
 
 def create_project(request: HttpRequest):
-    name = request.POST["name"]
+    name = request.POST.get("name")
 
-    project = Project(name=name)
-    project.save()
+    create_project_impl(name)
 
     return HttpResponse("Success")
 
+def create_project_impl(name: str):
+    project = Project(name=name)
+    project.save()
 
 @project_required_api
 def get_buildings(request: HttpRequest):
-    params = request.GET
-    layer_id = params.get("layer")
-    lat = params.get("lat")
-    lon = params.get("lon")
-    # TODO: Make sure "layer" is of this project
+    layer_id = request.GET.get("layer")
+    lat = request.GET.get("lat")
+    lat = int(lat)
+    lon = request.GET.get("lon")
+    lon = int(lon)
     project = get_project(request)
     layer = Layer.objects.get(pk=layer_id)
 
+    resp = get_buildings_impl(project, layer, lat, lon, layer_id)
+
+    return JsonResponse(resp)
+
+def get_buildings_impl(project: Project, layer: Layer, lat: int, lon: int, layer_id: str):
+    # TODO: Make sure "layer" is of this project
     buildings = Building.objects.filter(layer=layer, lat=lat, lon=lon)
     json_buildings = []
     for building in buildings:
@@ -45,14 +53,20 @@ def get_buildings(request: HttpRequest):
         "buildings": json_buildings
     }
 
-    return JsonResponse(resp)
+    return resp
 
 @project_required_api
 def get_placeholder_buildings(request: HttpRequest):
-    params = request.GET
-    lat = int(params.get("lat")) * RESOLUTION
-    lon = int(params.get("lon")) * RESOLUTION
+    lat = request.GET.get("lat")
+    lon = request.GET.get("lon")
+    lat = int(lat) * RESOLUTION
+    lon = int(lon) * RESOLUTION
 
+    json_buildings = get_placeholder_buildings_impl(lat, lon)
+
+    return JsonResponse(json_buildings)
+
+def get_placeholder_buildings_impl(lat: int, lon: int) -> dict[str]:
     buildings = []
     STEPS = 10
     for x in range(0, STEPS):
@@ -65,11 +79,17 @@ def get_placeholder_buildings(request: HttpRequest):
         "buildings": buildings
     }
 
-    return JsonResponse(json_buildings)
+    return json_buildings
 
 @project_required_api
 def get_attributes(request: HttpRequest):
     project = get_project(request)
+
+    attributes = get_attributes_impl(project)
+
+    return JsonResponse(attributes)
+
+def get_attributes_impl(project: Project):
     measures = Measure.objects.filter(project=project)
     measure_list = []
     for measure in measures:
@@ -82,17 +102,17 @@ def get_attributes(request: HttpRequest):
         "available_attributes": measure_list
     }
 
-    return JsonResponse(attributes)
+    return attributes
 
 class InputMethod:
     SINGLE = "single"
     MULTIPLE = "multiple"
 
 def get_files(request: HttpRequest) -> list[EsriFiles]:
-    input_method = request.POST["inputmethod"]
+    input_method = request.POST.get("inputmethod")
     files = []
     if input_method == InputMethod.SINGLE:
-        prj = request.FILES["prj"]
+        prj = request.FILES.get("prj")
         name = prj.name.split(".prj")[0]
         files.append(
             EsriFiles(
@@ -149,6 +169,12 @@ def get_files(request: HttpRequest) -> list[EsriFiles]:
 def add_building(request: HttpRequest):
     files = get_files(request)
     project = get_project(request)
+
+    add_building_impl(project, files)
+
+    return HttpResponse("Successfully saved")
+
+def add_building_impl(project: Project, files: list[EsriFiles]):
     layers = Layer.objects.filter(project=project)
     for esri_files in files:
         selected_layer = None
@@ -171,31 +197,39 @@ def add_building(request: HttpRequest):
         building = Building(layer=selected_layer, path=output_path, lat=lat, lon=lon)
         building.save()
 
-    return HttpResponse("Successfully saved")
-
 @project_required_api
 def new_attribute(request: HttpRequest):
-    new_name = request.POST["name"]
-    display_name = request.POST["display_name"]
+    new_name = request.POST.get("name")
+    display_name = request.POST.get("display_name")
     project = get_project(request)
 
-    new_measure = Measure(project=project, name=new_name, display_name=display_name)
-    new_measure.save()
+    new_attribute_impl(project, new_name, display_name)
 
     return HttpResponse("Success")
 
+def new_attribute_impl(project: Project, new_name: str, display_name: str):
+    new_measure = Measure(project=project, name=new_name, display_name=display_name)
+    new_measure.save()
+
 @project_required_api
 def edit_layer(request: HttpRequest):
-    layer_id = request.POST["layer"]
-    name_pattern = request.POST["name-pattern"]
+    layer_id = request.POST.get("layer")
+    name_pattern = request.POST.get("name-pattern")
     attributes = request.POST.getlist("attribute")
-    color_attribute_id = request.POST["color-attribute"]
+    color_attribute_id = request.POST.get("color-attribute")
     new_color_rules = request.POST.getlist("color_rule")
 
+    new_color_rules = list(map(new_color_rules(lambda color_rule: float(color_rule.replace(",", ".")))))
     layer = Layer.objects.get(pk=layer_id)
+
+    edit_layer_impl(layer, name_pattern, attributes, color_attribute_id, new_color_rules)
+
+    return HttpResponse("Success")
+
+def edit_layer_impl(layer: Layer, name_pattern: str, attributes: list[str], color_attribute_id: str, new_color_rules: list[float]):
     for rule in layer.color_rules.all():
         rule: ColorRule
-        new_minimum = float(new_color_rules[rule.color.strength].replace(",", "."))
+        new_minimum = new_color_rules[rule.color.strength]
         rule.minimum = new_minimum
         rule.save()
 
@@ -213,20 +247,22 @@ def edit_layer(request: HttpRequest):
 
     layer.save()
 
-    return HttpResponse("Success")
-
 @project_required_api
 def add_layer(request: HttpRequest):
     # TODO: add validation
     # TODO Make sure that no other layer exists with this name on this project
-    layer_name = request.POST["layer-name"]
+    layer_name = request.POST.get("layer-name")
     attributes = request.POST.getlist("attributes")
-    color_measure = request.POST["color-attribute"]
-    name_pattern = request.POST["name-pattern"]
-    # TODO: Asegurarse que name_pattern no es subset de otro patrón
-
+    color_measure = request.POST.get("color-attribute")
+    name_pattern = request.POST.get("name-pattern")
     project = get_project(request)
 
+    add_layer_impl(project, layer_name, attributes, color_measure, name_pattern)
+
+    return HttpResponse("Success")
+
+def add_layer_impl(project: Project, layer_name: str, attributes: list[str], color_measure: str, name_pattern: str):
+    # TODO: Asegurarse que name_pattern no es subset de otro patrón
     measures = []
     for attribute in attributes:
         selected_measure = Measure.objects.get(pk=attribute)
@@ -238,12 +274,15 @@ def add_layer(request: HttpRequest):
     new_layer.save()
     new_layer.default_measures.set(measures)
 
-    return HttpResponse("Success")
-
 @project_required_api
 def get_layers(request: HttpRequest):
     project = get_project(request)
 
+    resp = get_layers_impl(project)
+
+    return JsonResponse(resp)
+
+def get_layers_impl(project: Project):
     layers = Layer.objects.filter(project=project)
     json_layers = []
     for layer in layers:
@@ -263,11 +302,19 @@ def get_layers(request: HttpRequest):
     resp = {
         "layers": json_layers
     }
-    return JsonResponse(resp)
+
+    return resp
+
 
 @project_required_api
 def get_colors(request: HttpRequest):
     project = get_project(request)
+
+    resp = get_colors_impl(project)
+
+    return JsonResponse(resp)
+
+def get_colors_impl(project: Project):
     colors = list(Color.objects.filter(project=project))
     colors.sort(key=lambda color: color.strength)
     json_colors = []
@@ -287,13 +334,18 @@ def get_colors(request: HttpRequest):
         "minimums": minimums
     }
 
-    return JsonResponse(resp)
+    return resp
 
 @project_required_api
 def update_colors(request: HttpRequest):
     colors = request.POST.getlist("color")
     project = get_project(request)
 
+    update_colors_impl(project, colors)
+
+    return HttpResponse(colors)
+
+def update_colors_impl(project: Project, colors: list[str]):
     colores_proyecto = list(Color.objects.filter(project=project))
     colores_proyecto.sort(key=lambda color: color.strength)
     for (strength, color) in enumerate(colors):
@@ -313,10 +365,8 @@ def update_colors(request: HttpRequest):
         colores_proyecto[i].delete()
         i += 1
 
-    return HttpResponse(colors)
-
 def select_project(request: HttpRequest):
-    project_id = request.POST["project_id"]
+    project_id = request.POST.get("project_id")
     set_project(request, project_id)
 
     return HttpResponse("Success")
