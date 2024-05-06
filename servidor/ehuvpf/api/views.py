@@ -138,6 +138,7 @@ def add_building(request: HttpRequest):
 @project_required
 def static_html(request: HttpRequest):
     file_name = request.path.split("/")[-1]
+    print(f"Static html: {file_name}")
     template = loader.get_template(f"map/{file_name}")
     context = {
     }
@@ -160,6 +161,9 @@ def index(request: HttpRequest):
     default_project_if_undefined(request)
 
     template = loader.get_template(f"map/index.html")
+    project = get_project(request)
+
     context = {
+        "project": project
     }
     return HttpResponse(template.render(context, request))

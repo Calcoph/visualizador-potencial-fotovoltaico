@@ -17,7 +17,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/smap/css/index.css"/>
 </head>
-<body onload="init()">
+<body class="marginless" onload="init()">
     <dialog id="leyenda-loader">
         <p><b>Indicador de carga</b></p>
         <p><img src="/smap/svg/red.svg" width="25px"> No se muestran edificios nuevos, haz zoom para cargar más</p>
@@ -25,26 +25,33 @@
         <button autofocus id="leyenda-loader-close-button">Cerrar</button>
     </dialog>
     <header class="header">
-        <a href="/admin"><button>Administrar app</button></a>
-        <a href="/map/project-admin"><button>Administrar proyecto</button></a>
-        <a href="/map/project-list.html"><button>Elegir proyecto</button></a>
-        <a href="/map/add-building"><button>add building</button></a>
-        <div class="login-section">
-            <a href="/map/login.html"><button>login</button></a>
-            <a href="/map/register.html"><button>register</button></a>
-        </div>
+        <a href="/map/"><img class="header-logo" src="/smap/svg/logo-map.svg"/></a>
+        <span class="header-right">
+            <a class=anchorbutton href="/admin">Administrar app</a>
+            <a class=anchorbutton href="/map/project-admin">Administrar proyecto</a>
+            <div class="login-section">
+                <a class=anchorbutton href="/map/login.html">login</a>
+                <a class=anchorbutton href="/map/register.html">register</a>
+            </div>
+        </span>
     </header>
     <div class="interface">
-        <div id="tab-select" class="attribute-select">
-            <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)" checked>Atributos</label>
-            <label><input type="radio" name="tab" value="capas" onchange="change_tab(this.value)">Capas</label>
-            <label><input disabled type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)">Marcadores</label>
-            <label><input disabled type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)">Mis edificios</label>
-        </div>
-        <div id="tab" class="attribute-select">
+        <div>
+            <div class="interface">
+                <div id="tab-select" class="attribute-select">
+                    <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)" checked><span>Atributos</span></label>
+                    <label><input type="radio" name="tab" value="capas" onchange="change_tab(this.value)"><span>Capas</span></label>
+                    <label><input disabled type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)"><span>Marcadores</span></label>
+                    <label><input disabled type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)"><span>Mis edificios</span></label>
+                </div>
+                <div id="tab" class="attribute-select">
+                </div>
+            </div>
+            Se está mostrando el proyecto <b>{{ project.name }}</b> <a href="/map/project-list.html"><button>Cambiar</button></a>
         </div>
         <div id="map"></div>
     </div>
+    <footer></footer>
     <script src="/smap/js/map.js"></script>
     <script src="/smap/js/index_interface.js"></script>
 </body>

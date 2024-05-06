@@ -37,7 +37,7 @@ if DEBUG:
             content_type = "text/css"
         if extension == "svg":
             content_type = "image/svg+xml"
-        print(f"/var/www/map/{file_name}")
+        print(f"smap: /var/www/map/{file_name}")
         with open(f"/var/www/map/{file_name}", "rb") as f:
             static_file = f.read()
         response = HttpResponse(static_file)
@@ -47,4 +47,13 @@ if DEBUG:
             response.headers["Content-Type"] = content_type
             print(content_type)
         return response
+    def serve_favico(request: HttpRequest):
+        with open(f"/var/www/map/favicon.ico", "rb") as f:
+            static_file = f.read()
+        response = HttpResponse(static_file)
+        # Al ser estáticas se les puede indicar que se guarden en el caché
+        response.headers["Cache-Control"] = f"max-age={60*24*14}"
+        response.headers["Content-Type"] = "image/x-icon"
+        return response
     urlpatterns.append(re_path("smap/*", serve_smap))
+    urlpatterns.append(path("favicon.ico", serve_favico))

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/smap/css/index.css"/>
 </head>
 <body>
-    <h1>Administración del proyecto {{ project.name }}</h1>
-    <a href="project-list.html"><button>Cambiar de proyecto</button></a>
-
+    <h1>Administración del proyecto <b>{{ project.name }}</b> <a href="project-list.html"><button>Cambiar</button></a></h1>
+    <hr>
     <details>
         <summary>Atributos de las capas</summary>
         <ul>
@@ -16,8 +16,8 @@
                 <li>{{ attribute.display_name }} ({{ attribute.name }})</li>
             {% endfor %}
         </ul>
-    </details>
-    <a href="edit-attributes"><button>Modificar atributos</button></a>
+    </details><br>
+    <a href="edit-attributes"><button>Modificar atributos</button></a><br>
 
     <details>
         <summary>Capas</summary>
@@ -37,6 +37,7 @@
     </table>
     <a href="edit-colors"><button>Editar colores</button></a>
     <a href="edit-layers"><button>Modificar capas</button></a>
+    <a href="/map/add-building"><button>Añadir edificio</button></a>
 
     <a href="/">Go back</a>
 </body>

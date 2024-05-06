@@ -78,8 +78,10 @@ function tab_atributos(tab) {
         }) !== undefined
         input.onclick = update_selected_attributes
         label.appendChild(input)
-        let att = document.createTextNode(atributo.display_name);
-        label.appendChild(att)
+        let span = document.createElement("span");
+        let text = document.createTextNode(atributo.display_name);
+        span.append(text)
+        label.appendChild(span)
 
         tab.appendChild(label)
     })
@@ -135,8 +137,10 @@ function tab_capas(tab) {
             cambiar_capa(layer_name)
         }
         label.appendChild(input)
-        let nombre = document.createTextNode(layer.display_name);
-        label.appendChild(nombre)
+        let span = document.createElement("span");
+        let text = document.createTextNode(layer.display_name);
+        span.append(text)
+        label.appendChild(span)
 
         tab.appendChild(label)
     }
