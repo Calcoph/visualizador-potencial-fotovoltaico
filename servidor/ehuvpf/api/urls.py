@@ -37,6 +37,7 @@ urlpatterns = [
     path("add-layer", views.add_layer, name="edit-layers"),
     path("add-building", views.add_building, name="edit-layers"),
     path("project-list.html", views.project_list, name="project-list"),
+    path("details", views.details, name="details"),
     path("index", views.index, name="index"),
     path("index.html", views.index, name="index"),
     re_path("\w\.html", views.static_html, name="static"),

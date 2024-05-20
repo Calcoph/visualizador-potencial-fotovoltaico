@@ -7,31 +7,38 @@
     <link rel="stylesheet" href="/smap/css/index.css"/>
 </head>
 <body>
-    <h1>Información del proyecto</h1>
+    <h1>Información del proyecto {{ current_project.name }}</h1>
     <hr>
     <h3>Fuente de datos</h3>
-    <p>Los datos se han obtenido de: . . .</p>
+    <p>{{ current_project.data_source }}</p>
     <hr>
     <h3>Procesamiento de datos</h3>
-    <p>El resultado se ha obtenido al procesar los datos con este programa:</p>
-    <p><a href="">https://github/...</a></p>
-    <p>Utilizando la versión: <code>aj591fb</code></p>
+    {% if preprocess_info is None %}
+        <p>Los datos originales no se han preprocesado o se ha seguido un método desconocido/oculto para su cálculo.</p>
+    {% else %}
+        <p>El resultado se ha obtenido al procesar los datos con este programa:</p>
+        <p><a href="{{ preprocess_info.program_link }}">{{ preprocess_info.program_name }}</a></p>
+        <p>Utilizando la versión: <code>{{ preprocess_info.program_version }}</code></p>
+    {% endif %}
     <hr>
     <h3>Parámetros</h3>
-
-    <details>
-        <summary>Parámetro 1</summary>
-        <p>Este parámetro indica el índice de colisión de hormigas con los paneles</p>
-    </details><span> = 0.59</span>
-    <br>
-    <details>
-        <summary>Parámetro 2</summary>
-        <p>Este indica el coeficiente de absorción de energía</p>
-    </details><span> = 0.87</span>
-    <br>
-    <details>
-        <summary>Parámetro 3</summary>
-        <p>Es la relación entre el iridio y paladio del material</p>
-    </details><span> = 0.23</span>
+    <p>En el procesamiento de los datos se han usado estos parámetros con los valores indicados.</p>
+    {% for parameter in parameters %}
+        <details>
+            <summary>{{ parameter.name }}</summary>
+            <p class="parameter_description">{{ parameter.description }}</p>
+        </details><span> = {{ parameter.value }}</span>
+        <br>
+    {% endfor %}
+    <hr>
+    <h3>Atributos</h3>
+    <p>Los atributos resultado tras los cálculos son los siguientes.</p>
+    {% for attribute in attributes %}
+        <details>
+            <summary>{{ attribute.display_name }}</summary>
+            <p class="parameter_description">{{ attribute.description }}</p>
+        </details><span> medido en {{ attribute.unit }}</span>
+        <br>
+    {% endfor %}
 </body>
 </html>

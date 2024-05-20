@@ -128,3 +128,8 @@ button {
 button:hover {
     background-color: #3c963c;
 }
+
+.parameter_description {
+    max-width: 30vw;
+    min-height: 2em;
+}

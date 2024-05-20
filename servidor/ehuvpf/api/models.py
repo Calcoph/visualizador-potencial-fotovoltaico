@@ -4,8 +4,22 @@ from django.db import models
 class Project(models.Model):
     """
     name: str
+    data_source: str
     """
     name = models.TextField()
+    data_source = models.TextField()
+
+class PreprocessingInfo(models.Model):
+    """
+    project: Project
+    program_name: str
+    program_link: str
+    program_version: str
+    """
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    program_name = models.TextField()
+    program_link = models.TextField()
+    program_version = models.TextField()
 
 class Color(models.Model):
     """
@@ -30,10 +44,26 @@ class Measure(models.Model):
     project: Project
     name: str
     display_name: str
+    description: str
+    unit: str
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     name = models.TextField()
     display_name = models.TextField()
+    description = models.TextField()
+    unit = models.TextField()
+
+class Parameter(models.Model):
+    """
+    project: Project
+    name: str
+    description: str
+    value: str
+    """
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    name = models.TextField()
+    description = models.TextField()
+    value = models.TextField() # It is a text in case there are non-numeric parameters
 
 class Layer(models.Model):
     """

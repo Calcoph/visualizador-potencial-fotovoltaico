@@ -36,7 +36,7 @@
         </span>
     </header>
     <div class="interface">
-        <div>
+        <div style="position: relative;">
             <div class="interface">
                 <div id="tab-select" class="attribute-select">
                     <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)" checked><span>Atributos</span></label>
@@ -48,6 +48,7 @@
                 </div>
             </div>
             Se está mostrando el proyecto <b>{{ project.name }}</b> <a href="/map/project-list.html"><button>Cambiar</button></a>
+            <div style="position:absolute;bottom: 0;right: 0;"><a href="/map/details"><button style="padding: 5px;">Detalles sobre los datos</button></a></div>
         </div>
         <div id="map"></div>
     </div>
