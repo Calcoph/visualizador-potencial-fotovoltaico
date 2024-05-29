@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ehukhivpf{% endblock %}</title>
+
+    {% block head %}
+    <link rel="stylesheet" href="/smap/css/general.css"/>
+    {% endblock %}
+</head>
+<body {% block body_attrs %}class="marginless"{% endblock %}>
+    <header class="header">
+        <a href="/map/"><img class="header-logo" src="/smap/svg/logo-map.svg"/></a>
+        <span class="header-right">
+            <a class=anchorbutton href="/admin">Administrar app</a>
+            <a class=anchorbutton href="/map/project-admin">Administrar proyecto</a>
+            <div class="login-section">
+                <a class=anchorbutton href="/map/login.html">login</a>
+                <a class=anchorbutton href="/map/register.html">register</a>
+            </div>
+        </span>
+    </header>
+    <div class="content">
+        {% block content %}
+        <p>Insert content into this page with: &#123;&#37; block content &#37;&#125;<code>The body goes here</code>&#123;&#37; endblock &#37;&#125;</p>
+        {% endblock %}
+    </div>
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
+    {% block after_scripts %}{% endblock %}
+</body>
+</html>

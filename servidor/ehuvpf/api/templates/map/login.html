@@ -1,23 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/smap/css/login.css"/>
-</head>
-<body>
-    <h1>LOGIN</h1>
-    <a href="index.html">Go back</a>
-    <div class="center">
-        <div>
-            <form class="field-array">
-            <label for="usuario-input">Usuario</label>
-        </div>
-        <input id="usuario-input" type="text" name="usuario">
-        </form>
+{% extends "base.html" %}
 
-        Sin cuenta? <a href="/map/register.html">regístrate</a>
+{% block title %}Inicia sesión{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/smap/css/general.css"/>
+<link rel="stylesheet" href="/smap/css/login.css"/>
+{% endblock %}
+
+{% block content %}
+<h1>LOGIN</h1>
+<div class="center">
+    <div>
+        <form class="field-array">
+        <label for="usuario-input">Usuario</label>
     </div>
-</body>
-</html>
+    <input id="usuario-input" type="text" name="usuario">
+    </form>
+
+    Sin cuenta? <a href="/map/register.html">regístrate</a>
+</div>
+{% endblock %}
+
+{% block after_scripts %}
+{% endblock %}

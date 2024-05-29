@@ -1,60 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+{% extends "base.html" %}
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-        crossorigin=""/>
-    <!-- Leaflet javascript -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-        crossorigin=""></script>
+{% block title %}Ehukhivpf{% endblock %}
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/smap/css/general.css"/>
-    <link rel="stylesheet" href="/smap/css/index.css"/>
-</head>
-<body class="marginless" onload="init()">
-    <dialog id="leyenda-loader">
-        <p><b>Indicador de carga</b></p>
-        <p><img src="/smap/svg/red.svg" width="25px"> No se muestran edificios nuevos, haz zoom para cargar más</p>
-        <p><img src="/smap/svg/green.svg" width="25px"> Se cargan edificios nuevos correctamente</p>
-        <button autofocus id="leyenda-loader-close-button">Cerrar</button>
-    </dialog>
-    <header class="header">
-        <a href="/map/"><img class="header-logo" src="/smap/svg/logo-map.svg"/></a>
-        <span class="header-right">
-            <a class=anchorbutton href="/admin">Administrar app</a>
-            <a class=anchorbutton href="/map/project-admin">Administrar proyecto</a>
-            <div class="login-section">
-                <a class=anchorbutton href="/map/login.html">login</a>
-                <a class=anchorbutton href="/map/register.html">register</a>
+{% block head %}
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+crossorigin=""/>
+<!-- Leaflet javascript -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+crossorigin=""></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="/smap/css/general.css"/>
+<link rel="stylesheet" href="/smap/css/index.css"/>
+{% endblock %}
+
+{% block body_attrs %}
+class="marginless" onload="init()"
+{% endblock %}
+
+{% block content %}
+<dialog id="leyenda-loader">
+    <p><b>Indicador de carga</b></p>
+    <p><img src="/smap/svg/red.svg" width="25px"> No se muestran edificios nuevos, haz zoom para cargar más</p>
+    <p><img src="/smap/svg/green.svg" width="25px"> Se cargan edificios nuevos correctamente</p>
+    <button autofocus id="leyenda-loader-close-button">Cerrar</button>
+</dialog>
+<div class="interface">
+    <div style="position: relative;">
+        <div class="interface">
+            <div id="tab-select" class="attribute-select">
+                <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)" checked><span>Atributos</span></label>
+                <label><input type="radio" name="tab" value="capas" onchange="change_tab(this.value)"><span>Capas</span></label>
+                <label><input disabled type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)"><span>Marcadores</span></label>
+                <label><input disabled type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)"><span>Mis edificios</span></label>
             </div>
-        </span>
-    </header>
-    <div class="interface">
-        <div style="position: relative;">
-            <div class="interface">
-                <div id="tab-select" class="attribute-select">
-                    <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)" checked><span>Atributos</span></label>
-                    <label><input type="radio" name="tab" value="capas" onchange="change_tab(this.value)"><span>Capas</span></label>
-                    <label><input disabled type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)"><span>Marcadores</span></label>
-                    <label><input disabled type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)"><span>Mis edificios</span></label>
-                </div>
-                <div id="tab" class="attribute-select">
-                </div>
+            <div id="tab" class="attribute-select">
             </div>
-            Se está mostrando el proyecto <b>{{ project.name }}</b> <a href="/map/project-list.html"><button>Cambiar</button></a>
-            <div style="position:absolute;bottom: 0;right: 0;"><a href="/map/details"><button style="padding: 5px;">Detalles sobre los datos</button></a></div>
         </div>
-        <div id="map"></div>
+        Se está mostrando el proyecto <b>{{ project.name }}</b> <a href="/map/project-list.html"><button>Cambiar</button></a>
+        <div style="position:absolute;bottom: 0;right: 0;"><a href="/map/details"><button style="padding: 5px;">Detalles sobre los datos</button></a></div>
     </div>
-    <footer></footer>
-    <script src="/smap/js/map.js"></script>
-    <script src="/smap/js/index_interface.js"></script>
-</body>
-</html>
+    <div id="map"></div>
+</div>
+{% endblock %}
+
+{% block after_scripts %}
+<script src="/smap/js/map.js"></script>
+<script src="/smap/js/index_interface.js"></script>
+{% endblock %}

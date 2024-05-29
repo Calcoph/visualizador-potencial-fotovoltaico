@@ -1,58 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/smap/css/general.css"/>
-</head>
-<body>
-    <script src="/smap/js/edit-layer.js"></script>
-    <h1>Administración del proyecto {{ project.name }}</h1>
-    <h3>Modificando capa {{ layer.name }}</h3>
-    <form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validar_formulario()">
-        <h3>Patrón en el nombre (para identificación automática de capa)</h3>
-        <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
-        <h3>Atributos relevantes:</h3>
-        <ul id="atributos">
-            {% for measure in default_measures %}
-                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="quitar_atributo({{ measure.pk }})" value="Quitar"></li>
+{% extends "base.html" %}
+
+{% block title %}Editar capa{% endblock %}
+
+{% block content %}
+<h1>Administración del proyecto {{ project.name }}</h1>
+<h3>Modificando capa {{ layer.name }}</h3>
+<form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validar_formulario()">
+    <h3>Patrón en el nombre (para identificación automática de capa)</h3>
+    <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
+    <h3>Atributos relevantes:</h3>
+    <ul id="atributos">
+        {% for measure in default_measures %}
+            <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="quitar_atributo({{ measure.pk }})" value="Quitar"></li>
+        {% endfor %}
+    </ul>
+    <details>
+        <summary>Añadir un atributo para mostrar en esta capa:</summary>
+        <ul id="atributos-disponibles">
+            {% for measure in unused_measures %}
+                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="anadir_atributo({{ measure.pk }})" value="Añadir"></li>
             {% endfor %}
         </ul>
-        <details>
-            <summary>Añadir un atributo para mostrar en esta capa:</summary>
-            <ul id="atributos-disponibles">
-                {% for measure in unused_measures %}
-                    <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="anadir_atributo({{ measure.pk }})" value="Añadir"></li>
-                {% endfor %}
-            </ul>
-        </details>
-        <h3>Atributo a colorear:</h3>
-        <select id="seleccion-atributo-color" name="color-attribute">
-            {% for measure in default_measures %}
-                {% if measure.pk == color_measure.pk %}
-                    <option value="{{ measure.pk }}" selected>{{ measure.display_name }} ({{ measure.name}})</option>
-                {% else %}
-                    <option value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name}})</option>
-                {% endif %}
-            {% endfor %}
-        </select>
-        <table>
+    </details>
+    <h3>Atributo a colorear:</h3>
+    <select id="seleccion-atributo-color" name="color-attribute">
+        {% for measure in default_measures %}
+            {% if measure.pk == color_measure.pk %}
+                <option value="{{ measure.pk }}" selected>{{ measure.display_name }} ({{ measure.name}})</option>
+            {% else %}
+                <option value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name}})</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <table>
+        <tr>
+            <th style="width:50px">Color</th>
+            <th>Valor mínimo</th>
+        </tr>
+        {% for color_rule in color_rules %}
             <tr>
-                <th style="width:50px">Color</th>
-                <th>Valor mínimo</th>
+                <td style="background-color:{{ color_rule.color.hex }}"></td>
+                <td><input type="text" value="{{ color_rule.minimum }}" name="color_rule"></td>
             </tr>
-            {% for color_rule in color_rules %}
-                <tr>
-                    <td style="background-color:{{ color_rule.color.hex }}"></td>
-                    <td><input type="text" value="{{ color_rule.minimum }}" name="color_rule"></td>
-                </tr>
-            {% endfor %}
-        </table>
-        <input type="hidden" name="layer" value="{{ layer.pk }}">
-        <input type="submit" value="Confirmar cambios">
-    </form>
+        {% endfor %}
+    </table>
+    <input type="hidden" name="layer" value="{{ layer.pk }}">
+    <input type="submit" value="Confirmar cambios">
+</form>
 
-    <a href="project-admin">Go back</a>
-</body>
-</html>
+<a href="project-admin">Go back</a>
+{% endblock %}
+
+{% block after_scripts %}
+<script src="/smap/js/edit-layer.js"></script>
+{% endblock %}
