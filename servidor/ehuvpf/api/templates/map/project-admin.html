@@ -4,30 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/smap/css/index.css"/>
+    <link rel="stylesheet" href="/smap/css/general.css"/>
 </head>
 <body>
     <h1>Administración del proyecto <b>{{ project.name }}</b> <a href="project-list.html"><button>Cambiar</button></a></h1>
     <hr>
-    <details>
-        <summary>Atributos de las capas</summary>
-        <ul>
-            {% for attribute in attributes %}
-                <li>{{ attribute.display_name }} ({{ attribute.name }})</li>
-            {% endfor %}
-        </ul>
-    </details><br>
-    <a href="edit-attributes"><button>Modificar atributos</button></a><br>
+    <h2>Atributos</h2>
+    <table style="border-collapse: collapse; background-color: rgb(179, 206, 183);" border="1">
+        <tr>
+            <th>Nombre</th>
+            <th>Identificador</th>
+        </tr>
+        {% for attribute in attributes %}
+            <tr>
+                <td>{{ attribute.display_name }}</td>
+                <td>{{ attribute.name }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="add-attribute"><button>Añadir atributos</button></a><br>
 
-    <details>
-        <summary>Capas</summary>
-        <ul>
-            {% for layer in layers %}
-                <li>{{ layer.name }} <a href="edit-layer?layer={{ layer.pk }}"><button>Editar</button></a></li>
-            {% endfor %}
-        </ul>
-    </details>
-    <p>Colores del proyecto</p>
+    <h2>Capas</h2>
+    <table style="border-collapse: collapse; background-color: rgb(179, 206, 183);" border="1">
+        <tr>
+            <th>Nombre</th>
+        </tr>
+        {% for layer in layers %}
+            <tr>
+                <td>{{ layer.name }}</td>
+                <td><a href="edit-layer?layer={{ layer.pk }}"><button>Editar</button></a></li></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <a href="add-layer"><button>Añadir capa</button></a>
+    <h2>Colores del proyecto</h2>
     <table>
         <tr>
             {% for color in colors %}
@@ -35,9 +45,8 @@
             {% endfor %}
         </tr>
     </table>
-    <a href="edit-colors"><button>Editar colores</button></a>
-    <a href="edit-layers"><button>Modificar capas</button></a>
-    <a href="/map/add-building"><button>Añadir edificio</button></a>
+    <a href="edit-colors"><button>Editar colores</button></a><br>
+    <a href="/map/add-building"><button>Añadir edificio</button></a><br>
 
     <a href="/">Go back</a>
 </body>

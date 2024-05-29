@@ -1,0 +1,108 @@
+#map {
+    height: calc(100vh - (max(2em, 67px) + 2*5px + 2em));
+    flex-grow: 2;
+}
+
+.interface {
+    display: flex;
+}
+.attribute-select {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+}
+.header {
+    border-bottom: 2px solid #103010;
+    text-align: right;
+    background-color: #308030;
+    padding: 5px;
+    height: 2em;
+    min-height: 67px;
+}
+
+.header-logo {
+    margin-left: 50px;
+    padding: 2px;
+    float: left;
+    width: 75px;
+}
+
+.header-logo:hover {
+    background-color: #30b030;
+}
+
+.header .anchorbutton {
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    background-color: #103010;
+    color: white;
+}
+
+.header a:hover {
+    background-color: #30b030;
+    color: black;
+}
+
+.login-section {
+    margin-left: 10%;
+    margin-right: 2%;
+    display: inline-block;
+    float: none;
+}
+
+body {
+    background-color: #e0eee0;
+}
+
+.marginless {
+    margin: 0px;
+}
+
+footer {
+    background-color: #305030;
+    height: 150px;
+    border-top: 2px solid #103010;
+}
+
+details {
+    background-color: #205520;
+    display: inline-block;
+    border-radius: 7px;
+}
+
+details *:not(summary) {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+/*
+    Preserve background color of summary, input and button,
+    change the rest. (if inside <details>)
+*/
+details *:not(input, summary, button) {
+    background-color: #308030;
+}
+
+summary {
+    background-color: #2a922a;
+    padding-left: 5px;
+    border-radius: 7px;
+}
+
+button {
+    background-color: #56d856;
+    border-radius: 6px;
+    border: 1px solid #3c963c;
+}
+
+button:hover {
+    background-color: #3c963c;
+}
+
+.parameter_description {
+    max-width: 30vw;
+    min-height: 2em;
+}

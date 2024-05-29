@@ -30,17 +30,6 @@ def project_admin_impl(project: Project):
     return context
 
 @project_required
-def edit_layers(request: HttpRequest):
-    project = get_project(request)
-    template = loader.get_template("map/edit-layers.html")
-    layers = Layer.objects.filter(project=project)
-    context = {
-        "project": project,
-        "layers": layers,
-    }
-    return HttpResponse(template.render(context, request))
-
-@project_required
 def edit_layer(request: HttpRequest):
     layer_id = request.GET.get("layer")
     layer = Layer.objects.get(pk=layer_id)
@@ -116,9 +105,9 @@ def add_layer(request: HttpRequest):
     return HttpResponse(template.render(context, request))
 
 @project_required
-def edit_attributes(request: HttpRequest):
+def add_attribute(request: HttpRequest):
     project = get_project(request)
-    template = loader.get_template("map/edit-attributes.html")
+    template = loader.get_template("map/add-attribute.html")
     attributes = Measure.objects.filter(project=project)
     context = {
         "attributes": attributes,

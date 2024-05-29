@@ -4,13 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/smap/css/general.css"/>
 </head>
 <body>
     <script src="/smap/js/project_list.js"></script>
-    <h1>Create Project</h1>
+    <h1>Crear proyecto</h1>
     <form action="api/createProject" method="post">
-        <input type="text" name="name">
-        <input type="submit" value="Crear proyecto">
+        <label>
+            Nombre del proyecto
+            <br>
+            <input type="text" name="name">
+        </label>
+        <br>
+        <label>
+            Indica un texto para explicar la fuente de datos.
+            <br>
+            <textarea name="data_source">
+            </textarea>
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" name="preprocessed">
+            Los datos originales han sido preprocesados
+        </label>
+        <br>
+        <details>
+            <summary>Información sobre el preproceso</summary>
+            <p>
+                <label style="background-color: transparent;">
+                    Nombre del programa/proyecto de preprocesado
+                    <br>
+                    <input style="background-color: azure;" type="text" name="preprocess_name">
+                </label>
+            </p>
+            <p>
+                <label style="background-color: transparent;">
+                    Link al programa/proyecto
+                    <br>
+                    <input style="background-color:azure; color: blue; text-decoration: underline;" type="text" name="preprocess_name">
+                </label>
+            </p>
+            <p>
+                <label style="background-color: transparent;">
+                    Versión del programa/proyecto
+                    <br>
+                    <input style="background-color: azure;" type="text" name="preprocess_name">
+                </label>
+            </p>
+        </details>
+        <br>
+        <input style="margin-left: 100px;margin-top: 1.5em;" type="submit" value="Crear proyecto">
     </form>
 </body>
 </html>

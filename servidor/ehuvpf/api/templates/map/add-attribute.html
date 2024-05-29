@@ -4,19 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/smap/css/general.css"/>
 </head>
 <body>
-    <script src="/smap/js/edit-attributes.js"></script>
+    <script src="/smap/js/add-attribute.js"></script>
     <h1>Administración del proyecto</h1>
-    <h3>Atributos de las capas</h3>
+    <h2>Atributos existentes</h2>
     <ul id="lista">
         {% for attribute in attributes %}
             <li>{{ attribute.display_name }} ({{ attribute.name }})</li>
         {% endfor %}
     </ul>
-    <p>Nuevo atributo:</p>
-    <input type="text" id="name">
-    <input type="text" id="display_name">
+    <h1>Nuevo atributo:</h1>
+    <label>
+        Identificador:
+        <input type="text" id="name"><br>
+    </label>
+    <label>
+        Nombre a mostrar:
+        <input type="text" id="display_name"><br>
+    </label>
     <button onclick="anadir_atributo()">Añadir</button>
     <a href="project-admin">Go back</a>
 </body>
