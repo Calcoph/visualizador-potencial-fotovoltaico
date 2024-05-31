@@ -1,6 +1,20 @@
 from django.urls import include, path, re_path
 
-from . import views, api
+from . import views, api, user_view, user_api
+
+# /map/user/api/*
+user_api_urls = [
+    path("login", user_api.login, name="apiLogin"),
+    path("register", user_api.register, name="apiRegister")
+]
+
+# /map/user/*
+user_urls = [
+    path("api/", include(user_api_urls)),
+
+    path("login", user_view.login, name="login"),
+    path("register", user_view.register, name="register")
+]
 
 # /map/api/*
 api_urls = [
@@ -31,6 +45,7 @@ api_urls = [
 # /map/*
 urlpatterns = [
     path("api/", include(api_urls)),
+    path("user/", include(user_urls)),
 
     path("", views.index, name="index"),
     path("project-admin", views.project_admin, name="project-admin"),

@@ -3,9 +3,11 @@ import json
 from os import makedirs
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.core.files.uploadedfile import UploadedFile
+from django.contrib.auth.decorators import permission_required
 
 from .utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
 from .utils.testing import generate_placeholder_building
+from .utils.user import Permission
 
 from .models import Layer, Building, Measure, Parameter, Project, Color, ColorRule
 from .utils.session_handler import get_project, set_project
@@ -14,6 +16,7 @@ from .utils.decorators import project_required_api
 RESOLUTION = 0.1
 PROJECT_PATH = "/var/lib/ehuvpf/ehuvpf-projects"
 
+@permission_required(Permission.ProjectAdd)
 def create_project(request: HttpRequest):
     name = request.POST.get("name")
 
@@ -25,6 +28,7 @@ def create_project_impl(name: str):
     project = Project(name=name)
     project.save()
 
+# @permission_required(Permission.BuildingView) # Commented out because this should be accessible by anyone
 @project_required_api
 def get_buildings(request: HttpRequest):
     layer_id = request.GET.get("layer")
@@ -81,6 +85,7 @@ def get_placeholder_buildings_impl(lat: int, lon: int) -> dict[str]:
 
     return json_buildings
 
+# @permission_required(Permission.MeasureView) # Commented out because this should be accessible by anyone
 @project_required_api
 def get_attributes(request: HttpRequest):
     project = get_project(request)
@@ -165,6 +170,7 @@ def get_files(request: HttpRequest) -> list[EsriFiles]:
 
     return files
 
+@permission_required(Permission.BuildingAdd)
 @project_required_api
 def add_building(request: HttpRequest):
     files = get_files(request)
@@ -197,6 +203,7 @@ def add_building_impl(project: Project, files: list[EsriFiles]):
         building = Building(layer=selected_layer, path=output_path, lat=lat, lon=lon)
         building.save()
 
+@permission_required(Permission.MeasureAdd)
 @project_required_api
 def add_attribute(request: HttpRequest):
     name = request.POST.get("name")
@@ -213,6 +220,7 @@ def add_attribute_impl(project: Project, name: str, display_name: str, descripti
     new_measure = Measure(project=project, name=name, display_name=display_name, description=description, unit=unit)
     new_measure.save()
 
+@permission_required(Permission.MeasureEdit)
 @project_required_api
 def edit_attribute(request: HttpRequest):
     name = request.POST.get("name")
@@ -235,6 +243,7 @@ def edit_attribute_impl(name: str, display_name: str, description: str, unit: st
 
     editing_attribute.save()
 
+@permission_required(Permission.ParameterAdd)
 @project_required_api
 def add_parameter(request: HttpRequest):
     name = request.POST.get("name")
@@ -250,6 +259,7 @@ def add_parameter_impl(project: Project, name: str, description: str, value: str
     parameter = Parameter(project=project, name=name, description=description, value=value)
     parameter.save()
 
+@permission_required(Permission.ParameterEdit)
 @project_required_api
 def edit_parameter(request: HttpRequest):
     name = request.POST.get("name")
@@ -271,6 +281,7 @@ def edit_parameter_impl(name: str, description: str, value: str, id: str):
 
     parameter.save()
 
+@permission_required(Permission.LayerEdit)
 @project_required_api
 def edit_layer(request: HttpRequest):
     layer_id = request.POST.get("layer")
@@ -307,6 +318,7 @@ def edit_layer_impl(layer: Layer, name_pattern: str, attributes: list[str], colo
 
     layer.save()
 
+@permission_required(Permission.LayerAdd)
 @project_required_api
 def add_layer(request: HttpRequest):
     # TODO: add validation
@@ -334,6 +346,7 @@ def add_layer_impl(project: Project, layer_name: str, attributes: list[str], col
     new_layer.save()
     new_layer.default_measures.set(measures)
 
+# @permission_required(Permission.LayerView) # Commented out because this should be accessible by anyone
 @project_required_api
 def get_layers(request: HttpRequest):
     project = get_project(request)
@@ -366,6 +379,7 @@ def get_layers_impl(project: Project):
     return resp
 
 
+# @permission_required(Permission.ColorView) # Commented out because this should be accessible by anyone
 @project_required_api
 def get_colors(request: HttpRequest):
     project = get_project(request)
@@ -396,6 +410,7 @@ def get_colors_impl(project: Project):
 
     return resp
 
+@permission_required(Permission.ColorEdit)
 @project_required_api
 def update_colors(request: HttpRequest):
     colors = request.POST.getlist("color")
@@ -425,6 +440,7 @@ def update_colors_impl(project: Project, colors: list[str]):
         colores_proyecto[i].delete()
         i += 1
 
+# @permission_required(Permission.ProjectView) # Commented out because this should be accessible by anyone
 def select_project(request: HttpRequest):
     project_id = request.POST.get("project_id")
     set_project(request, project_id)

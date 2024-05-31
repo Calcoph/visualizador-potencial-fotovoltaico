@@ -2,11 +2,14 @@ from os import makedirs
 
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
+from django.contrib.auth.decorators import permission_required
 
 from .utils.decorators import project_required
 from .utils.session_handler import get_project, default_project_if_undefined
+from .utils.user import Permission
 from .models import Color, Layer, Parameter, PreprocessingInfo, Project, Measure, ColorRule
 
+@permission_required(Permission.AdminEditProject)
 @project_required
 def project_admin(request: HttpRequest):
     project = get_project(request)
@@ -29,6 +32,7 @@ def project_admin_impl(project: Project):
 
     return context
 
+@permission_required(Permission.LayerEdit)
 @project_required
 def edit_layer(request: HttpRequest):
     layer_id = request.GET.get("layer")
@@ -76,6 +80,7 @@ def edit_layer_impl(project: Project, layer: Layer) -> dict[str]:
 
     return context
 
+@permission_required(Permission.ColorEdit)
 @project_required
 def edit_colors(request: HttpRequest):
     project = get_project(request)
@@ -91,6 +96,7 @@ def edit_colors(request: HttpRequest):
 
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.LayerAdd)
 @project_required
 def add_layer(request: HttpRequest):
     project = get_project(request)
@@ -104,6 +110,7 @@ def add_layer(request: HttpRequest):
 
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.MeasureAdd)
 @project_required
 def add_attribute(request: HttpRequest):
     project = get_project(request)
@@ -114,6 +121,7 @@ def add_attribute(request: HttpRequest):
     }
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.MeasureEdit)
 @project_required
 def edit_attribute(request: HttpRequest):
     attribute_id = request.GET.get("id")
@@ -125,6 +133,7 @@ def edit_attribute(request: HttpRequest):
     }
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.ParameterAdd)
 @project_required
 def add_parameter(request: HttpRequest):
     project = get_project(request)
@@ -135,6 +144,7 @@ def add_parameter(request: HttpRequest):
     }
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.ParameterEdit)
 @project_required
 def edit_parameter(request: HttpRequest):
     parameter_id = request.GET.get("id")
@@ -147,6 +157,7 @@ def edit_parameter(request: HttpRequest):
     }
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.BuildingAdd)
 @project_required
 def add_building(request: HttpRequest):
     project = get_project(request)
@@ -175,6 +186,7 @@ def details(request: HttpRequest):
     }
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.AdminEditProject)
 @project_required
 def edit_project_details(request: HttpRequest):
     template = loader.get_template(f"map/edit-project-details.html")
