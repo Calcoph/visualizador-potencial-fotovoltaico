@@ -1,20 +1,17 @@
 function anadir_atributo() {
-    let nodo_nuevo_nombre = document.getElementById("name")
-    let nuevo_nombre = nodo_nuevo_nombre.value
-    nodo_nuevo_nombre.value = ""
+    /** @type {HTMLFormElement} */
+    let form = document.getElementById("formAddAttribute")
+    let form_data = new FormData(form)
+    let name = form_data.get("name");
+    let display_name = form_data.get("display_name");
 
-    let nodo_nuevo_display_name = document.getElementById("display_name")
-    let nuevo_display_name = nodo_nuevo_display_name.value
-    nodo_nuevo_display_name.value = ""
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/map/api/addAttribute", true);
+    xhttp.send(form_data)
 
-    let xhttp = new XMLHttpRequest()
+    let new_li = document.createElement("li")
+    new_li.innerText = `${display_name} (${name})`
+    document.getElementById("list").appendChild(new_li)
 
-    xhttp.open("POST", "/map/api/newAttribute", true)
-    xhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded")
-    let params = "name=" + encodeURIComponent(nuevo_nombre) + "&display_name=" + encodeURIComponent(nuevo_display_name)
-    xhttp.send(params)
-
-    let nuevo_li = document.createElement("li")
-    nuevo_li.innerText = `${nuevo_display_name} (${nuevo_nombre})`
-    document.getElementById("lista").appendChild(nuevo_li)
+    form.reset()
 }
