@@ -11,7 +11,11 @@ api_urls = [
     path("addBuilding", api.add_building, name="addBuilding"),
 
     path("getAttributes", api.get_attributes, name="getAttributes"),
-    path("newAttribute", api.new_attribute, name="newAttribute"),
+    path("addAttribute", api.add_attribute, name="newAttribute"),
+    path("editAttribute", api.edit_attribute, name="editAttribute"),
+
+    path("addParameter", api.add_parameter, name="newParameter"),
+    path("editParameter", api.edit_parameter, name="editParameter"),
 
     path("editLayer", api.edit_layer, name="newAttribute"),
 
@@ -31,8 +35,12 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("project-admin", views.project_admin, name="project-admin"),
     path("add-attribute", views.add_attribute, name="add-attribute"),
+    path("edit-attribute", views.edit_attribute, name="edit-attribute"),
+    path("add-parameter", views.add_parameter, name="add-parameter"),
+    path("edit-parameter", views.edit_parameter, name="edit-parameter"),
     path("edit-layer", views.edit_layer, name="edit-layer"),
     path("edit-colors", views.edit_colors, name="edit-colors"),
+    path("edit-project-details", views.edit_project_details, name="edit-project-details"),
     path("add-layer", views.add_layer, name="add-layer"),
     path("add-building", views.add_building, name="add-building"),
     path("project-list.html", views.project_list, name="project-list"),

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles del proyecto{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="/smap/css/general.css"/>
+<link rel="stylesheet" href="/smap/css/details.css"/>
+{% endblock %}
+
+
+{% block content %}
+<h1>Información del proyecto {{ current_project.name }}</h1>
+<hr>
+<h3>Fuente de datos</h3>
+<p style="color: red;">En este apartado se puede insertar cualquier HTML. Por lo que sólo se puede editar con permisos de administrador.</p>
+<form>
+    <textarea>{{ current_project.data_source }}</textarea>
+</form>
+<hr>
+<h3>Procesamiento de datos</h3>
+<form>
+    <p>Si se han Procesado los datos
+        originales se indicar aquí la información
+        sobre el programa principal utilizado para
+        el procesado.
+    </p>
+    <label>
+        Enlace al programa de procesado de datos:<br>
+        <input id="preprocess_link" type="text">
+    </label><br>
+    <label>
+        Nombre del programa de procesado:<br>
+        <input id="preprocess_name" type="text">
+    </label><br>
+    <label>
+        Versión del programa de procesado<br>
+        <input id="preprocess_version" type="text">
+    </label><br>
+    {% if preprocess_info is not None %}
+        <script>Document.getElementById("preprocess_link").value = "{{ preprocess_info.program_link }}"</script>
+        <script>Document.getElementById("preprocess_name").value = "{{ preprocess_info.program_name }}"</script>
+        <script>Document.getElementById("preprocess_version").value = "{{ preprocess_info.program_version }}"</script>
+    {% endif %}
+</form>
+<hr>
+<h3>Parámetros</h3>
+<p>Si el procesado de datos depende de parámetros, se pueden indicar a continuación.</p>
+{% for parameter in parameters %}
+    <details>
+        <summary>{{ parameter.name }}</summary>
+        <p class="parameter_description">{{ parameter.description }}</p>
+    </details><span> = {{ parameter.value }}</span><a href="edit-parameter?id={{ parameter.pk }}"><button>Editar</button></a>
+    <br>
+{% endfor %}
+<a href="add-parameter"><button>Añadir parámetro</button></a>
+<hr>
+<h3>Atributos</h3>
+<p>Aquí se muestran los atributos que tienen las capas.</p>
+{% for attribute in attributes %}
+    <details>
+        <summary>{{ attribute.display_name }}</summary>
+        <p class="parameter_description">{{ attribute.description }}</p>
+    </details><span> medido en {{ attribute.unit }}</span><a href="edit-attribute?id={{ attribute.pk }}"><button>Editar</button></a>
+    <br>
+{% endfor %}
+{% endblock %}

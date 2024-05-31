@@ -7,7 +7,7 @@ from django.core.files.uploadedfile import UploadedFile
 from .utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
 from .utils.testing import generate_placeholder_building
 
-from .models import Layer, Building, Measure, Project, Color, ColorRule
+from .models import Layer, Building, Measure, Parameter, Project, Color, ColorRule
 from .utils.session_handler import get_project, set_project
 from .utils.decorators import project_required_api
 
@@ -198,18 +198,78 @@ def add_building_impl(project: Project, files: list[EsriFiles]):
         building.save()
 
 @project_required_api
-def new_attribute(request: HttpRequest):
-    new_name = request.POST.get("name")
+def add_attribute(request: HttpRequest):
+    name = request.POST.get("name")
     display_name = request.POST.get("display_name")
+    description = request.POST.get("description")
+    unit = request.POST.get("unit")
     project = get_project(request)
 
-    new_attribute_impl(project, new_name, display_name)
+    add_attribute_impl(project, name, display_name, description, unit)
 
     return HttpResponse("Success")
 
-def new_attribute_impl(project: Project, new_name: str, display_name: str):
-    new_measure = Measure(project=project, name=new_name, display_name=display_name)
+def add_attribute_impl(project: Project, name: str, display_name: str, description: str, unit: str):
+    new_measure = Measure(project=project, name=name, display_name=display_name, description=description, unit=unit)
     new_measure.save()
+
+@project_required_api
+def edit_attribute(request: HttpRequest):
+    name = request.POST.get("name")
+    display_name = request.POST.get("display_name")
+    description = request.POST.get("description")
+    unit = request.POST.get("unit")
+    id = request.POST.get("id")
+    project = get_project(request)
+
+    edit_attribute_impl(name, display_name, description, unit, id)
+
+    return HttpResponse("Success")
+
+def edit_attribute_impl(name: str, display_name: str, description: str, unit: str, id: str):
+    editing_attribute = Measure.objects.get(pk=id)
+    editing_attribute.name = name
+    editing_attribute.display_name = display_name
+    editing_attribute.description = description
+    editing_attribute.unit = unit
+
+    editing_attribute.save()
+
+@project_required_api
+def add_parameter(request: HttpRequest):
+    name = request.POST.get("name")
+    description = request.POST.get("description")
+    value = request.POST.get("value")
+    project = get_project(request)
+
+    add_parameter_impl(project, name, description, value)
+
+    return HttpResponse("Success")
+
+def add_parameter_impl(project: Project, name: str, description: str, value: str):
+    parameter = Parameter(project=project, name=name, description=description, value=value)
+    parameter.save()
+
+@project_required_api
+def edit_parameter(request: HttpRequest):
+    name = request.POST.get("name")
+    description = request.POST.get("description")
+    value = request.POST.get("value")
+    id = request.POST.get("id")
+    project = get_project(request)
+
+    edit_parameter_impl(name, description, value, id)
+
+    return HttpResponse("Success")
+
+def edit_parameter_impl(name: str, description: str, value: str, id: str):
+    print(id)
+    parameter = Parameter.objects.get(pk=id)
+    parameter.name = name
+    parameter.description = description
+    parameter.value = value
+
+    parameter.save()
 
 @project_required_api
 def edit_layer(request: HttpRequest):

@@ -115,6 +115,39 @@ def add_attribute(request: HttpRequest):
     return HttpResponse(template.render(context, request))
 
 @project_required
+def edit_attribute(request: HttpRequest):
+    attribute_id = request.GET.get("id")
+    attribute = Measure.objects.get(pk=attribute_id)
+    project = get_project(request)
+    template = loader.get_template("map/edit-attribute.html")
+    context = {
+        "attribute": attribute,
+    }
+    return HttpResponse(template.render(context, request))
+
+@project_required
+def add_parameter(request: HttpRequest):
+    project = get_project(request)
+    template = loader.get_template("map/add-parameter.html")
+    parameters = Parameter.objects.filter(project=project)
+    context = {
+        "parameters": parameters,
+    }
+    return HttpResponse(template.render(context, request))
+
+@project_required
+def edit_parameter(request: HttpRequest):
+    parameter_id = request.GET.get("id")
+    parameter = Parameter.objects.get(pk=parameter_id)
+    project = get_project(request)
+    template = loader.get_template("map/edit-parameter.html")
+    context = {
+        "project": project,
+        "parameter": parameter,
+    }
+    return HttpResponse(template.render(context, request))
+
+@project_required
 def add_building(request: HttpRequest):
     project = get_project(request)
     template = loader.get_template("map/add-building.html")
@@ -127,6 +160,24 @@ def add_building(request: HttpRequest):
 @project_required
 def details(request: HttpRequest):
     template = loader.get_template(f"map/details.html")
+    current_project = get_project(request)
+    try:
+        preprocess_info = PreprocessingInfo.objects.get(project=current_project)
+    except PreprocessingInfo.DoesNotExist:
+        preprocess_info = None
+    attributes = Measure.objects.filter(project=current_project)
+    parameters = Parameter.objects.filter(project=current_project)
+    context = {
+        "attributes": attributes,
+        "parameters": parameters,
+        "preprocess_info": preprocess_info,
+        "current_project": current_project,
+    }
+    return HttpResponse(template.render(context, request))
+
+@project_required
+def edit_project_details(request: HttpRequest):
+    template = loader.get_template(f"map/edit-project-details.html")
     current_project = get_project(request)
     try:
         preprocess_info = PreprocessingInfo.objects.get(project=current_project)

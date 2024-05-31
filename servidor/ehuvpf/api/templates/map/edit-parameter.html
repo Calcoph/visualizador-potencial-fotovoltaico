@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Editar atributo{% endblock %}
+
+{% block content %}
+<h2>Administración del proyecto {{ project.name }}</h2>
+<h1>Editando parámetro <span id="title_name">{{ parameter.name }}</span>:</h1>
+<form id="formEditParameter" onsubmit="return false">
+    <label>
+        Nombre:<br>
+        <input type="text" id="name" name="name" value="{{ parameter.name }}">
+    </label><br>
+    <label>
+        Descripción:<br>
+        <input type="text" id="description" name="description" value="{{ parameter.description }}">
+    </label><br>
+    <label>
+        Valor dado:<br>
+        <input type="text" id="value" name="value" value="{{ parameter.value }}">
+    </label><br>
+    <input type="hidden" name="id" value="{{ parameter.pk }}">
+    <button type="submit" onclick="editar_parametro()">Confirmar</button>
+</form>
+
+{% endblock %}
+
+{% block after_scripts %}
+<script src="/smap/js/edit-parameter.js"></script>
+{% endblock %}
