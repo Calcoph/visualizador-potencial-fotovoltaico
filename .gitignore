@@ -6,6 +6,10 @@
 /linenv
 /documentación/EDT.svg
 /documentación/EDT.png
+/documentación/casos-uso-actores.png
+/documentación/casos-uso.png
+/documentación/diagrama-clases.png
+/documentación/Entidad-relacion.png
 __pycache__/
 /.secrets/
 /db-data/
