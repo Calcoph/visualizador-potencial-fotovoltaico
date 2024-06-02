@@ -138,4 +138,5 @@ STATIC_ROOT = "./static"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL = "/map/login.html"
+LOGIN_URL = "/map/user/login"
+LOGIN_REDIRECT_URL = "/map"

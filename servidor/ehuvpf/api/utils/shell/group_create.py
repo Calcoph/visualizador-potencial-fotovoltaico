@@ -3,25 +3,12 @@
 # executed using the django shell.
 # Check this directory's README.md for more info.
 
-from django.contrib.auth.models import Group
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Group, User
 
 from api.utils.user import Permission
 from django.contrib.auth.models import Permission as DjPermission
 
-djpermission = lambda x: DjPermission.objects.get(codename=x)
-
-no_content_type = ContentType(app_label='ehuvpf', model='no_model')
-no_content_type.save()
-# If no_content_type was already created:
-# no_content_type = ContentType.objects.get(app_label='ehuvpf', model='no_model')
-
-
-p = DjPermission.objects.create(
-    codename=Permission.AdminEditProject,
-    name="Permission for accessing admin pages such as \"project-admin\" and \"edit-project-details\"",
-    content_type=no_content_type
-)
+djpermission = lambda x: DjPermission.objects.get(codename=x.split(".", maxsplit=1)[1]) # Split to remove the "api." at the start of the permission
 
 data_contributor_permissions = [
     djpermission(Permission.BuildingAdd),

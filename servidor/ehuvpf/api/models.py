@@ -1,5 +1,7 @@
 from django.db import models
 
+from .utils.user import Permission
+
 # Create your models here.
 class Project(models.Model):
     """
@@ -8,6 +10,11 @@ class Project(models.Model):
     """
     name = models.TextField()
     data_source = models.TextField()
+
+    class Meta:
+        permissions = [
+            (Permission.AdminEditProject, "Permission for accessing admin pages such as \"project-admin\" and \"edit-project-details\"")
+        ]
 
 class PreprocessingInfo(models.Model):
     """

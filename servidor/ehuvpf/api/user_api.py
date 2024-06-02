@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django.http import HttpRequest, HttpResponse
 
 def create_user(request: HttpRequest):
@@ -17,7 +18,12 @@ def change_password(request: HttpRequest):
     user.save()
 
 def login(request: HttpRequest):
-    return HttpResponse("TODO")
+    user = request.GET.get("username")
+    password = request.GET.get("password")
+
+    logged_user = authenticate(username=user,password=password)
+
+    return HttpResponse(logged_user.get_username())
 
 def register(request: HttpRequest):
     return HttpResponse("TODO")
