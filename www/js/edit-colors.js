@@ -11,12 +11,12 @@ function anadir_color() {
     let move_buttons = document.createElement("td")
     let button_up = document.createElement("input")
     button_up.type = "button"
-    button_up.value = "^"
+    button_up.value = "↑"
     button_up.onclick = function() {swap_color_up(row_id)}
 
     let button_down = document.createElement("input")
     button_down.type = "button"
-    button_down.value = "v"
+    button_down.value = "↓"
     button_down.onclick = function() {swap_color_down(row_id)}
 
     let br = document.createElement("br")
