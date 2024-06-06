@@ -9,16 +9,17 @@
 
 
 {% block content %}
-<h1>Información del proyecto {{ current_project.name }}</h1>
+<h1>Información del proyecto {{ project.name }}</h1>
 <hr>
 <h3>Fuente de datos</h3>
 <p style="color: red;">En este apartado se puede insertar cualquier HTML. Por lo que sólo se puede editar con permisos de administrador.</p>
-<form>
-    <textarea>{{ current_project.data_source }}</textarea>
+<form id="formEditDataSource" onsubmit="return false">
+    <textarea name="data_source">{{ project.data_source }}</textarea><br>
+    <button type="submit" onclick="edit_data_source()">Confirmar</button>
 </form>
 <hr>
 <h3>Procesamiento de datos</h3>
-<form>
+<form id="formEditPreprocessInfo" onsubmit="return false">
     <p>Si se han Procesado los datos
         originales se indicar aquí la información
         sobre el programa principal utilizado para
@@ -26,21 +27,17 @@
     </p>
     <label>
         Enlace al programa de procesado de datos:<br>
-        <input id="preprocess_link" type="text">
+        <input id="preprocess_link" name="preprocess_link" value="{{ project.preprocess_program_link }}" type="text">
     </label><br>
     <label>
         Nombre del programa de procesado:<br>
-        <input id="preprocess_name" type="text">
+        <input id="preprocess_name" name="preprocess_name" value="{{ project.preprocess_program_name }}" type="text">
     </label><br>
     <label>
         Versión del programa de procesado<br>
-        <input id="preprocess_version" type="text">
+        <input id="preprocess_version" name="preprocess_version" value="{{ project.preprocess_program_version }}" type="text">
     </label><br>
-    {% if preprocess_info is not None %}
-        <script>Document.getElementById("preprocess_link").value = "{{ preprocess_info.program_link }}"</script>
-        <script>Document.getElementById("preprocess_name").value = "{{ preprocess_info.program_name }}"</script>
-        <script>Document.getElementById("preprocess_version").value = "{{ preprocess_info.program_version }}"</script>
-    {% endif %}
+    <button type="submit" onclick="edit_preprocess_info()">Confirmar</button>
 </form>
 <hr>
 <h3>Parámetros</h3>
@@ -63,4 +60,8 @@
     </details><span> medido en {{ attribute.unit }}</span><a href="edit-attribute?id={{ attribute.pk }}"><button>Editar</button></a>
     <br>
 {% endfor %}
+{% endblock %}
+
+{% block after_scripts %}
+<script src="/smap/js/edit-project-details.js"></script>
 {% endblock %}

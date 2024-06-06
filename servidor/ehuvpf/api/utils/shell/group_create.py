@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group, User
 from api.utils.user import Permission
 from django.contrib.auth.models import Permission as DjPermission
 
-djpermission = lambda x: DjPermission.objects.get(codename=x.split(".", maxsplit=1)[1]) # Split to remove the "api." at the start of the permission
+djpermission = lambda x: DjPermission.objects.get(codename=Permission.permission_name(x))
 
 data_contributor_permissions = [
     djpermission(Permission.BuildingAdd),
@@ -34,7 +34,8 @@ data_editor.save()
 
 project_admin_permissions = [
     djpermission(Permission.ParameterAdd),
-    djpermission(Permission.ParameterEdit),
+    djpermission(Permission.PreprocessingInfoEdit),
+    djpermission(Permission.DataSourceEdit),
     *data_contributor_permissions
 ]
 project_admin = Group(name="project_admin")

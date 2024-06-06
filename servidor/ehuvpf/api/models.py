@@ -10,23 +10,16 @@ class Project(models.Model):
     """
     name = models.TextField()
     data_source = models.TextField()
+    preprocess_program_name = models.TextField()
+    preprocess_program_link = models.TextField()
+    preprocess_program_version = models.TextField()
 
     class Meta:
         permissions = [
-            (Permission.AdminEditProject, "Permission for accessing admin pages such as \"project-admin\" and \"edit-project-details\"")
+            (Permission.permission_name(Permission.AdminEditProject), "Permission for accessing admin pages such as \"project-admin\" and \"edit-project-details\""),
+            (Permission.permission_name(Permission.DataSourceEdit), "Permission for editing the data source of the project"),
+            (Permission.permission_name(Permission.PreprocessingInfoEdit), "Permission for editing the preprocessing info of the project"),
         ]
-
-class PreprocessingInfo(models.Model):
-    """
-    project: Project
-    program_name: str
-    program_link: str
-    program_version: str
-    """
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    program_name = models.TextField()
-    program_link = models.TextField()
-    program_version = models.TextField()
 
 class Color(models.Model):
     """

@@ -9,18 +9,18 @@
 
 {% block content %}
 <a href="edit-project-details"><button>Editar esta página</button></a>
-<h1>Información del proyecto {{ current_project.name }}</h1>
+<h1>Información del proyecto {{ project.name }}</h1>
 <hr>
 <h3>Fuente de datos</h3>
-{{ current_project.data_source|safe }}
+{{ project.data_source|safe }}
 <hr>
 <h3>Procesamiento de datos</h3>
-{% if preprocess_info is None %}
-    <p>Los datos originales no se han preprocesado o se ha seguido un método desconocido/oculto para su cálculo.</p>
-{% else %}
+{% if project.preprocess_program_name|length > 0 %}
     <p>El resultado se ha obtenido al procesar los datos con este programa:</p>
-    <p><a href="{{ preprocess_info.program_link }}">{{ preprocess_info.program_name }}</a></p>
-    <p>Utilizando la versión: <code>{{ preprocess_info.program_version }}</code></p>
+    <p><a href="{{ project.preprocess_program_link }}">{{ project.preprocess_program_name }}</a></p>
+    <p>Utilizando la versión: <code>{{ project.preprocess_program_version }}</code></p>
+{% else %}
+    <p>Los datos originales no se han preprocesado o se ha seguido un método desconocido/oculto para su cálculo.</p>
 {% endif %}
 <hr>
 <h3>Parámetros</h3>

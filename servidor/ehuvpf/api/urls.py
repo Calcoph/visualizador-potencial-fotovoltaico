@@ -32,6 +32,9 @@ api_urls = [
     path("addParameter", api.add_parameter, name="newParameter"),
     path("editParameter", api.edit_parameter, name="editParameter"),
 
+    path("editPreprocessInfo", api.edit_preprocess_info, name="editPreprocessInfo"),
+    path("editDataSource", api.edit_data_source, name="editDataSource"),
+
     path("editLayer", api.edit_layer, name="newAttribute"),
 
     path("selectProject", api.select_project, name="selectProject"),

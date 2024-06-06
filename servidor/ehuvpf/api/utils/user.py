@@ -1,17 +1,14 @@
 class Permission:
     # Permissions created manually
     AdminEditProject = "api.admin_edit_project"
+    DataSourceEdit = "api.data_source_edit"
+    PreprocessingInfoEdit = "api.change_preprocessinginfo"
 
     # Permissions created by django
     ProjectAdd = "api.add_project"
     ProjectEdit = "api.change_project"
     ProjectDelete = "api.delete_project"
     ProjectView = "api.view_project"
-
-    PreprocessingInfoAdd = "api.add_preprocessinginfo"
-    PreprocessingInfoEdit = "api.change_preprocessinginfo"
-    PreprocessingInfoDelete = "api.delete_preprocessinginfo"
-    PreprocessingInfoView = "api.view_preprocessinginfo"
 
     ColorAdd = "api.add_color"
     ColorEdit = "api.change_color"
@@ -42,3 +39,7 @@ class Permission:
     BuildingEdit = "api.change_building"
     BuildingDelete = "api.delete_building"
     BuildingView = "api.view_building"
+
+    def permission_name(permission: str):
+         # Split to remove the "api." at the start of the permission
+        return permission.split(".", maxsplit=1)[1]

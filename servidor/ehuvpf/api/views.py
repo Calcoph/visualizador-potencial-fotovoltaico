@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import permission_required
 from .utils.decorators import project_required
 from .utils.session_handler import get_project, default_project_if_undefined
 from .utils.user import Permission
-from .models import Color, Layer, Parameter, PreprocessingInfo, Project, Measure, ColorRule
+from .models import Color, Layer, Parameter, Project, Measure, ColorRule
 
 @permission_required(Permission.AdminEditProject)
 @project_required
@@ -172,17 +172,12 @@ def add_building(request: HttpRequest):
 def details(request: HttpRequest):
     template = loader.get_template(f"map/details.html")
     current_project = get_project(request)
-    try:
-        preprocess_info = PreprocessingInfo.objects.get(project=current_project)
-    except PreprocessingInfo.DoesNotExist:
-        preprocess_info = None
     attributes = Measure.objects.filter(project=current_project)
     parameters = Parameter.objects.filter(project=current_project)
     context = {
         "attributes": attributes,
         "parameters": parameters,
-        "preprocess_info": preprocess_info,
-        "current_project": current_project,
+        "project": current_project,
     }
     return HttpResponse(template.render(context, request))
 
@@ -191,17 +186,12 @@ def details(request: HttpRequest):
 def edit_project_details(request: HttpRequest):
     template = loader.get_template(f"map/edit-project-details.html")
     current_project = get_project(request)
-    try:
-        preprocess_info = PreprocessingInfo.objects.get(project=current_project)
-    except PreprocessingInfo.DoesNotExist:
-        preprocess_info = None
     attributes = Measure.objects.filter(project=current_project)
     parameters = Parameter.objects.filter(project=current_project)
     context = {
         "attributes": attributes,
         "parameters": parameters,
-        "preprocess_info": preprocess_info,
-        "current_project": current_project,
+        "project": current_project,
     }
     return HttpResponse(template.render(context, request))
 
