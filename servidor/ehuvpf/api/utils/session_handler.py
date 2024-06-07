@@ -1,5 +1,5 @@
 from django.http import HttpRequest
-from ...models import Project
+from ..models import Project
 
 SESSION_PROJECT_ID = "project_id"
 

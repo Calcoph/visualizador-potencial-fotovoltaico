@@ -1,15 +1,9 @@
 from django.urls import include, path, re_path
 from django.contrib.auth import views as auth_views
 
-import api.attributes
-import api.buildings
-import api.colors
-import api.layers
-import api.parameters
-import api.project
+from .api import attributes as api_attributes, buildings as api_buildings, colors as api_colors, layers as api_layers, parameters as api_parameters, project as api_project
 
 from . import views, user_view, user_api
-import api
 
 # /map/user/api/*
 user_api_urls = [
@@ -27,31 +21,31 @@ user_urls = [
 
 # /map/api/*
 api_urls = [
-    path("createProject", api.project.create_project, name="createProject"),
+    path("createProject", api_project.create_project, name="createProject"),
 
-    path("getBuildings", api.buildings.get_buildings, name="getBuildings"),
-    path("getPlaceholderBuildings", api.buildings.get_placeholder_buildings, name="getPlaceholderBuildings"),
-    path("addBuilding", api.buildings.add_building, name="addBuilding"),
+    path("getBuildings", api_buildings.get_buildings, name="getBuildings"),
+    path("getPlaceholderBuildings", api_buildings.get_placeholder_buildings, name="getPlaceholderBuildings"),
+    path("addBuilding", api_buildings.add_building, name="addBuilding"),
 
-    path("getAttributes", api.attributes.get_attributes, name="getAttributes"),
-    path("addAttribute", api.attributes.add_attribute, name="newAttribute"),
-    path("editAttribute", api.attributes.edit_attribute, name="editAttribute"),
+    path("getAttributes", api_attributes.get_attributes, name="getAttributes"),
+    path("addAttribute", api_attributes.add_attribute, name="newAttribute"),
+    path("editAttribute", api_attributes.edit_attribute, name="editAttribute"),
 
-    path("addParameter", api.parameters.add_parameter, name="newParameter"),
-    path("editParameter", api.parameters.edit_parameter, name="editParameter"),
+    path("addParameter", api_parameters.add_parameter, name="newParameter"),
+    path("editParameter", api_parameters.edit_parameter, name="editParameter"),
 
-    path("editPreprocessInfo", api.project.edit_preprocess_info, name="editPreprocessInfo"),
-    path("editDataSource", api.project.edit_data_source, name="editDataSource"),
+    path("editPreprocessInfo", api_project.edit_preprocess_info, name="editPreprocessInfo"),
+    path("editDataSource", api_project.edit_data_source, name="editDataSource"),
 
-    path("editLayer", api.layers.edit_layer, name="newAttribute"),
+    path("editLayer", api_layers.edit_layer, name="newAttribute"),
 
-    path("selectProject", api.project.select_project, name="selectProject"),
+    path("selectProject", api_project.select_project, name="selectProject"),
 
-    path("addLayer", api.layers.add_layer, name="addLayer"),
-    path("getLayers", api.layers.get_layers, name="getLayers"),
+    path("addLayer", api_layers.add_layer, name="addLayer"),
+    path("getLayers", api_layers.get_layers, name="getLayers"),
 
-    path("getColors", api.colors.get_colors, name="getColors"),
-    path("updateColors", api.colors.update_colors, name="updateColors")
+    path("getColors", api_colors.get_colors, name="getColors"),
+    path("updateColors", api_colors.update_colors, name="updateColors")
 ]
 
 # /map/*

@@ -34,11 +34,11 @@ function init_map() {
     // layers won't automatically be added at this time, have to wait asyc AJAX
     let layer_promise = add_layers(colorset_promise)
 
-    /* TODO: Read https://operations.osmfoundation.org/policies/tiles/ */
-    /* L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(MAP); */
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        referrerPolicy: "origin"
+    }).addTo(MAP);
 
     //var marker = L.marker([43.2629, -2.95]).addTo(map);
 

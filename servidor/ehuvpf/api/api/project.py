@@ -3,15 +3,15 @@ from __future__ import annotations
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth.decorators import permission_required
 
-from .utils.session_handler import set_project
+from ..utils.session_handler import set_project
 
-from .utils.errors import ApiError, ErrorKind
+from ..utils.errors import ApiError, ErrorKind
 
-from .utils.user import Permission
+from ..utils.user import Permission
 
 from ..models import Project
-from .utils.session_handler import get_project
-from .utils.decorators import project_required_api
+from ..utils.session_handler import get_project
+from ..utils.decorators import project_required_api
 
 @permission_required(Permission.ProjectAdd)
 def create_project(request: HttpRequest):

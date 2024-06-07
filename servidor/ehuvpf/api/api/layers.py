@@ -3,13 +3,13 @@ from __future__ import annotations
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import permission_required
 
-from .utils.errors import ApiError, ErrorKind
+from ..utils.errors import ApiError, ErrorKind
 
-from .utils.user import Permission
+from ..utils.user import Permission
 
 from ..models import Layer, Measure, Project, ColorRule
-from .utils.session_handler import get_project
-from .utils.decorators import project_required_api
+from ..utils.session_handler import get_project
+from ..utils.decorators import project_required_api
 
 class EditLayerParams:
     def __init__(self, layer: Layer, name_pattern: str, attribute_list: list[Measure], color_attribute: list[Measure], new_color_rules: list[float]) -> None:

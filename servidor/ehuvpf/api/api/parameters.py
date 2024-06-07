@@ -3,13 +3,13 @@ from __future__ import annotations
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth.decorators import permission_required
 
-from .utils.errors import ApiError, ErrorKind
+from ..utils.errors import ApiError, ErrorKind
 
-from .utils.user import Permission
+from ..utils.user import Permission
 
 from ..models import Parameter, Project
-from .utils.session_handler import get_project
-from .utils.decorators import project_required_api
+from ..utils.session_handler import get_project
+from ..utils.decorators import project_required_api
 
 class AddParameterParams:
     def __init__(self, name: str, description: str, value: str) -> None:

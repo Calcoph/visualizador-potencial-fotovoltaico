@@ -8,15 +8,15 @@ from django.contrib.auth.decorators import permission_required
 
 from . import PROJECT_PATH, RESOLUTION
 
-from .utils.errors import ApiError, ErrorKind
+from ..utils.errors import ApiError, ErrorKind
 
-from .utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
-from .utils.testing import generate_placeholder_building
-from .utils.user import Permission
+from ..utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
+from ..utils.testing import generate_placeholder_building
+from ..utils.user import Permission
 
 from ..models import Layer, Building, Project
-from .utils.session_handler import get_project
-from .utils.decorators import project_required_api
+from ..utils.session_handler import get_project
+from ..utils.decorators import project_required_api
 
 class GetBuildingsParams:
     def __init__(self, layer: Layer, lat: int, lon: int) -> None:
