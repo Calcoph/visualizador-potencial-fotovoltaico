@@ -1,29 +1,10 @@
-/* Elimina todos los checkbox
-
-Esto es para generar un checkbox personalizado luego
-estilizando el span, en vez de el checkbox
-*/
-input[type="checkbox"] {
-    opacity: 0;
-    cursor: pointer;
-    height: 0;
-    width: 0;
-    margin-bottom: calc(1px + 0.5em);
-}
-
-/* El primer span después de un checkbox.
+/*
+El primer span después de un checkbox.
 
 Para que funcione, el texto del label debe estar después del checkbox
 */
-input[type="checkbox"]+span {
-    outline: 2px solid black;
-    background-color: lightgray;
-    box-sizing: border-box;
-    padding: 1px;
-}
 
 input[type="checkbox"]:checked+span {
-    outline: 2px solid blue;
     background-color: lightblue;
 }
 
