@@ -208,12 +208,17 @@ def static_html(request: HttpRequest):
     return response
 
 def project_list(request: HttpRequest):
+    try:
+        next = request.GET.get("next")
+    except:
+        next = ""
     template = loader.get_template(f"map/project-list.html")
     current_project = get_project(request)
     projects = Project.objects.all()
     context = {
         "projects": projects,
         "current_project": current_project,
+        "next": next
     }
     return HttpResponse(template.render(context, request))
 

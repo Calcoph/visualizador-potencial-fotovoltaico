@@ -9,6 +9,7 @@
 {% else %}
     <p>Currently selected project: {{ current_project.name }}</p>
 {% endif %}
+    <input id="next" type="hidden" value="{{ next }}">
 {% for project in projects %}
     &nbsp;&nbsp;&nbsp;&nbsp;
     {% if current_project is not None and project.pk == current_project.pk %}

@@ -9,8 +9,7 @@ def project_required(func):
         if request.session.has_key(SESSION_PROJECT_ID):
             return func(request, *args, **kwargs)
         else:
-            response = redirect(f"/map/project-list.html")
-            response.set_cookie("project-list-source", request.path, max_age=600)
+            response = redirect(f"/map/project-list?next={request.path}")
             return response
 
     return view_wrapper
