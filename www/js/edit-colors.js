@@ -1,15 +1,3 @@
-function update_color(color) {
-    let color_display = color.children.item(1)
-    let color_input = color.children.item(2).children.item(0)
-    let color_value = color_input.value
-    // TODO: More validation
-    if (color_value[0] !== "#") {
-        color_value = "#" + color_value
-        color_input.value = color_value
-    }
-    color_display.style.backgroundColor = color_value
-}
-
 /**
  *
  * @param {HTMLTableRowElement} caller
@@ -36,14 +24,19 @@ function swap_color_up(caller) {
     }
 }
 
+/**
+ *
+ * @param {HTMLTableRowElement} color0
+ * @param {HTMLTableRowElement} color1
+ */
 function swap_colors(color0, color1) {
-    let color0_text_input = color0.children.item(2).children.item(0)
-    let color1_text_input = color1.children.item(2).children.item(0)
-    let color0_value = color0_text_input.value
-    let color1_value = color1_text_input.value
+    let color0_input = color0.children[1].children[0]
+    let color1_input = color1.children[1].children[0]
+    let color0_value = color0_input.value
+    let color1_value = color1_input.value
 
-    color0_text_input.value = color1_value
-    color1_text_input.value = color0_value
+    color0_input.value = color1_value
+    color1_input.value = color0_value
 }
 
 init()

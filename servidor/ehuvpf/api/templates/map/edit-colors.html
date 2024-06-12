@@ -9,6 +9,12 @@
 
 {% block content %}
 <form method="post" action="/map/api/updateColors">
+    <p>
+        Haz click en los colores para cambiarlos.
+    </p>
+    <p>
+        Haz click en las flechas para cambiar el orden.
+    </p>
     <table id="colores">
         <template id="color_template">
             <tr>
@@ -16,8 +22,7 @@
                     <input type="button" value="↑"><br>
                     <input type="button" value="↓">
                 </td>
-                <td class="color_cell"></td>
-                <td><input type="text" name="color"></td>
+                <td><input class="color_cell"type="color" name="color"></td>
             </tr>
         </template>
     </table>
@@ -39,10 +44,7 @@ function addItemToList(color) {
     new_node.children[0].children[0].onclick = function() {swap_color_up(new_node)}
     new_node.children[0].children[2].onclick = function() {swap_color_down(new_node)}
 
-    new_node.children[1].style.backgroundColor = color
-
-    new_node.children[2].children[0].value = color
-    new_node.children[2].children[0].onchange = function() {update_color(new_node)}
+    new_node.children[1].children[0].value = color
 
     list.appendChild(new_node)
 }
@@ -52,7 +54,7 @@ for (color of colors) {
 }
 </script>
 
-    <input type="button" value="Añadir Color" onclick="anadir_color('#000000')">
+    <input type="button" value="Añadir Color" onclick="addItemToList('#808080')">
     <input type="submit" value="Confirmar cambios">
 </form>
 
