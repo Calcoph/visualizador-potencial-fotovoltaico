@@ -6,8 +6,6 @@ function swap_color_down(caller) {
     let down_color = caller.nextElementSibling
     if (down_color !== null) {
         swap_colors(caller, down_color)
-        update_color(caller)
-        update_color(down_color)
     }
 }
 
@@ -19,8 +17,6 @@ function swap_color_up(caller) {
     let up_color = caller.previousElementSibling
     if (up_color !== null) {
         swap_colors(caller, up_color)
-        update_color(caller)
-        update_color(up_color)
     }
 }
 
