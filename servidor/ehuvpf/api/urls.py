@@ -15,7 +15,8 @@ user_api_urls = [
 user_urls = [
     path("api/", include(user_api_urls)),
 
-    path("login", auth_views.LoginView.as_view(template_name="map/login.html"), name="login"),
+    path("login", auth_views.LoginView.as_view(template_name="user/login.html"), name="login"),
+    path("logout", user_view.logout, name="logout"),
     path("register", user_view.register, name="register")
 ]
 
