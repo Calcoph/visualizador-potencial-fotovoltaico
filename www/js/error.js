@@ -11,7 +11,7 @@ function get_error_string(response) {
         }
         error = `When accessing ${error_json.endpoint}, ${error_json.reason}`
     } catch(err) {
-        error = response.responseText
+        error = response.statusText
     }
     return `Error ${response.status}: ${error}\nNo changes have been made`
 }
