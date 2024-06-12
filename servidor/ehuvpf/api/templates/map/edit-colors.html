@@ -22,7 +22,7 @@
                     <input type="button" value="↑"><br>
                     <input type="button" value="↓">
                 </td>
-                <td><input class="color_cell"type="color" name="color"></td>
+                <td><input class="color_cell" type="color" name="color"></td>
             </tr>
         </template>
     </table>
@@ -53,12 +53,9 @@ for (color of colors) {
     addItemToList(color.color)
 }
 </script>
-
-    <input type="button" value="Añadir Color" onclick="addItemToList('#808080')">
+    <input type="button" value="Añadir Color" onclick="addItemToList('#808080')"><br>
     <input type="submit" value="Confirmar cambios">
 </form>
-
-<a href="project-admin">Go back</a>
 {% endblock %}
 
 {% block after_scripts %}
