@@ -352,7 +352,6 @@ function add_layers(colorset_promise) {
                         nueva_capa.color_measure = layer.color_measure
                         LOADED_CHUNKS[id] = []
                         if (id === SELECTED_LAYER) {
-                            add_placeholder_data(nueva_capa)
                             on_first_layer_loaded()
                             nueva_capa.addTo(MAP)
                         }

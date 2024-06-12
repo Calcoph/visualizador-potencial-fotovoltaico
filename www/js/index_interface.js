@@ -67,23 +67,28 @@ function carga_atributos() {
  * @param {HTMLElement} tab
  */
 function tab_atributos(tab) {
+    let template = document.getElementById("atributos-tab").content.children[0];
+
     available_attributes.forEach(function(atributo) {
-        let label = document.createElement("label");
-        let input = document.createElement("input")
-        input.type = "checkbox"
+        /** @type {HTMLLabelElement} */
+        let new_node = document.importNode(template, true);
+        /** @type {HTMLInputElement} */
+        let input = new_node.children[0]
+        /** @type {HTMLSpanElement} */
+        let span = new_node.children[1];
+
+        // Rellena input
         input.value = atributo.display_name
         input.name = atributo.name
         input.checked = SELECTED_ATTRIBUTES.find(function(selected_attribute) {
             return selected_attribute.name == atributo.name
         }) !== undefined
-        input.onclick = update_selected_attributes
-        label.appendChild(input)
-        let span = document.createElement("span");
-        let text = document.createTextNode(atributo.display_name);
-        span.append(text)
-        label.appendChild(span)
 
-        tab.appendChild(label)
+        // Rellena span
+        span.textContent = atributo.display_name
+
+        tab.appendChild(new_node)
+
     })
 }
 
@@ -119,6 +124,8 @@ function tab_mis_edificios(tab) {
  * @param {HTMLElement} tab
  */
 function tab_capas(tab) {
+    let template = document.getElementById("capas-tab").content.children[0];
+
     for (layer_key in LAYERS) {
         // Esta copia es necesaria, ya que layer_key cambia pero se le debe pasar
         // Un valor constante a la función onclick
@@ -126,22 +133,24 @@ function tab_capas(tab) {
 
         let layer = LAYERS[layer_key]
 
-        let label = document.createElement("label");
-        let input = document.createElement("input");
+        /** @type {HTMLLabelElement} */
+        let new_node = document.importNode(template, true);
+        /** @type {HTMLInputElement} */
+        let input = new_node.children[0];
+        /** @type {HTMLSpanElement} */
+        let span = new_node.children[1];
+
+        // Rellena input
         if (layer_key === SELECTED_LAYER) {
             input.checked = true
         }
-        input.setAttribute("type", "radio")
-        input.setAttribute("name", "a")
         input.onclick = function() {
             cambiar_capa(layer_name)
         }
-        label.appendChild(input)
-        let span = document.createElement("span");
-        let text = document.createTextNode(layer.display_name);
-        span.append(text)
-        label.appendChild(span)
 
-        tab.appendChild(label)
+        // Rellena span
+        span.textContent = layer.display_name;
+
+        tab.appendChild(new_node)
     }
 }

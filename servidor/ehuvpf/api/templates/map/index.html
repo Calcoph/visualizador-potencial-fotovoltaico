@@ -37,6 +37,18 @@ class="marginless" onload="init()"
                 <label><input disabled type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)"><span>Marcadores</span></label>
                 <label><input disabled type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)"><span>Mis edificios</span></label>
             </div>
+            <template id="atributos-tab">
+                <label>
+                    <input type="checkbox" onclick="update_selected_attributes()">
+                    <span></span>
+                </label>
+            </template>
+            <template id="capas-tab">
+                <label>
+                    <input type="radio" name="a">
+                    <span></span>
+                </label>
+            </template>
             <div id="tab" class="attribute-select">
             </div>
         </div>
