@@ -1,3 +1,5 @@
+import get_error_string from "error"
+
 function anadir_atributo() {
     /** @type {HTMLFormElement} */
     let form = document.getElementById("formAddAttribute")
@@ -7,11 +9,22 @@ function anadir_atributo() {
 
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/map/api/addAttribute", true);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                confirm_add_attribute(display_name, name)
+            } else {
+                let error = get_error_string(this)
+                window.alert(error)
+            }
+        }
+    }
     xhttp.send(form_data)
+}
 
-    let new_li = document.createElement("li")
-    new_li.innerText = `${display_name} (${name})`
-    document.getElementById("list").appendChild(new_li)
+function confirm_add_attribute(display_name, name) {
+    addItemToList(display_name, name)
 
+    let form = document.getElementById("formAddAttribute")
     form.reset()
 }

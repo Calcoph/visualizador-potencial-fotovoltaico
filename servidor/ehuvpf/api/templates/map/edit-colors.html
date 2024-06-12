@@ -2,21 +2,57 @@
 
 {% block title %}Editar colores{% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="/smap/css/general.css"/>
+    <link rel="stylesheet" href="/smap/css/coloredit.css"/>
+{% endblock %}
+
 {% block content %}
 <form method="post" action="/map/api/updateColors">
     <table id="colores">
-        {% for indexed_color in colors %}
-            <tr id="color_{{ indexed_color.0 }}" >
+        <template id="color_template">
+            <tr>
                 <td>
-                    <input type="button" value="↑" onclick="swap_color_up({{ indexed_color.0 }})"><br>
-                    <input type="button" value="↓" onclick="swap_color_down({{ indexed_color.0 }})">
+                    <input type="button" value="↑"><br>
+                    <input type="button" value="↓">
                 </td>
-                <td style="width:50px;height:50px;background-color:{{ indexed_color.1.hex }};border:1px solid black"></td>
-                <td><input type="text" value="{{ indexed_color.1.hex }}" name="color" onchange="update_color({{ indexed_color.0 }})"></td>
+                <td class="color_cell"></td>
+                <td><input type="text" name="color"></td>
             </tr>
-        {% endfor %}
+        </template>
     </table>
-    <input type="button" value="Añadir Color" onclick="anadir_color()">
+<script>
+// TODO: No longer need the index of indexed_color
+let colors = [
+{% for indexed_color in colors %}
+{
+    color: "{{indexed_color.1.hex}}"
+},
+{% endfor %}
+]
+
+function addItemToList(color) {
+    let template = document.getElementById("color_template").content.children[0];
+    let list = document.getElementById("colores");
+
+    let new_node = document.importNode(template, true);
+    new_node.children[0].children[0].onclick = function() {swap_color_up(new_node)}
+    new_node.children[0].children[2].onclick = function() {swap_color_down(new_node)}
+
+    new_node.children[1].style.backgroundColor = color
+
+    new_node.children[2].children[0].value = color
+    new_node.children[2].children[0].onchange = function() {update_color(new_node)}
+
+    list.appendChild(new_node)
+}
+
+for (color of colors) {
+    addItemToList(color.color)
+}
+</script>
+
+    <input type="button" value="Añadir Color" onclick="anadir_color('#000000')">
     <input type="submit" value="Confirmar cambios">
 </form>
 
