@@ -6,10 +6,31 @@
 <h1>Administración del proyecto</h1>
 <h2>Parámetros existentes</h2>
 <ul id="lista">
-    {% for parameter in parameters %}
-        <li>{{ parameter.name }}</li>
-    {% endfor %}
+    <template id="list_element_template">
+        <li></li>
+    </template>
 </ul>
+<script>
+let parameters = [
+    {% for parameter in parameters %}
+    {
+        name: "{{ parameter.name }}"
+    },
+    {% endfor %}
+]
+function addItemToList(name) {
+    let template = document.getElementById("list_element_template").content.children[0];
+    let list = document.getElementById("lista");
+
+    let new_node = document.importNode(template, true);
+    new_node.textContent = name
+    list.appendChild(new_node)
+}
+
+for (parameter of parameters) {
+    addItemToList(parameter.name)
+}
+</script>
 <h1>Nuevo parámetro:</h1>
 <form id="formAddParameter" onsubmit="return false">
     <label>

@@ -1,7 +1,5 @@
 function anadir_atributo() {
-    /** @type {HTMLFormElement} */
-    let form = document.getElementById("formAddAttribute")
-    let form_data = new FormData(form)
+    let form_data = new FormData(get_form())
     let name = form_data.get("name");
     let display_name = form_data.get("display_name");
 
@@ -23,6 +21,9 @@ function anadir_atributo() {
 function confirm_add_attribute(display_name, name) {
     addItemToList(display_name, name)
 
-    let form = document.getElementById("formAddAttribute")
-    form.reset()
+    get_form().reset()
+}
+
+function get_form() {
+    return document.getElementById("formAddAttribute")
 }

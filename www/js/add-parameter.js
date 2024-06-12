@@ -1,20 +1,26 @@
 function anadir_parametro() {
-    let form_data = new FormData(document.getElementById("formAddParameter"))
+    let form_data = new FormData(get_form())
     let nombre = form_data.get("name");
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", "/map/api/addParameter", true);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                confirm_add_parameter(nombre)
+            } else {
+                let error = get_error_string(this)
+                window.alert(error)
+            }
+        }
+    }
     xhttp.send(form_data)
+}
 
-    let nodo_nuevo_nombre = document.getElementById("name")
-    nodo_nuevo_nombre.value = ""
+function confirm_add_parameter(name) {
+    addItemToList(name)
+    get_form().reset()
+}
 
-    let nodo_descripcion = document.getElementById("description")
-    nodo_descripcion.value = ""
-
-    let nodo_valor = document.getElementById("value")
-    nodo_valor.value = ""
-
-    let nuevo_li = document.createElement("li")
-    nuevo_li.innerText = `${nombre}`
-    document.getElementById("lista").appendChild(nuevo_li)
+function get_form() {
+    return document.getElementById("formAddParameter")
 }
