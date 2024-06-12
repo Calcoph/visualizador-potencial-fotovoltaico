@@ -1,4 +1,4 @@
-function anadir_parametro() {
+function addParameter() {
     let form_data = new FormData(get_form())
     let nombre = form_data.get("name");
     let xhttp = new XMLHttpRequest();

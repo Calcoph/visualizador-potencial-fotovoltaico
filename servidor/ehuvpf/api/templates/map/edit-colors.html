@@ -15,7 +15,7 @@
     <p>
         Haz click en las flechas para cambiar el orden.
     </p>
-    <table id="colores">
+    <table id="colors">
         <template id="color_template">
             <tr>
                 <td>
@@ -38,7 +38,7 @@ let colors = [
 
 function addItemToList(color) {
     let template = document.getElementById("color_template").content.children[0];
-    let list = document.getElementById("colores");
+    let list = document.getElementById("colors");
 
     let new_node = document.importNode(template, true);
     new_node.children[0].children[0].onclick = function() {swap_color_up(new_node)}

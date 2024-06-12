@@ -12,13 +12,13 @@
     <p>Nombre de la capa</p>
     <input type="text" name="layer-name"/>
     <p>Selecciona los atributos que se mostrarán en la nueva capa</p>
-    <select id="seleccion-atributo" name="attributes" onchange="atributos_cambiados()" multiple>
+    <select id="attribute-select" name="attributes" onchange="attributesChanged()" multiple>
         {% for attribute in attributes %}
             <option value="{{ attribute.pk }}">{{ attribute.display_name }} ({{ attribute.name }})</option>
         {% endfor %}
     </select>
     <p>Selecciona el atributo que se va a utilizar para colorear los edificios</p>
-    <select id="seleccion-atributo-color" name="color-attribute"></select>
+    <select id="color-attribute-select" name="color-attribute"></select>
     <input type="submit" value="Crear capa"/>
 </form>
 {% endblock %}

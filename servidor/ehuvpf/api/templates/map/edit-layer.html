@@ -5,25 +5,25 @@
 {% block content %}
 <h1>Administración del proyecto {{ project.name }}</h1>
 <h3>Modificando capa {{ layer.name }}</h3>
-<form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validar_formulario()">
+<form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validateForm()">
     <h3>Patrón en el nombre (para identificación automática de capa)</h3>
     <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
     <h3>Atributos relevantes:</h3>
-    <ul id="atributos">
+    <ul id="attributes">
         {% for measure in default_measures %}
-            <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="quitar_atributo({{ measure.pk }})" value="Quitar"></li>
+            <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="removeAttribute({{ measure.pk }})" value="Quitar"></li>
         {% endfor %}
     </ul>
     <details>
         <summary>Añadir un atributo para mostrar en esta capa:</summary>
-        <ul id="atributos-disponibles">
+        <ul id="available-attributes">
             {% for measure in unused_measures %}
-                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="anadir_atributo({{ measure.pk }})" value="Añadir"></li>
+                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="addAttribute({{ measure.pk }})" value="Añadir"></li>
             {% endfor %}
         </ul>
     </details>
     <h3>Atributo a colorear:</h3>
-    <select id="seleccion-atributo-color" name="color-attribute">
+    <select id="attribute-color-selector" name="color-attribute">
         {% for measure in default_measures %}
             {% if measure.pk == color_measure.pk %}
                 <option value="{{ measure.pk }}" selected>{{ measure.display_name }} ({{ measure.name}})</option>

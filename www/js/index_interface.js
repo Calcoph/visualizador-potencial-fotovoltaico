@@ -31,7 +31,7 @@ function change_tab(tab) {
     let tab_html = document.getElementById("tab");
     tab_html.innerHTML = ""
     switch (tab) {
-        case "atributos":
+        case "attributes":
             tab_atributos(tab_html)
             break
         case "marcadores":
@@ -40,7 +40,7 @@ function change_tab(tab) {
         case "mis edificios":
             tab_mis_edificios(tab_html)
             break
-        case "capas":
+        case "layers":
             tab_capas(tab_html)
             break
         default:
@@ -57,7 +57,7 @@ function carga_atributos() {
         .then((json) => {
             available_attributes = json.available_attributes
 
-            if (current_tab === "atributos") {
+            if (current_tab === "attributes") {
                 change_tab(current_tab)
             }
         })
@@ -67,7 +67,7 @@ function carga_atributos() {
  * @param {HTMLElement} tab
  */
 function tab_atributos(tab) {
-    let template = document.getElementById("atributos-tab").content.children[0];
+    let template = document.getElementById("attributes-tab").content.children[0];
 
     available_attributes.forEach(function(atributo) {
         /** @type {HTMLLabelElement} */
@@ -77,14 +77,14 @@ function tab_atributos(tab) {
         /** @type {HTMLSpanElement} */
         let span = new_node.children[1];
 
-        // Rellena input
+        // Fill input
         input.value = atributo.display_name
         input.name = atributo.name
         input.checked = SELECTED_ATTRIBUTES.find(function(selected_attribute) {
             return selected_attribute.name == atributo.name
         }) !== undefined
 
-        // Rellena span
+        // Fill span
         span.textContent = atributo.display_name
 
         tab.appendChild(new_node)
@@ -124,12 +124,15 @@ function tab_mis_edificios(tab) {
  * @param {HTMLElement} tab
  */
 function tab_capas(tab) {
-    let template = document.getElementById("capas-tab").content.children[0];
+    let template = document.getElementById("layer-tab").content.children[0];
 
     for (layer_key in LAYERS) {
-        // Esta copia es necesaria, ya que layer_key cambia pero se le debe pasar
-        // Un valor constante a la función onclick
-        let layer_name = layer_key
+        /*
+        This copy is needed, because layer_key
+        changes but the value passed to
+        onclick must be constant
+        */
+        let layer_name = layer_key // DO NOT DELETE THIS LINE (see comment above)
 
         let layer = LAYERS[layer_key]
 
@@ -140,7 +143,7 @@ function tab_capas(tab) {
         /** @type {HTMLSpanElement} */
         let span = new_node.children[1];
 
-        // Rellena input
+        // Fill input
         if (layer_key === SELECTED_LAYER) {
             input.checked = true
         }
@@ -148,7 +151,7 @@ function tab_capas(tab) {
             cambiar_capa(layer_name)
         }
 
-        // Rellena span
+        // Fill span
         span.textContent = layer.display_name;
 
         tab.appendChild(new_node)

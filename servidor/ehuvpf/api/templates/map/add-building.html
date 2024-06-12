@@ -30,14 +30,16 @@
                 <input type="file" name="multiple_files" multiple="multiple">
             </label>
         </template>
-        <div id="files" class="field-array"><!-- Va a ser rellenado por javascript --></div>
+        <div id="files" class="field-array">
+            {# This div is going to be filled by javascipt, don't delete #}
+        </div>
         <select name="layer">
             {% for layer in layers %}
                 <option value="{{ layer.pk }}">{{ layer.name }}</option>
             {% endfor %}
         </select>
         <button disabled>validar (o no)</button>
-        <input type="submit" value="subir"/>
+        <input type="submit" value="Subir"/>
     </div>
 </form>
 {% endblock %}

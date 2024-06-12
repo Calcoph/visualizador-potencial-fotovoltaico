@@ -62,8 +62,8 @@ function init_map() {
     })
 
     // TODO: Mover esto a otra función (no tiene mucho que ver con la inicialización del mapa)
-    document.getElementById("leyenda-loader-close-button").addEventListener("click", function() {
-        document.getElementById("leyenda-loader").close()
+    document.getElementById("legend-loader-close-button").addEventListener("click", function() {
+        document.getElementById("legend-loader").close()
     })
 
     L.control.loadState = function(opts) {
@@ -331,7 +331,7 @@ function add_layers(colorset_promise) {
             SELECTED_LAYER = first_layer.id.toString()
             colorset_promise.then(
                 () => {
-                    // CURRENT_MINIMUMS se tiene que inicializar después de SELECTED_LAYER y COLOR_SET, pero antes de llamar a estilo()
+                    // CURRENT_MINIMUMS must be initialized after SELECTED_LAYER and COLOR_SET, but before estilo() must be called
                     console.assert(COLOR_SET.colors.length > 0, "COLOR_SET sin inicializar")
                     console.assert(SELECTED_LAYER !== undefined, "SELECTED_LAYER sin inicializar")
                     CURRENT_MINIMUMS = COLOR_SET.minimums[SELECTED_LAYER]
@@ -339,21 +339,21 @@ function add_layers(colorset_promise) {
             ).then(
                 () => {
                     for (const layer of json.layers) {
-                        let nueva_capa = L.geoJSON(null, {
+                        let newLayer = L.geoJSON(null, {
                             onEachFeature: init_building,
                             style: (edificio) => estilo(edificio, layer.color_measure)
                         })
 
                         id = layer.id.toString()
-                        LAYERS[id] = nueva_capa
+                        LAYERS[id] = newLayer
 
-                        nueva_capa.display_name = layer.name
-                        nueva_capa.measures = layer.measures
-                        nueva_capa.color_measure = layer.color_measure
+                        newLayer.display_name = layer.name
+                        newLayer.measures = layer.measures
+                        newLayer.color_measure = layer.color_measure
                         LOADED_CHUNKS[id] = []
                         if (id === SELECTED_LAYER) {
                             on_first_layer_loaded()
-                            nueva_capa.addTo(MAP)
+                            newLayer.addTo(MAP)
                         }
                     }
                     refrescar_tab()
@@ -379,19 +379,19 @@ function overwrite_selected_attributes() {
     refrescar_tab()
 }
 
-function cambiar_capa(nombre_capa) {
-    let vieja_capa = LAYERS[SELECTED_LAYER]
-    vieja_capa.removeFrom(MAP)
-    SELECTED_LAYER = nombre_capa
+function cambiar_capa(layerName) {
+    let oldLayer = LAYERS[SELECTED_LAYER]
+    oldLayer.removeFrom(MAP)
+    SELECTED_LAYER = layerName
     CURRENT_MINIMUMS = COLOR_SET.minimums[SELECTED_LAYER]
-    let nueva_capa = LAYERS[SELECTED_LAYER]
-    nueva_capa.addTo(MAP)
+    let newLayer = LAYERS[SELECTED_LAYER]
+    newLayer.addTo(MAP)
 
     on_layer_loaded()
 }
 
-function calcular_color(d) {
-    // CURRENT_MINIMUMS debe ser inicializado antes de llamar a calcular_color
+function calculateColor(d) {
+    // CURRENT_MINIMUMS must be initialized before calling calculateColor
     console.assert(CURRENT_MINIMUMS.length > 0, "CURRENT_MINIMUMS sin inicializar")
     let color = COLOR_SET.colors[COLOR_SET.colors.length-1] // Por defecto el color es el último.
     for (const i in CURRENT_MINIMUMS) {
@@ -406,7 +406,7 @@ function calcular_color(d) {
 
 function estilo(edificio, propiedad) {
     return {
-        fillColor: calcular_color(edificio.properties[propiedad]),
+        fillColor: calculateColor(edificio.properties[propiedad]),
         weight: 1,
         color: "#000000"
     }

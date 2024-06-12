@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Ehukhivpf{% endblock %}
+{% block title %}EhukhiVPF{% endblock %}
 
 {% block head %}
 <!-- Leaflet CSS -->
@@ -22,28 +22,28 @@ class="marginless" onload="init()"
 {% endblock %}
 
 {% block content %}
-<dialog id="leyenda-loader">
+<dialog id="legend-loader">
     <p><b>Indicador de carga</b></p>
     <p><img src="/smap/svg/red.svg" width="25px"> No se muestran edificios nuevos, haz zoom para cargar más</p>
     <p><img src="/smap/svg/green.svg" width="25px"> Se cargan edificios nuevos correctamente</p>
-    <button autofocus id="leyenda-loader-close-button">Cerrar</button>
+    <button autofocus id="legend-loader-close-button">Cerrar</button>
 </dialog>
 <div class="interface">
     <div style="position: relative;">
         <div class="interface">
             <div id="tab-select" class="attribute-select">
-                <label><input type="radio" name="tab" value="atributos" onchange="change_tab(this.value)" checked><span>Atributos</span></label>
-                <label><input type="radio" name="tab" value="capas" onchange="change_tab(this.value)"><span>Capas</span></label>
+                <label><input type="radio" name="tab" value="attributes" onchange="change_tab(this.value)" checked><span>Atributos</span></label>
+                <label><input type="radio" name="tab" value="layers" onchange="change_tab(this.value)"><span>Capas</span></label>
                 <label><input disabled type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)"><span>Marcadores</span></label>
                 <label><input disabled type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)"><span>Mis edificios</span></label>
             </div>
-            <template id="atributos-tab">
+            <template id="attributes-tab">
                 <label>
                     <input type="checkbox" onclick="update_selected_attributes()">
                     <span></span>
                 </label>
             </template>
-            <template id="capas-tab">
+            <template id="layer-tab">
                 <label>
                     <input type="radio" name="a">
                     <span></span>

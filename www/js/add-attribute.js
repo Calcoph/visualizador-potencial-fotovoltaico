@@ -1,4 +1,4 @@
-function anadir_atributo() {
+function addAttribute() {
     let form_data = new FormData(get_form())
     let name = form_data.get("name");
     let display_name = form_data.get("display_name");
