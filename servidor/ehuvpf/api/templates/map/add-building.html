@@ -19,6 +19,17 @@
         <textarea name="aa" id="t_area" cols="30" rows="10" disabled></textarea>
         <label><input type="radio" name="inputmethod" value="single" checked onchange="select_input('single')">single</label>
         <label><input type="radio" name="inputmethod" value="multiple" onchange="select_input('multiple')">multiple</label>
+        <template id="single_layer_template">
+            <label>.prj<input type="file" name="prj"></label>
+            <label>.dbf<input type="file" name="dbf"></label>
+            <label>.shx<input type="file" name="shx"></label>
+            <label>.shp<input type="file" name="shp"></label>
+        </template>
+        <template id="multiple_layer_template">
+            <label>Ficheros (.shp, .shx, .dbf y .prj)
+                <input type="file" name="multiple_files" multiple="multiple">
+            </label>
+        </template>
         <div id="files" class="field-array"><!-- Va a ser rellenado por javascript --></div>
         <select name="layer">
             {% for layer in layers %}

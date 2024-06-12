@@ -1,5 +1,3 @@
-import get_error_string from "error"
-
 function anadir_atributo() {
     /** @type {HTMLFormElement} */
     let form = document.getElementById("formAddAttribute")
