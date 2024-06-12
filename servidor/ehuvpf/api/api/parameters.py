@@ -23,25 +23,25 @@ class AddParameterParams:
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         param_name = "name"
         try:
             name = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
         param_name = "description"
         try:
             description = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "value"
         try:
             value = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
         return AddParameterParams(name, description, value)
 
@@ -79,38 +79,38 @@ class EditParameterParams:# TODO: Delete this class
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         param_name = "name"
         try:
             name = request.GET.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "description"
         try:
             description = request.GET.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "value"
         try:
             value = request.GET.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         parameter_id_param_name = "id"
         try:
             id = request.GET.get(parameter_id_param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
         try:
             parameter = Parameter.objects.get(pk=id)
         except:
-            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.bad_request())
 
         # Integrity check
         if parameter.project.pk != project.pk:
-            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of a parameter of the selected project', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of a parameter of the selected project', ErrorKind.bad_request())
 
         return EditParameterParams(name, description, value, parameter)
 

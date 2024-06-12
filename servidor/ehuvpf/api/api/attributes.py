@@ -48,29 +48,29 @@ class AddAttributeParams:
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         param_name = "name"
         try:
             name = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "display_name"
         try:
             display_name = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "description"
         try:
             description = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "unit"
         try:
             unit = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
         return AddAttributeParams(name, display_name, description, unit)
 
@@ -110,43 +110,43 @@ class EditAttributeParams:
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         param_name = "name"
         try:
             name = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "display_name"
         try:
             display_name = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "description"
         try:
             description = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "unit"
         try:
             unit = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         attribute_id_param_name = "id"
         try:
             id = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
         try:
             attribute = Measure.objects.get(pk=id)
         except:
-            return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an existing attribute', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
 
         # Integrity check
         if attribute.project.pk != project.pk:
-            return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an attribute of the selected project', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
 
         return EditAttributeParams(name, display_name, description, unit, attribute)
 

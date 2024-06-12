@@ -30,42 +30,42 @@ class GetBuildingsParams:
         # Method check
         method = "GET"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         layer_param_name = "layer"
         try:
             layer_id = request.GET.get(layer_param_name)
         except:
-            return ApiError(endpoint, f'"{layer_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{layer_param_name}" is required', ErrorKind.bad_request())
         lat_param_name = "lat"
         try:
             lat = request.GET.get(lat_param_name)
         except:
-            return ApiError(endpoint, f'"{lat_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{lat_param_name}" is required', ErrorKind.bad_request())
         lon_param_name = "lon"
         try:
             lon = request.GET.get(lon_param_name)
         except:
-            return ApiError(endpoint, f'"{lon_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{lon_param_name}" is required', ErrorKind.bad_request())
 
         # Parameter types
         try:
             lat = int(lat)
         except:
-            return ApiError(endpoint, f'"{lat_param_name}" must be an integer', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{lat_param_name}" must be an integer', ErrorKind.bad_request())
         try:
             lon = int(lon)
         except:
-            return ApiError(endpoint, f'"{lon_param_name}" must be an integer', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{lon_param_name}" must be an integer', ErrorKind.bad_request())
         try:
             layer = Layer.objects.get(pk=layer_id)
         except:
-            return ApiError(endpoint, f'"{layer_param_name}" must be the id of an existing layer', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{layer_param_name}" must be the id of an existing layer', ErrorKind.bad_request())
 
         # Integrity check
         if layer.project.pk != project.pk:
-            return ApiError(endpoint, f'"{layer_param_name}" must be the id of a layer of the selected project', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{layer_param_name}" must be the id of a layer of the selected project', ErrorKind.bad_request())
 
         return GetBuildingsParams(layer, lat, lon)
 
@@ -107,29 +107,29 @@ class GetPlaceholderBuildingsParams:
         # Method check
         method = "GET"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         lat_param_name = "lat"
         try:
             lat = request.GET.get(lat_param_name)
         except:
-            return ApiError(endpoint, f'"{lat_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{lat_param_name}" is required', ErrorKind.bad_request())
         lon_param_name = "lon"
         try:
             lon = request.GET.get(lon_param_name)
         except:
-            return ApiError(endpoint, f'"{lon_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{lon_param_name}" is required', ErrorKind.bad_request())
 
         # Parameter types
         try:
             lat = int(lat)
         except:
-            return ApiError(endpoint, f'"{lat_param_name}" must be an integer', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{lat_param_name}" must be an integer', ErrorKind.bad_request())
         try:
             lon = int(lon)
         except:
-            return ApiError(endpoint, f'"{lon_param_name}" must be an integer', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{lon_param_name}" must be an integer', ErrorKind.bad_request())
 
         return GetPlaceholderBuildingsParams(lat, lon)
 
@@ -188,14 +188,14 @@ class AddBuildingParams:
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         input_method_param_name = "inputmethod"
         try:
             input_method = request.POST.get(input_method_param_name)
         except:
-            return ApiError(endpoint, f'"{input_method_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{input_method_param_name}" is required', ErrorKind.bad_request())
 
         files: dict[str, dict[str, UploadedFile]] = []
         if input_method == InputMethod.SINGLE:
@@ -203,32 +203,32 @@ class AddBuildingParams:
             try:
                 prj = request.FILES.get(prj_file_name)
             except:
-                return ApiError(endpoint, f'"{prj_file_name}" file is required when using "single" input method', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{prj_file_name}" file is required when using "single" input method', ErrorKind.bad_request())
             dbf_file_name = "dbf"
             try:
                 dbf = request.FILES.get(dbf_file_name)
             except:
-                return ApiError(endpoint, f'"{dbf_file_name}" file is required when using "single" input method', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{dbf_file_name}" file is required when using "single" input method', ErrorKind.bad_request())
             shx_file_name = "shx"
             try:
                 shx = request.FILES.get(shx_file_name)
             except:
-                return ApiError(endpoint, f'"{shx_file_name}" file is required when using "single" input method', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{shx_file_name}" file is required when using "single" input method', ErrorKind.bad_request())
             shp_file_name = "shp"
             try:
                 shp = request.FILES.get(shp_file_name)
             except:
-                return ApiError(endpoint, f'"{shp_file_name}" file is required when using "single" input method', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{shp_file_name}" file is required when using "single" input method', ErrorKind.bad_request())
 
             # File extension check
             if not prj.name.endswith(".prj"):
-                return ApiError(endpoint, f'"{prj_file_name}" file must end in ".prj"', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{prj_file_name}" file must end in ".prj"', ErrorKind.bad_request())
             if not dbf.name.endswith(".dbf"):
-                return ApiError(endpoint, f'"{dbf_file_name}" file must end in ".dbf"', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{dbf_file_name}" file must end in ".dbf"', ErrorKind.bad_request())
             if not shx.name.endswith(".shx"):
-                return ApiError(endpoint, f'"{shx_file_name}" file must end in ".shx"', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{shx_file_name}" file must end in ".shx"', ErrorKind.bad_request())
             if not shp.name.endswith(".shp"):
-                return ApiError(endpoint, f'"{shp_file_name}" file must end in ".shp"', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{shp_file_name}" file must end in ".shp"', ErrorKind.bad_request())
 
             file_name = file.name.split(".")[-1]
             files[file_name] = {
@@ -240,7 +240,7 @@ class AddBuildingParams:
         elif input_method == InputMethod.MULTIPLE:
             multiple = request.FILES.getlist("multiple_files")
             if len(multiple) == 0:
-                return ApiError(endpoint, f'{input_method_param_name} was "{InputMethod.MULTIPLE}" but no files were sent', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'{input_method_param_name} was "{InputMethod.MULTIPLE}" but no files were sent', ErrorKind.bad_request())
 
             # Group all files by their names
             for file in multiple:
@@ -257,18 +257,18 @@ class AddBuildingParams:
             # Validate the groups
             for (file_name, file_dict) in files.items():
                 if "prj" not in file_dict:
-                    return ApiError(endpoint, f'Layer "{file_name}" doesn\'t have any file ending in ".prj"', ErrorKind.BAD_REQUEST)
+                    return ApiError(endpoint, f'Layer "{file_name}" doesn\'t have any file ending in ".prj"', ErrorKind.bad_request())
                 if "dbf" not in file_dict:
-                    return ApiError(endpoint, f'Layer "{file_name}" doesn\'t have any file ending in ".dbf"', ErrorKind.BAD_REQUEST)
+                    return ApiError(endpoint, f'Layer "{file_name}" doesn\'t have any file ending in ".dbf"', ErrorKind.bad_request())
                 if "shx" not in file_dict:
-                    return ApiError(endpoint, f'Layer "{file_name}" doesn\'t have any file ending in ".shx"', ErrorKind.BAD_REQUEST)
+                    return ApiError(endpoint, f'Layer "{file_name}" doesn\'t have any file ending in ".shx"', ErrorKind.bad_request())
                 if "shp" not in file_dict:
-                    return ApiError(endpoint, f'Layer "{file_name}" doesn\'t have any file ending in ".shp"', ErrorKind.BAD_REQUEST)
+                    return ApiError(endpoint, f'Layer "{file_name}" doesn\'t have any file ending in ".shp"', ErrorKind.bad_request())
 
                 if len(file_dict) != 4:
-                    return ApiError(endpoint, f'Layer "{file_name}" contains a file that doesn\'t end in ".prj", ".dbf", ".shx", ".shp"', ErrorKind.BAD_REQUEST)
+                    return ApiError(endpoint, f'Layer "{file_name}" contains a file that doesn\'t end in ".prj", ".dbf", ".shx", ".shp"', ErrorKind.bad_request())
         else:
-            return ApiError(endpoint, f'{input_method_param_name} must be one of ["{InputMethod.SINGLE}", "{InputMethod.MULTIPLE}"] but was {input_method}', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'{input_method_param_name} must be one of ["{InputMethod.SINGLE}", "{InputMethod.MULTIPLE}"] but was {input_method}', ErrorKind.bad_request())
 
         return AddBuildingParams(files)
 

@@ -37,24 +37,24 @@ class EditPreprocessInfoParams:# TODO: Delete this class
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         param_name = "preprocess_link"
         try:
             preprocess_link = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "preprocess_name"
         try:
             preprocess_name = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "preprocess_version"
         try:
             preprocess_version = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
         return EditPreprocessInfoParams(preprocess_link, preprocess_name, preprocess_version)
 
@@ -86,14 +86,14 @@ class EditDataSourceParams:# TODO: Delete this class
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         param_name = "data_source"
         try:
             data_source = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
         return EditDataSourceParams(data_source)
 

@@ -25,65 +25,65 @@ class EditLayerParams:
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         layer_param_name = "layer"
         try:
             layer = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "name-pattern"
         try:
             name_pattern = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         attribute_param_name = "attribute"
         try:
             attributes = request.POST.getlist(attribute_param_name)
         except:
-            return ApiError(endpoint, f'"{attribute_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{attribute_param_name}" is required', ErrorKind.bad_request())
         color_attribute_param_name = "color-attribute"
         try:
             color_attribute = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         color_rule_param_name = "color_rule"
         try:
             color_rules = request.POST.getlist(color_rule_param_name)
         except:
-            return ApiError(endpoint, f'"{color_rule_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{color_rule_param_name}" is required', ErrorKind.bad_request())
 
         new_color_rules = []
         for color_rule in color_rules:
             try:
                 new_color_rule = float(color_rule.replace(",", "."))
             except:
-                return ApiError(endpoint, f'"{color_rule_param_name}" must be a list of floats, got: {color_rule}', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{color_rule_param_name}" must be a list of floats, got: {color_rule}', ErrorKind.bad_request())
             new_color_rules.append(new_color_rule)
 
         try:
             layer = Layer.objects.get(pk=layer)
         except:
-            return ApiError(endpoint, f'"{layer_param_name}" must be the id of an existing layer', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{layer_param_name}" must be the id of an existing layer', ErrorKind.bad_request())
         if layer.project.pk != project.pk:
-            return ApiError(endpoint, f'"{layer_param_name}" must be the id of a layer of the selected project', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{layer_param_name}" must be the id of a layer of the selected project', ErrorKind.bad_request())
 
         try:
             color_attribute = Measure.objects.get(pk=color_attribute)
         except:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an existing attribute', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
         if color_attribute.project.pk != project.pk:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an attribute of the selected project', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
 
         attribute_list = []
         for attribute_id in attributes:
             try:
                 attribute = Measure.objects.get(pk=attribute_id)
             except:
-                return ApiError(endpoint, f'"{attribute_id}" is not the id of an existing attribute', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{attribute_id}" is not the id of an existing attribute', ErrorKind.bad_request())
             if attribute.project.pk != project.pk:
-                return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
             attribute_list.append(attribute)
 
         return EditLayerParams(layer, name_pattern, attribute_list, color_attribute, new_color_rules)
@@ -131,45 +131,45 @@ class AddLayerParams:# TODO: Delete this class
         # Method check
         method = "POST"
         if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
         param_name = "layer-name"
         try:
             layer_name = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "attributes"
         try:
             attributes = request.POST.getlist(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         color_attribute_param_name = "color-attribute"
         try:
             color_attribute = request.POST.get(color_attribute_param_name)
         except:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{color_attribute_param_name}" is required', ErrorKind.bad_request())
         param_name = "name-pattern"
         try:
             name_pattern = request.POST.get(param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
         try:
             color_attribute = Measure.objects.get(pk=color_attribute)
         except:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an existing attribute', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
         if color_attribute.project.pk != project.pk:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an attribute of the selected project', ErrorKind.BAD_REQUEST)
+            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
 
         attribute_list = []
         for attribute_id in attributes:
             try:
                 attribute = Measure.objects.get(pk=attribute_id)
             except:
-                return ApiError(endpoint, f'"{attribute_id}" is not the id of an existing attribute', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{attribute_id}" is not the id of an existing attribute', ErrorKind.bad_request())
             if attribute.project.pk != project.pk:
-                return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.BAD_REQUEST)
+                return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
             attribute_list.append(attribute)
 
         return AddLayerParams(layer_name, attribute_list, color_attribute, name_pattern)
