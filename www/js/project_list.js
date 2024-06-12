@@ -7,7 +7,7 @@ function select_project(id) {
     let params = "project_id=" + id
     xhttp.send(params)
     if (xhttp.status != 200) {
-        window.alert(`No se ha podido cambiar el proyecto por un error inesperado.\n${xhttp.status}: ${xhttp.statusText}`)
+        window.alert(get_error_string(xhttp))
         return
     }
 
