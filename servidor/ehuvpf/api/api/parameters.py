@@ -50,7 +50,7 @@ class AddParameterParams:
 def add_parameter(request: HttpRequest):
     project = get_project(request)
 
-    parameters = AddParameterParams.validate(request, project)
+    parameters = AddParameterParams.validate(request)
     if isinstance(parameters, ApiError):
         return parameters.to_response()
     else:
@@ -119,7 +119,7 @@ class EditParameterParams:# TODO: Delete this class
 def edit_parameter(request: HttpRequest):
     project = get_project(request)
 
-    parameters = AddParameterParams.validate(request, project)
+    parameters = AddParameterParams.validate(request)
     if isinstance(parameters, ApiError):
         return parameters.to_response()
     else:
