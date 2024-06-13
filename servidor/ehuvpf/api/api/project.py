@@ -63,7 +63,7 @@ class EditPreprocessInfoParams:# TODO: Delete this class
 def edit_preprocess_info(request: HttpRequest):
     project = get_project(request)
 
-    parameters = EditPreprocessInfoParams.validate(request, project)
+    parameters = EditPreprocessInfoParams.validate(request)
     if isinstance(parameters, ApiError):
         return parameters.to_response()
     else:
