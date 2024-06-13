@@ -4,7 +4,12 @@
 
 {% block content %}
 <h1>Administración del proyecto {{ project.name }}</h1>
-<h3>Modificando capa {{ layer.name }}</h3>
+<h3>Modificando capa <span id="title_name" style="border: 1px solid black;">{{ layer.name }}</span></h3>
+<dialog id="delete-confirm">
+    <p>Estás seguro de que quieres eliminar la capa <b>{{ layer.name }}</b>?</p>
+    <button onclick="deleteLayer()">Sí</button>
+    <button autofocus onclick="document.getElementById('delete-confirm').close()">No</button>
+</dialog>
 <form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validateForm()">
     <h3>Patrón en el nombre (para identificación automática de capa)</h3>
     <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
@@ -44,8 +49,9 @@
             </tr>
         {% endfor %}
     </table>
-    <input type="hidden" name="layer" value="{{ layer.pk }}">
+    <input type="hidden" name="id" value="{{ layer.pk }}">
     <input type="submit" value="Confirmar cambios">
+    <button type="button" onclick="document.getElementById('delete-confirm').showModal()">Eliminar</button>
 </form>
 {% endblock %}
 

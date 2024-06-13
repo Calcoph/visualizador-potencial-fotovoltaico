@@ -39,12 +39,12 @@ api_urls = [
     path("editPreprocessInfo", api_project.edit_preprocess_info, name="editPreprocessInfo"),
     path("editDataSource", api_project.edit_data_source, name="editDataSource"),
 
-    path("editLayer", api_layers.edit_layer, name="newAttribute"),
-
     path("selectProject", api_project.select_project, name="selectProject"),
 
-    path("addLayer", api_layers.add_layer, name="addLayer"),
     path("getLayers", api_layers.get_layers, name="getLayers"),
+    path("addLayer", api_layers.add_layer, name="addLayer"),
+    path("editLayer", api_layers.edit_layer, name="newAttribute"),
+    path("deleteLayer", api_layers.delete_layer, name="deleteLayer"),
 
     path("getColors", api_colors.get_colors, name="getColors"),
     path("updateColors", api_colors.update_colors, name="updateColors")

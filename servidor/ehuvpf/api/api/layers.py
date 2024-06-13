@@ -28,11 +28,11 @@ class EditLayerParams:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
         # Required parameters
-        layer_param_name = "layer"
+        layer_param_name = "id"
         try:
-            layer = request.POST.get(param_name)
+            layer = request.POST.get(layer_param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            return ApiError(endpoint, f'"{layer_param_name}" is required', ErrorKind.bad_request())
         param_name = "name-pattern"
         try:
             name_pattern = request.POST.get(param_name)
@@ -45,9 +45,9 @@ class EditLayerParams:
             return ApiError(endpoint, f'"{attribute_param_name}" is required', ErrorKind.bad_request())
         color_attribute_param_name = "color-attribute"
         try:
-            color_attribute = request.POST.get(param_name)
+            color_attribute = request.POST.get(color_attribute_param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            return ApiError(endpoint, f'"{color_attribute_param_name}" is required', ErrorKind.bad_request())
         color_rule_param_name = "color_rule"
         try:
             color_rules = request.POST.getlist(color_rule_param_name)
@@ -117,6 +117,54 @@ def edit_layer_impl(params: EditLayerParams):
 
     layer.save()
 
+class DeleteLayerParams:
+    def __init__(self, layer: Layer) -> None:
+        self.layer = layer
+
+    def validate(request: HttpRequest, project: Project) -> DeleteLayerParams | ApiError:
+        endpoint = "delete_layer"
+
+        # Method check
+        method = "POST"
+        if request.method != method:
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
+
+        # Required parameters
+        param_name = "id"
+        try:
+            id = request.POST.get(param_name)
+        except:
+            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+        try:
+            layer = Layer.objects.get(pk=id)
+        except:
+            return ApiError(endpoint, f'"{param_name}" must be the id of an existing layer', ErrorKind.bad_request())
+        if layer.project.pk != project.pk:
+            return ApiError(endpoint, f'"{param_name}" must be the id of a layer of the selected project', ErrorKind.bad_request())
+
+        return DeleteLayerParams(layer)
+
+@permission_required(Permission.LayerDelete)
+@project_required_api
+def delete_layer(request: HttpRequest):
+    project = get_project(request)
+
+    parameters = DeleteLayerParams.validate(request, project)
+    if isinstance(parameters, ApiError):
+        return parameters.to_response()
+    else:
+        delete_layer_impl(parameters)
+        return HttpResponse("Success")
+
+def delete_layer_impl(params: DeleteLayerParams):
+    layer = params.layer
+    # Delete all its associated color rules, since they are layer dependant
+    for rule in layer.color_rules.all():
+        rule.delete()
+
+    layer.delete()
+
 class AddLayerParams:# TODO: Delete this class
     def __init__(self, layer_name: str, attribute_list: list[Measure], color_attribute: Measure, name_pattern: str) -> None:
         self.layer_name = layer_name
@@ -183,7 +231,7 @@ def add_layer(request: HttpRequest):
     if isinstance(parameters, ApiError):
         return parameters.to_response()
     else:
-        edit_layer_impl(project, parameters)
+        add_layer_impl(project, parameters)
         return HttpResponse("Success")
 
 def add_layer_impl(project: Project, params: AddLayerParams):

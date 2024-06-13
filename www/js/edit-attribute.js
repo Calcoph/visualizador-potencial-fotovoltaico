@@ -51,9 +51,9 @@ function confirm_delete_attribute() {
     let name = document.getElementById("title_name").textContent
 
     window.alert(`El atributo ${name} se ha eliminado correctamente`)
-    redirect_home()
+    redirectProjectAdmin()
 }
 
-function redirect_home() {
-    window.location.href = "/"
+function redirectProjectAdmin() {
+    window.location.href = "/map/project-admin"
 }
