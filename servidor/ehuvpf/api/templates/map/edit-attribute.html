@@ -4,6 +4,11 @@
 
 {% block content %}
 <h1>Editando atributo <span id="title_name" style="border: 1px solid black;">{{ attribute.display_name }}</span>:</h1>
+<dialog id="delete-confirm">
+    <p>Estás seguro de que quieres eliminar el atributo <b>{{ attribute.display_name }}</b>?</p>
+    <button onclick="deleteAttribute()">Sí</button>
+    <button autofocus onclick="document.getElementById('delete-confirm').close()">No</button>
+</dialog>
 <form id="formEditAttribute" onsubmit="return false">
     <label>
         Identificador: (Este identificador es el nombre del atributo en los archivos subidos)<br>
@@ -23,6 +28,7 @@
     </label><br>
     <input type="hidden" name="id" value="{{ attribute.pk }}">
     <button type="submit" onclick="editAttribute()">Confirmar</button>
+    <button type="button" onclick="document.getElementById('delete-confirm').showModal()">Eliminar</button>
 </form>
 
 {% endblock %}

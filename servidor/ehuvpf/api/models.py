@@ -76,7 +76,7 @@ class Layer(models.Model):
     """
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     default_measures = models.ManyToManyField(Measure)
-    color_measure = models.ForeignKey(Measure, on_delete=models.CASCADE, related_name="color_measure")
+    color_measure = models.ForeignKey(Measure, on_delete=models.PROTECT, related_name="color_measure")
     color_rules = models.ManyToManyField(ColorRule)
     name = models.TextField()
     name_pattern = models.TextField()

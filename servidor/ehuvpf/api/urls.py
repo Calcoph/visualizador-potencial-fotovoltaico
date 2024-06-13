@@ -31,6 +31,7 @@ api_urls = [
     path("getAttributes", api_attributes.get_attributes, name="getAttributes"),
     path("addAttribute", api_attributes.add_attribute, name="newAttribute"),
     path("editAttribute", api_attributes.edit_attribute, name="editAttribute"),
+    path("deleteAttribute", api_attributes.delete_attribute, name="deleteAttribute"),
 
     path("addParameter", api_parameters.add_parameter, name="newParameter"),
     path("editParameter", api_parameters.edit_parameter, name="editParameter"),
