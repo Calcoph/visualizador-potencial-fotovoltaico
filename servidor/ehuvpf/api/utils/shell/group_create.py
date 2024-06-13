@@ -38,6 +38,7 @@ project_admin_permissions = [
     djpermission(Permission.DataSourceEdit),
     djpermission(Permission.MeasureDelete),
     djpermission(Permission.LayerDelete),
+    djpermission(Permission.ParameterDelete),
     *data_contributor_permissions
 ]
 project_admin = Group(name="project_admin")

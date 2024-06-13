@@ -4,7 +4,12 @@
 
 {% block content %}
 <h2>Administración del proyecto {{ project.name }}</h2>
-<h1>Editando parámetro <span id="title_name">{{ parameter.name }}</span>:</h1>
+<h1>Editando parámetro <span id="title_name" style="border: 1px solid black;">{{ parameter.name }}</span>:</h1>
+<dialog id="delete-confirm">
+    <p>Estás seguro de que quieres eliminar el parámetro <b>{{ parametro.name }}</b>?</p>
+    <button onclick="deleteParameter()">Sí</button>
+    <button autofocus onclick="document.getElementById('delete-confirm').close()">No</button>
+</dialog>
 <form id="formEditParameter" onsubmit="return false">
     <label>
         Nombre:<br>
@@ -20,6 +25,7 @@
     </label><br>
     <input type="hidden" name="id" value="{{ parameter.pk }}">
     <button type="submit" onclick="editParameter()">Confirmar</button>
+    <button type="button" onclick="document.getElementById('delete-confirm').showModal()">Eliminar</button>
 </form>
 
 {% endblock %}

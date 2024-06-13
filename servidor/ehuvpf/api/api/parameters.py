@@ -84,24 +84,24 @@ class EditParameterParams:# TODO: Delete this class
         # Required parameters
         param_name = "name"
         try:
-            name = request.GET.get(param_name)
+            name = request.POST.get(param_name)
         except:
             return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "description"
         try:
-            description = request.GET.get(param_name)
+            description = request.POST.get(param_name)
         except:
             return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         param_name = "value"
         try:
-            value = request.GET.get(param_name)
+            value = request.POST.get(param_name)
         except:
             return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         parameter_id_param_name = "id"
         try:
-            id = request.GET.get(parameter_id_param_name)
+            id = request.POST.get(parameter_id_param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            return ApiError(endpoint, f'"{parameter_id_param_name}" is required', ErrorKind.bad_request())
 
         try:
             parameter = Parameter.objects.get(pk=id)
@@ -119,7 +119,7 @@ class EditParameterParams:# TODO: Delete this class
 def edit_parameter(request: HttpRequest):
     project = get_project(request)
 
-    parameters = AddParameterParams.validate(request)
+    parameters = AddParameterParams.validate(request, project)
     if isinstance(parameters, ApiError):
         return parameters.to_response()
     else:
@@ -134,3 +134,49 @@ def edit_parameter_impl(parameters: EditParameterParams):
     parameter.value = parameters.value
 
     parameter.save()
+
+class DeleteParameterParams:# TODO: Delete this class
+    def __init__(self, parameter: Parameter) -> None:
+        self.parameter = parameter
+
+    def validate(request: HttpRequest, project: Project) -> DeleteParameterParams | ApiError:
+        endpoint = "delete_parameter"
+
+        # Method check
+        method = "POST"
+        if request.method != method:
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
+
+        # Required parameters
+        parameter_id_param_name = "id"
+        try:
+            id = request.POST.get(parameter_id_param_name)
+        except:
+            return ApiError(endpoint, f'"{parameter_id_param_name}" is required', ErrorKind.bad_request())
+
+        try:
+            parameter = Parameter.objects.get(pk=id)
+        except:
+            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.bad_request())
+
+        # Integrity check
+        if parameter.project.pk != project.pk:
+            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of a parameter of the selected project', ErrorKind.bad_request())
+
+        return DeleteParameterParams(parameter)
+
+@permission_required(Permission.ParameterDelete)
+@project_required_api
+def delete_parameter(request: HttpRequest):
+    project = get_project(request)
+
+    parameters = AddParameterParams.validate(request, project)
+    if isinstance(parameters, ApiError):
+        return parameters.to_response()
+    else:
+        delete_parameter_impl(parameters)
+        return HttpResponse("Success")
+
+def delete_parameter_impl(parameters: DeleteParameterParams):
+    parameter = parameters.parameter
+    parameter.delete()
