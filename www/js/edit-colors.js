@@ -35,4 +35,10 @@ function swap_colors(color0, color1) {
     color1_input.value = color0_value
 }
 
+function deleteColor() {
+    /** @type {HTMLTableElement} */
+    let color_list = document.getElementById("colors")
+    color_list.deleteRow(color_list.rows.length - 1)
+}
+
 init()
