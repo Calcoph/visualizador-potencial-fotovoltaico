@@ -50,7 +50,7 @@ function init_map() {
                 img.src = "/smap/svg/green.svg";
                 img.style.width = "20px";
                 img.addEventListener("click", function() {
-                    document.getElementById("leyenda-loader").showModal()
+                    document.getElementById("legend-loader").showModal()
                 })
 
                 return img

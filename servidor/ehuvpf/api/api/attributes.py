@@ -135,9 +135,9 @@ class EditAttributeParams:
             return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         attribute_id_param_name = "id"
         try:
-            id = request.POST.get(param_name)
+            id = request.POST.get(attribute_id_param_name)
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            return ApiError(endpoint, f'"{attribute_id_param_name}" is required', ErrorKind.bad_request())
 
         try:
             attribute = Measure.objects.get(pk=id)
@@ -170,3 +170,66 @@ def edit_attribute_impl(parameters: EditAttributeParams):
     editing_attribute.unit = parameters.unit
 
     editing_attribute.save()
+
+
+class DeleteAttributeParams:
+    def __init__(self, attribute: Measure) -> None:
+        self.attribute = attribute
+
+    def validate(request: HttpRequest, project: Project) -> DeleteAttributeParams | ApiError:
+        endpoint = "delete_attribute"
+
+        # Method check
+        method = "POST"
+        if request.method != method:
+            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
+
+        # Required parameters
+        attribute_id_param_name = "id"
+        try:
+            id = request.POST.get(attribute_id_param_name)
+        except:
+            return ApiError(endpoint, f'"{attribute_id_param_name}" is required', ErrorKind.bad_request())
+
+        try:
+            attribute = Measure.objects.get(pk=id)
+        except:
+            return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
+
+        # Integrity check
+        if attribute.project.pk != project.pk:
+            return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
+
+        return DeleteAttributeParams(attribute)
+
+@permission_required(Permission.MeasureDelete)
+@project_required_api
+def delete_attribute(request: HttpRequest):
+    project = get_project(request)
+
+    parameters = DeleteAttributeParams.validate(request, project)
+    if isinstance(parameters, ApiError):
+        return parameters.to_response()
+    else:
+        response = delete_attribute_impl(parameters)
+        if isinstance(response, ApiError):
+            print("NOT DELETED")
+            return response.to_response()
+        else:
+            print("DELETED")
+            return HttpResponse("Success")
+
+def delete_attribute_impl(parameters: EditAttributeParams) -> ApiError | None:
+    attribute = parameters.attribute
+    try:
+        attribute.delete()
+    except:
+        # Deletion might fail if this attribute is
+        # the colored attribute of a layer
+        return ApiError(
+            "delete_attribute",
+            f"Cannot delete {attribute.display_name}. Possible reason: A layer exists that uses this attribute as the color attribute. Delete that layer or change this color attribute.",
+            ErrorKind.unprocessable()
+        )
+
+    return None
