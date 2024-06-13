@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path("map/", include("api.urls")),
@@ -55,5 +56,6 @@ if DEBUG:
         response.headers["Cache-Control"] = f"max-age={60*24*14}"
         response.headers["Content-Type"] = "image/x-icon"
         return response
+    urlpatterns.append(path("", RedirectView.as_view(url="/map")))
     urlpatterns.append(re_path("smap/*", serve_smap))
     urlpatterns.append(path("favicon.ico", serve_favico))
