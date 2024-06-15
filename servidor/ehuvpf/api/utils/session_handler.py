@@ -11,8 +11,12 @@ def get_project(request: HttpRequest) -> Project | None:
         return None
 
 def set_project(request: HttpRequest, id):
-    # TODO: Make sure that project_id is valid
-    request.session[SESSION_PROJECT_ID] = id
+    try:
+        Project.objects.get(pk=id)
+        request.session[SESSION_PROJECT_ID] = id
+        return True
+    except:
+        return False
 
 def default_project_if_undefined(request: HttpRequest):
     if not request.session.has_key(SESSION_PROJECT_ID):

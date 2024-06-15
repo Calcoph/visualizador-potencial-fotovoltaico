@@ -4,21 +4,21 @@ from http import HTTPStatus
 from django.http import JsonResponse
 
 class ErrorKind:
-    FORBIDDEN = 0
-    BAD_REQUEST = 1
-    UNPROCESSABLE = 2
+    _FORBIDDEN = 0
+    _BAD_REQUEST = 1
+    _UNPROCESSABLE = 2
 
     def __init__(self, id: int) -> None:
         self.id = id
 
     def forbidden() -> ErrorKind:
-        return ErrorKind(ErrorKind.FORBIDDEN)
+        return ErrorKind(ErrorKind._FORBIDDEN)
 
     def bad_request() -> ErrorKind:
-        return ErrorKind(ErrorKind.BAD_REQUEST)
+        return ErrorKind(ErrorKind._BAD_REQUEST)
 
     def unprocessable() -> ErrorKind:
-        return ErrorKind(ErrorKind.UNPROCESSABLE)
+        return ErrorKind(ErrorKind._UNPROCESSABLE)
 
 class ApiError:
     def __init__(self, endpoint: str, reason: str, error_kind: ErrorKind) -> None:
@@ -32,11 +32,11 @@ class ApiError:
             "reason": self.reason
         }
         response = JsonResponse(json_resp)
-        if self.error_kind.id == ErrorKind.FORBIDDEN:
+        if self.error_kind.id == ErrorKind._FORBIDDEN:
             response.status_code = HTTPStatus.FORBIDDEN
-        if self.error_kind.id == ErrorKind.BAD_REQUEST:
+        if self.error_kind.id == ErrorKind._BAD_REQUEST:
             response.status_code = HTTPStatus.BAD_REQUEST
-        if self.error_kind.id == ErrorKind.UNPROCESSABLE:
+        if self.error_kind.id == ErrorKind._UNPROCESSABLE:
             response.status_code = HTTPStatus.UNPROCESSABLE_ENTITY
 
         return response

@@ -116,6 +116,11 @@ def edit_data_source_impl(project: Project, parameters: EditDataSourceParams):
 # @permission_required(Permission.ProjectView) # Commented out because this should be accessible by anyone
 def select_project(request: HttpRequest):
     project_id = request.POST.get("project_id")
-    set_project(request, project_id)
+    selected = set_project(request, project_id)
 
-    return HttpResponse("Success")
+    if selected:
+        response = HttpResponse("Success")
+    else:
+        response = ApiError("select_project", "Unexisting project", ErrorKind.unprocessable())
+
+    return response
