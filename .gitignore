@@ -16,3 +16,4 @@ __pycache__/
 *.code-workspace
 /ehuvpf-projects
 /servidor/ehuvpf/api/migrations
+/mariadb-data
