@@ -1,6 +1,7 @@
 #map {
     height: calc(100vh - (max(2em, 67px) + 2*5px + 2em));
     flex-grow: 2;
+    min-width: 500px;
 }
 
 .interface {
@@ -47,8 +48,8 @@
 }
 
 .login-section {
-    margin-left: 10%;
-    margin-right: 2%;
+    margin-left: 5vw;
+    margin-right: 2vw;
     display: inline-block;
     float: none;
 }

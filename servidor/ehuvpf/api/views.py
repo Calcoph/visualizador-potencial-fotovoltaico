@@ -86,7 +86,6 @@ def edit_colors(request: HttpRequest):
     project = get_project(request)
     template = loader.get_template("map/edit-colors.html")
 
-    # TODO: sort colors by strength
     colors = list(Color.objects.filter(project=project))
     colors.sort(key=lambda color: color.strength)
     context = {
@@ -228,7 +227,11 @@ def index(request: HttpRequest):
     template = loader.get_template(f"map/index.html")
     project = get_project(request)
 
+    colors = list(Color.objects.filter(project=project))
+    colors.sort(key=lambda color: color.strength)
+
     context = {
-        "project": project
+        "project": project,
+        "colors": colors
     }
     return HttpResponse(template.render(context, request))

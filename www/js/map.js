@@ -370,6 +370,7 @@ function on_first_layer_loaded() {
 
 function on_layer_loaded() {
     overwrite_selected_attributes()
+    overwrite_legend()
     update_zoom(MAP, null)
     update_map(MAP, null)
 }
@@ -377,6 +378,15 @@ function on_layer_loaded() {
 function overwrite_selected_attributes() {
     SELECTED_ATTRIBUTES = LAYERS[SELECTED_LAYER].measures
     refrescar_tab()
+}
+
+function overwrite_legend() {
+    /** @type {HTMLTableElement} */
+    const legend = document.getElementById("color-legend")
+    for (const i in CURRENT_MINIMUMS) {
+        const minimum = CURRENT_MINIMUMS[i];
+        legend.rows[i].children[1].textContent = minimum
+    }
 }
 
 function cambiar_capa(layerName) {

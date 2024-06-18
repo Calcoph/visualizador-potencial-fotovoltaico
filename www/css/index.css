@@ -15,3 +15,22 @@ Para que funcione, el texto del label debe estar después del radio
 input[type="radio"]:checked+span {
     background-color: lightblue;
 }
+
+.color_cell {
+    width: 20px;
+    height: 20px;
+}
+
+.color_legend {
+    align-items: end;
+    float: right;
+    padding-top: 10px;
+    padding-right: 40px;
+    margin-bottom: 30px;
+}
+
+.bottom_floater {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}

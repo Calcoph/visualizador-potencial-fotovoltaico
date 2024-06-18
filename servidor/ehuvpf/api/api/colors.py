@@ -64,6 +64,7 @@ def update_colors_impl(project: Project, colors: list[str]):
             # Añade un nuevo color
             new_color = Color(project=project, hex=color, strength=strength)
             new_color.save()
+            # TODO: haz un color rule para cada capa para este color
 
     # Borra los colores con strength > len(colors) (no se ha enviado estos colores)
     i = len(colors)

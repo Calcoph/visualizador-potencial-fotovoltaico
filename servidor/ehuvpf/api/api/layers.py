@@ -236,6 +236,7 @@ def add_layer(request: HttpRequest):
 
 def add_layer_impl(project: Project, params: AddLayerParams):
     # TODO: Asegurarse que name_pattern no es subset de otro patrón
+    # TODO: Hacer un color rule por cada color del proyecto
     new_layer = Layer(project=project, color_measure=params.color_attribute, name=params.layer_name, name_pattern=params.name_pattern)
     new_layer.save()
     new_layer.default_measures.set(params.attribute_list)

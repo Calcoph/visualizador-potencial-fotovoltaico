@@ -20,4 +20,9 @@ def set_project(request: HttpRequest, id):
 
 def default_project_if_undefined(request: HttpRequest):
     if not request.session.has_key(SESSION_PROJECT_ID):
-        request.session[SESSION_PROJECT_ID] = Project.objects.first().pk
+        if Project.objects.first() is None:
+            proyecto_por_defecto = Project(name="Proyecto por defecto")
+            proyecto_por_defecto.save()
+            request.session[SESSION_PROJECT_ID] = Project.objects.first().pk
+        else:
+            request.session[SESSION_PROJECT_ID] = Project.objects.first().pk

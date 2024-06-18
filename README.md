@@ -55,6 +55,8 @@ Si da error *Can't connect to local server through socket '/run/mysqld/mysqld.so
 
 12. Inicializa la base de datos desde django
 
+`python3 manage.py makemigrations`
+
 `python3 manage.py migrate`
 
 13. El proyecto está listo! Puedes ir a [localhost:8080](http://localhost:8080) para comprobarlo
