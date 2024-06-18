@@ -1,36 +1,49 @@
-function atributos_cambiados() {
+function attributesChanged() {
     /** @type {HTMLSelectElement} */
-    let atributos = document.getElementById("seleccion-atributo")
-    /** @type {HTMLSelectElement} */
-    let atributo_color = document.getElementById("seleccion-atributo-color")
-    //let color_seleccionado = atributo_color.selectedOptions[0]
+    let colorAttribute = document.getElementById("color-attribute-select")
 
-    let atributos_seleccionados = Array.from(atributos.selectedOptions)
-
-    let color_seleccionado = undefined
-    if (atributo_color.selectedIndex >= 0) {
-        // Si no hay ninguno seleccionado, slectedIndex es -1
-        color_seleccionado = atributo_color.selectedOptions[0].value
+    let selectedColor = undefined
+    if (colorAttribute.selectedIndex >= 0) {
+        // If there is no selection, slectedIndex is -1
+        selectedColor = colorAttribute.selectedOptions[0].value
     }
 
-    // Actualizar la lista de posibles atributos que utilizar para colorear
-    let opciones_color = Array.from(atributo_color.options)
-    for (const _ in opciones_color) {
-        atributo_color.options.remove(0)
+    recreate_color_select_list(selectedColor)
+}
+
+/**
+ * Update the list of attribute used to color
+ *
+ * @param {String} selectedColor The currently selected color
+ */
+function recreate_color_select_list(selectedColor) {
+    /** @type {HTMLSelectElement} */
+    let attributes = document.getElementById("attribute-select")
+    /** @type {HTMLSelectElement} */
+    let colorAttribute = document.getElementById("color-attribute-select")
+
+    // Remove all the (old) options
+    let colorOptions = Array.from(colorAttribute.options)
+    for (const _ in colorOptions) {
+        colorAttribute.options.remove(0)
     }
 
-    let cantidad_opciones_color = 0
-    for (const atributo_seleccionado of Array.from(atributos.selectedOptions)) {
-        let nueva_opcion = document.createElement("option")
-        nueva_opcion.value = atributo_seleccionado.value
-        nueva_opcion.innerText = atributo_seleccionado.innerText
-        atributo_color.append(nueva_opcion)
-        if (color_seleccionado !== undefined) {
-            if (nueva_opcion.value == color_seleccionado) {
-                atributo_color.selectedIndex = cantidad_opciones_color
+    // Create all the (new) options
+    let colorOptionAmount = 0
+    for (const selectedAttribute of Array.from(attributes.selectedOptions)) {
+        // Create new option
+        let newOption = document.createElement("option")
+        newOption.value = selectedAttribute.value
+        newOption.innerText = selectedAttribute.innerText
+        colorAttribute.append(newOption)
+
+        // Reselect the color
+        if (selectedColor !== undefined) {
+            if (newOption.value == selectedColor) {
+                colorAttribute.selectedIndex = colorOptionAmount
             }
         }
 
-        cantidad_opciones_color += 1
+        colorOptionAmount += 1
     }
 }

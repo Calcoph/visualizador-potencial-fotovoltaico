@@ -34,11 +34,11 @@ function init_map() {
     // layers won't automatically be added at this time, have to wait asyc AJAX
     let layer_promise = add_layers(colorset_promise)
 
-    /* TODO: Read https://operations.osmfoundation.org/policies/tiles/ */
-    /* L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(MAP); */
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        referrerPolicy: "origin"
+    }).addTo(MAP);
 
     //var marker = L.marker([43.2629, -2.95]).addTo(map);
 
@@ -50,7 +50,7 @@ function init_map() {
                 img.src = "/smap/svg/green.svg";
                 img.style.width = "20px";
                 img.addEventListener("click", function() {
-                    document.getElementById("leyenda-loader").showModal()
+                    document.getElementById("legend-loader").showModal()
                 })
 
                 return img
@@ -62,8 +62,8 @@ function init_map() {
     })
 
     // TODO: Mover esto a otra función (no tiene mucho que ver con la inicialización del mapa)
-    document.getElementById("leyenda-loader-close-button").addEventListener("click", function() {
-        document.getElementById("leyenda-loader").close()
+    document.getElementById("legend-loader-close-button").addEventListener("click", function() {
+        document.getElementById("legend-loader").close()
     })
 
     L.control.loadState = function(opts) {
@@ -113,80 +113,6 @@ function update_zoom(map, event) {
             loader_svg.title = "Los edificios han sido cargados"
         }
     }
-}
-
-/**
- *
- * @param {L.GeoJSON} layer
- */
-function add_placeholder_data(layer) {
-    layer.addData(
-        {
-            "type": "Feature",
-            "properties": {_sum: 0.5},
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[
-                    [-2.942, 43.267],
-                    [-2.938, 43.266],
-                    [-2.939, 43.264],
-                    [-2.944, 43.265]
-                ]]
-            },
-            "mycomment": "adsad"
-        },
-    )
-
-    layer.addData(
-        {
-            "type": "Feature",
-            "properties": {_sum: 1.5},
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[
-                    [-2.942, 43.262],
-                    [-2.938, 43.261],
-                    [-2.939, 43.259],
-                    [-2.944, 43.260]
-                ]]
-            },
-            "mycomment": "adsad"
-        }
-    )
-
-    layer.addData(
-        {
-            "type": "Feature",
-            "properties": {_sum: 2.5},
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[
-                    [-2.942, 43.257],
-                    [-2.938, 43.256],
-                    [-2.939, 43.254],
-                    [-2.944, 43.255]
-                ]]
-            },
-            "mycomment": "adsad"
-        }
-    )
-
-    layer.addData(
-        {
-            "type": "Feature",
-            "properties": {_sum: 3.5},
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [[
-                    [-2.942, 43.252],
-                    [-2.938, 43.251],
-                    [-2.939, 43.249],
-                    [-2.944, 43.250]
-                ]]
-            },
-            "mycomment": "adsad"
-        }
-    )
 }
 
 /**
@@ -405,7 +331,7 @@ function add_layers(colorset_promise) {
             SELECTED_LAYER = first_layer.id.toString()
             colorset_promise.then(
                 () => {
-                    // CURRENT_MINIMUMS se tiene que inicializar después de SELECTED_LAYER y COLOR_SET, pero antes de llamar a estilo()
+                    // CURRENT_MINIMUMS must be initialized after SELECTED_LAYER and COLOR_SET, but before estilo() must be called
                     console.assert(COLOR_SET.colors.length > 0, "COLOR_SET sin inicializar")
                     console.assert(SELECTED_LAYER !== undefined, "SELECTED_LAYER sin inicializar")
                     CURRENT_MINIMUMS = COLOR_SET.minimums[SELECTED_LAYER]
@@ -413,22 +339,21 @@ function add_layers(colorset_promise) {
             ).then(
                 () => {
                     for (const layer of json.layers) {
-                        let nueva_capa = L.geoJSON(null, {
+                        let newLayer = L.geoJSON(null, {
                             onEachFeature: init_building,
                             style: (edificio) => estilo(edificio, layer.color_measure)
                         })
 
                         id = layer.id.toString()
-                        LAYERS[id] = nueva_capa
+                        LAYERS[id] = newLayer
 
-                        nueva_capa.display_name = layer.name
-                        nueva_capa.measures = layer.measures
-                        nueva_capa.color_measure = layer.color_measure
+                        newLayer.display_name = layer.name
+                        newLayer.measures = layer.measures
+                        newLayer.color_measure = layer.color_measure
                         LOADED_CHUNKS[id] = []
                         if (id === SELECTED_LAYER) {
-                            add_placeholder_data(nueva_capa)
                             on_first_layer_loaded()
-                            nueva_capa.addTo(MAP)
+                            newLayer.addTo(MAP)
                         }
                     }
                     refrescar_tab()
@@ -454,19 +379,19 @@ function overwrite_selected_attributes() {
     refrescar_tab()
 }
 
-function cambiar_capa(nombre_capa) {
-    let vieja_capa = LAYERS[SELECTED_LAYER]
-    vieja_capa.removeFrom(MAP)
-    SELECTED_LAYER = nombre_capa
+function cambiar_capa(layerName) {
+    let oldLayer = LAYERS[SELECTED_LAYER]
+    oldLayer.removeFrom(MAP)
+    SELECTED_LAYER = layerName
     CURRENT_MINIMUMS = COLOR_SET.minimums[SELECTED_LAYER]
-    let nueva_capa = LAYERS[SELECTED_LAYER]
-    nueva_capa.addTo(MAP)
+    let newLayer = LAYERS[SELECTED_LAYER]
+    newLayer.addTo(MAP)
 
     on_layer_loaded()
 }
 
-function calcular_color(d) {
-    // CURRENT_MINIMUMS debe ser inicializado antes de llamar a calcular_color
+function calculateColor(d) {
+    // CURRENT_MINIMUMS must be initialized before calling calculateColor
     console.assert(CURRENT_MINIMUMS.length > 0, "CURRENT_MINIMUMS sin inicializar")
     let color = COLOR_SET.colors[COLOR_SET.colors.length-1] // Por defecto el color es el último.
     for (const i in CURRENT_MINIMUMS) {
@@ -481,7 +406,7 @@ function calcular_color(d) {
 
 function estilo(edificio, propiedad) {
     return {
-        fillColor: calcular_color(edificio.properties[propiedad]),
+        fillColor: calculateColor(edificio.properties[propiedad]),
         weight: 1,
         color: "#000000"
     }

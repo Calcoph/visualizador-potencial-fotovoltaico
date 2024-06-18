@@ -25,11 +25,10 @@ function init_map() {
     geojson_layer.addTo(MAP)
     add_placeholder_data(geojson_layer)
 
-    /* TODO: Read https://operations.osmfoundation.org/policies/tiles/ */
-    /* L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(MAP); */
+    }).addTo(MAP);
 
     //var marker = L.marker([43.2629, -2.95]).addTo(map);
 

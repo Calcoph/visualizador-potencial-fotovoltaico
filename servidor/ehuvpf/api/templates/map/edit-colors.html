@@ -1,29 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="post" action="/map/api/updateColors">
-        <table id="colores">
-            {% for indexed_color in colors %}
-                <tr id="color_{{ indexed_color.0 }}" >
-                    <td>
-                        <input type="button" value="^" onclick="swap_color_up({{ indexed_color.0 }})"><br>
-                        <input type="button" value="v" onclick="swap_color_down({{ indexed_color.0 }})">
-                    </td>
-                    <td style="width:50px;height:50px;background-color:{{ indexed_color.1.hex }};border:1px solid black"></td>
-                    <td><input type="text" value="{{ indexed_color.1.hex }}" name="color" onchange="update_color({{ indexed_color.0 }})"></td>
-                </tr>
-            {% endfor %}
-        </table>
-        <input type="button" value="Añadir Color" onclick="anadir_color()">
-        <input type="submit" value="Confirmar cambios">
-    </form>
+{% extends "base.html" %}
 
-    <a href="project-admin">Go back</a>
-    <script src="/smap/js/edit-colors.js"></script>
-</body>
-</html>
+{% block title %}Editar colores{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="/smap/css/general.css"/>
+    <link rel="stylesheet" href="/smap/css/coloredit.css"/>
+{% endblock %}
+
+{% block content %}
+<form method="post" action="/map/api/updateColors">
+    <p>
+        Haz click en los colores para cambiarlos.
+    </p>
+    <p>
+        Haz click en las flechas para cambiar el orden.
+    </p>
+    <table id="colors">
+        <template id="color_template">
+            <tr>
+                <td>
+                    <input type="button" value="↑"><br>
+                    <input type="button" value="↓">
+                </td>
+                <td><input class="color_cell" type="color" name="color"></td>
+            </tr>
+        </template>
+    </table>
+<script>
+// TODO: No longer need the index of indexed_color
+let colors = [
+{% for indexed_color in colors %}
+{
+    color: "{{indexed_color.1.hex}}"
+},
+{% endfor %}
+]
+
+function addItemToList(color) {
+    let template = document.getElementById("color_template").content.children[0];
+    let list = document.getElementById("colors");
+
+    let new_node = document.importNode(template, true);
+    new_node.children[0].children[0].onclick = function() {swap_color_up(new_node)}
+    new_node.children[0].children[2].onclick = function() {swap_color_down(new_node)}
+
+    new_node.children[1].children[0].value = color
+
+    list.appendChild(new_node)
+}
+
+for (color of colors) {
+    addItemToList(color.color)
+}
+</script>
+    <input type="button" value="Añadir Color" onclick="addItemToList('#808080')">
+    <input type="button" value="Eliminar el último color" onclick="deleteColor()"><br>
+    <input type="submit" value="Confirmar cambios">
+</form>
+{% endblock %}
+
+{% block after_scripts %}
+<script src="/smap/js/edit-colors.js"></script>
+{% endblock %}

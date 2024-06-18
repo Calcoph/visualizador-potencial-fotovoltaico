@@ -1,0 +1,9 @@
+.color_cell {
+    width: 75px;
+    height: 75px;
+    padding: 3px;
+}
+
+.color_cell:hover {
+    background-color: #40ff40
+}

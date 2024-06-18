@@ -21,3 +21,5 @@ https://gis.stackexchange.com/questions/362636/qgis-on-docker-container-could-no
 https://serverfault.com/questions/949991/how-to-install-tzdata-on-a-ubuntu-docker-image
 
 https://www.w3schools.com/howto/howto_css_custom_checkbox.asp
+
+https://stackoverflow.com/questions/13713077/get-user-information-in-django-templates

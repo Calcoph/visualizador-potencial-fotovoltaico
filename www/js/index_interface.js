@@ -31,7 +31,7 @@ function change_tab(tab) {
     let tab_html = document.getElementById("tab");
     tab_html.innerHTML = ""
     switch (tab) {
-        case "atributos":
+        case "attributes":
             tab_atributos(tab_html)
             break
         case "marcadores":
@@ -40,7 +40,7 @@ function change_tab(tab) {
         case "mis edificios":
             tab_mis_edificios(tab_html)
             break
-        case "capas":
+        case "layers":
             tab_capas(tab_html)
             break
         default:
@@ -57,7 +57,7 @@ function carga_atributos() {
         .then((json) => {
             available_attributes = json.available_attributes
 
-            if (current_tab === "atributos") {
+            if (current_tab === "attributes") {
                 change_tab(current_tab)
             }
         })
@@ -67,23 +67,28 @@ function carga_atributos() {
  * @param {HTMLElement} tab
  */
 function tab_atributos(tab) {
+    let template = document.getElementById("attributes-tab").content.children[0];
+
     available_attributes.forEach(function(atributo) {
-        let label = document.createElement("label");
-        let input = document.createElement("input")
-        input.type = "checkbox"
+        /** @type {HTMLLabelElement} */
+        let new_node = document.importNode(template, true);
+        /** @type {HTMLInputElement} */
+        let input = new_node.children[0]
+        /** @type {HTMLSpanElement} */
+        let span = new_node.children[1];
+
+        // Fill input
         input.value = atributo.display_name
         input.name = atributo.name
         input.checked = SELECTED_ATTRIBUTES.find(function(selected_attribute) {
             return selected_attribute.name == atributo.name
         }) !== undefined
-        input.onclick = update_selected_attributes
-        label.appendChild(input)
-        let span = document.createElement("span");
-        let text = document.createTextNode(atributo.display_name);
-        span.append(text)
-        label.appendChild(span)
 
-        tab.appendChild(label)
+        // Fill span
+        span.textContent = atributo.display_name
+
+        tab.appendChild(new_node)
+
     })
 }
 
@@ -119,29 +124,36 @@ function tab_mis_edificios(tab) {
  * @param {HTMLElement} tab
  */
 function tab_capas(tab) {
+    let template = document.getElementById("layer-tab").content.children[0];
+
     for (layer_key in LAYERS) {
-        // Esta copia es necesaria, ya que layer_key cambia pero se le debe pasar
-        // Un valor constante a la función onclick
-        let layer_name = layer_key
+        /*
+        This copy is needed, because layer_key
+        changes but the value passed to
+        onclick must be constant
+        */
+        let layer_name = layer_key // DO NOT DELETE THIS LINE (see comment above)
 
         let layer = LAYERS[layer_key]
 
-        let label = document.createElement("label");
-        let input = document.createElement("input");
+        /** @type {HTMLLabelElement} */
+        let new_node = document.importNode(template, true);
+        /** @type {HTMLInputElement} */
+        let input = new_node.children[0];
+        /** @type {HTMLSpanElement} */
+        let span = new_node.children[1];
+
+        // Fill input
         if (layer_key === SELECTED_LAYER) {
             input.checked = true
         }
-        input.setAttribute("type", "radio")
-        input.setAttribute("name", "a")
         input.onclick = function() {
             cambiar_capa(layer_name)
         }
-        label.appendChild(input)
-        let span = document.createElement("span");
-        let text = document.createTextNode(layer.display_name);
-        span.append(text)
-        label.appendChild(span)
 
-        tab.appendChild(label)
+        // Fill span
+        span.textContent = layer.display_name;
+
+        tab.appendChild(new_node)
     }
 }

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Añadir atributo{% endblock %}
+
+{% block content %}
+<h1>Administración del proyecto</h1>
+<h2>Atributos existentes</h2>
+<ul id="list">
+    <template id="list_template">
+        <li><span>DISPLAY_NAME</span> (<span>NAME</span>)</li>
+    </template>
+</ul>
+<script>
+let attributes = [
+    {% for attribute in attributes %}
+    {
+        display_name: "{{ attribute.display_name }}",
+        name: "{{ attribute.name }}"
+    },
+    {% endfor %}
+]
+function addItemToList(display_name, name) {
+    let template = document.getElementById("list_template").content.children[0];
+    let list = document.getElementById("list");
+
+    let new_node = document.importNode(template, true);
+    new_node.children[0].textContent = display_name
+    new_node.children[1].textContent = name
+    list.appendChild(new_node)
+}
+
+for (attribute of attributes) {
+    addItemToList(attribute.display_name, attribute.name)
+}
+</script>
+<h1>Nuevo atributo:</h1>
+<form id="formAddAttribute" onsubmit="return false">
+    <label>
+        Identificador: (Este identificador es el nombre del atributo en los archivos subidos)<br>
+        <input type="text" id="name" name="name">
+    </label><br>
+    <label>
+        Nombre a mostrar:<br>
+        <input type="text" id="display_name" name="display_name">
+    </label><br>
+    <label>
+        Descripción:<br>
+        <textarea id="description" name="description"></textarea>
+    </label><br>
+    <label>
+        Unidad:<br>
+        <input type="text" id="unit" name="unit">
+    </label><br>
+    <button type="submit" onclick="addAttribute()">Añadir</button>
+</form>
+{% endblock %}
+
+{% block after_scripts %}
+<script src="/smap/js/add-attribute.js"></script>
+{% endblock %}

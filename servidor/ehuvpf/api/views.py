@@ -2,11 +2,14 @@ from os import makedirs
 
 from django.http import HttpRequest, HttpResponse
 from django.template import loader
+from django.contrib.auth.decorators import permission_required
 
 from .utils.decorators import project_required
 from .utils.session_handler import get_project, default_project_if_undefined
-from .models import Color, Layer, Project, Measure, ColorRule
+from .utils.user import Permission
+from .models import Color, Layer, Parameter, Project, Measure, ColorRule
 
+@permission_required(Permission.AdminEditProject)
 @project_required
 def project_admin(request: HttpRequest):
     project = get_project(request)
@@ -29,17 +32,7 @@ def project_admin_impl(project: Project):
 
     return context
 
-@project_required
-def edit_layers(request: HttpRequest):
-    project = get_project(request)
-    template = loader.get_template("map/edit-layers.html")
-    layers = Layer.objects.filter(project=project)
-    context = {
-        "project": project,
-        "layers": layers,
-    }
-    return HttpResponse(template.render(context, request))
-
+@permission_required(Permission.LayerEdit)
 @project_required
 def edit_layer(request: HttpRequest):
     layer_id = request.GET.get("layer")
@@ -87,6 +80,7 @@ def edit_layer_impl(project: Project, layer: Layer) -> dict[str]:
 
     return context
 
+@permission_required(Permission.ColorEdit)
 @project_required
 def edit_colors(request: HttpRequest):
     project = get_project(request)
@@ -102,6 +96,7 @@ def edit_colors(request: HttpRequest):
 
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.LayerAdd)
 @project_required
 def add_layer(request: HttpRequest):
     project = get_project(request)
@@ -115,16 +110,54 @@ def add_layer(request: HttpRequest):
 
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.MeasureAdd)
 @project_required
-def edit_attributes(request: HttpRequest):
+def add_attribute(request: HttpRequest):
     project = get_project(request)
-    template = loader.get_template("map/edit-attributes.html")
+    template = loader.get_template("map/add-attribute.html")
     attributes = Measure.objects.filter(project=project)
     context = {
         "attributes": attributes,
     }
     return HttpResponse(template.render(context, request))
 
+@permission_required(Permission.MeasureEdit)
+@project_required
+def edit_attribute(request: HttpRequest):
+    attribute_id = request.GET.get("id")
+    attribute = Measure.objects.get(pk=attribute_id)
+    project = get_project(request)
+    template = loader.get_template("map/edit-attribute.html")
+    context = {
+        "attribute": attribute,
+    }
+    return HttpResponse(template.render(context, request))
+
+@permission_required(Permission.ParameterAdd)
+@project_required
+def add_parameter(request: HttpRequest):
+    project = get_project(request)
+    template = loader.get_template("map/add-parameter.html")
+    parameters = Parameter.objects.filter(project=project)
+    context = {
+        "parameters": parameters,
+    }
+    return HttpResponse(template.render(context, request))
+
+@permission_required(Permission.ParameterEdit)
+@project_required
+def edit_parameter(request: HttpRequest):
+    parameter_id = request.GET.get("id")
+    parameter = Parameter.objects.get(pk=parameter_id)
+    project = get_project(request)
+    template = loader.get_template("map/edit-parameter.html")
+    context = {
+        "project": project,
+        "parameter": parameter,
+    }
+    return HttpResponse(template.render(context, request))
+
+@permission_required(Permission.BuildingAdd)
 @project_required
 def add_building(request: HttpRequest):
     project = get_project(request)
@@ -132,6 +165,33 @@ def add_building(request: HttpRequest):
     layers = Layer.objects.filter(project=project)
     context = {
         "layers": layers,
+    }
+    return HttpResponse(template.render(context, request))
+
+@project_required
+def details(request: HttpRequest):
+    template = loader.get_template(f"map/details.html")
+    current_project = get_project(request)
+    attributes = Measure.objects.filter(project=current_project)
+    parameters = Parameter.objects.filter(project=current_project)
+    context = {
+        "attributes": attributes,
+        "parameters": parameters,
+        "project": current_project,
+    }
+    return HttpResponse(template.render(context, request))
+
+@permission_required(Permission.AdminEditProject)
+@project_required
+def edit_project_details(request: HttpRequest):
+    template = loader.get_template(f"map/edit-project-details.html")
+    current_project = get_project(request)
+    attributes = Measure.objects.filter(project=current_project)
+    parameters = Parameter.objects.filter(project=current_project)
+    context = {
+        "attributes": attributes,
+        "parameters": parameters,
+        "project": current_project,
     }
     return HttpResponse(template.render(context, request))
 
@@ -148,12 +208,17 @@ def static_html(request: HttpRequest):
     return response
 
 def project_list(request: HttpRequest):
+    try:
+        next = request.GET.get("next")
+    except:
+        next = ""
     template = loader.get_template(f"map/project-list.html")
     current_project = get_project(request)
     projects = Project.objects.all()
     context = {
         "projects": projects,
         "current_project": current_project,
+        "next": next
     }
     return HttpResponse(template.render(context, request))
 

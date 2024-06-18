@@ -1,28 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/smap/css/index.css"/>
-</head>
-<body>
-    <script src="/smap/js/project_list.js"></script>
-    <h1>LISTA DE PROYECTOS</h1>
-    <a href="index.html">Go back</a>
-    {% if current_project is None %}
-        <p>You don't have any project selected. Please select one from below:</p>
+{% extends "base.html" %}
+
+{% block title %}Editar atributo{% endblock %}
+
+{% block content %}
+<h1>LISTA DE PROYECTOS</h1>
+{% if current_project is None %}
+    <p>You don't have any project selected. Please select one from below:</p>
+{% else %}
+    <p>Currently selected project: {{ current_project.name }}</p>
+{% endif %}
+    <input id="next" type="hidden" value="{{ next }}">
+{% for project in projects %}
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    {% if current_project is not None and project.pk == current_project.pk %}
+        <button onclick="select_project({{ project.pk }})" disabled>{{ project.name }}</button><br>
     {% else %}
-        <p>Currently selected project: {{ current_project.name }}</p>
+        <button onclick="select_project({{ project.pk }})">{{ project.name }}</button><br>
     {% endif %}
-    {% for project in projects %}
-        {% if current_project is not None and project.pk == current_project.pk %}
-            <button onclick="select_project({{ project.pk }})" disabled>{{ project.name }}</button><br>
-        {% else %}
-            <button onclick="select_project({{ project.pk }})">{{ project.name }}</button><br>
-        {% endif %}
-    {% endfor %}
-    <br>
-    <a href="create-project.html">Crear proyecto</a>
-</body>
-</html>
+{% endfor %}
+<br>
+<a href="create-project.html"><button>Crear proyecto</button></a>
+{% endblock %}
+
+{% block after_scripts %}
+<script src="/smap/js/project_list.js"></script>
+{% endblock %}

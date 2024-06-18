@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Añadir parámetro{% endblock %}
+
+{% block content %}
+<h1>Administración del proyecto</h1>
+<h2>Parámetros existentes</h2>
+<ul id="lista">
+    <template id="list_element_template">
+        <li></li>
+    </template>
+</ul>
+<script>
+let parameters = [
+    {% for parameter in parameters %}
+    {
+        name: "{{ parameter.name }}"
+    },
+    {% endfor %}
+]
+function addItemToList(name) {
+    let template = document.getElementById("list_element_template").content.children[0];
+    let list = document.getElementById("lista");
+
+    let new_node = document.importNode(template, true);
+    new_node.textContent = name
+    list.appendChild(new_node)
+}
+
+for (parameter of parameters) {
+    addItemToList(parameter.name)
+}
+</script>
+<h1>Nuevo parámetro:</h1>
+<form id="formAddParameter" onsubmit="return false">
+    <label>
+        Nombre:<br>
+        <input type="text" id="name" name="name">
+    </label><br>
+    <label>
+        Descripción:<br>
+        <input type="text" id="description" name="description">
+    </label><br>
+    <label>
+        Valor dado: (Se recomienda especificar unidades si es apropiado)<br>
+        <input type="text" id="value" name="value">
+    </label><br>
+    <button type="submit" onclick="addParameter()">Añadir</button>
+</form>
+{% endblock %}
+
+{% block after_scripts %}
+<script src="/smap/js/add-parameter.js"></script>
+{% endblock %}
