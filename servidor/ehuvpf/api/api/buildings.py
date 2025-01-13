@@ -197,7 +197,7 @@ class AddBuildingParams:
         except:
             return ApiError(endpoint, f'"{input_method_param_name}" is required', ErrorKind.bad_request())
 
-        files: dict[str, dict[str, UploadedFile]] = []
+        files: dict[str, dict[str, UploadedFile]] = {}
         if input_method == InputMethod.SINGLE:
             prj_file_name = "prj"
             try:
@@ -230,7 +230,7 @@ class AddBuildingParams:
             if not shp.name.endswith(".shp"):
                 return ApiError(endpoint, f'"{shp_file_name}" file must end in ".shp"', ErrorKind.bad_request())
 
-            file_name = file.name.split(".")[-1]
+            file_name = prj.name.split(".")[-2]
             files[file_name] = {
                 "prj": prj,
                 "dbf": dbf,
@@ -289,14 +289,16 @@ def add_building_impl(project: Project, files: list[EsriFiles]):
     layers = Layer.objects.filter(project=project)
     for esri_files in files:
         selected_layer = None
+        patterns = []
         for layer in layers:
+            patterns.append(layer.name_pattern)
             if layer.name_pattern in esri_files.name:
                 selected_layer = layer
                 break
 
         if selected_layer is None:
             # TODO: Notify user
-            raise Exception()
+            raise Exception(f"{patterns}\n{esri_files.name}")
         path = f"{PROJECT_PATH}/{project.pk}/{selected_layer.name}"
         makedirs(path, exist_ok=True)
 

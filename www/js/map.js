@@ -37,7 +37,7 @@ function init_map() {
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        referrerPolicy: "origin"
+        referrerPolicy: "origin",
     }).addTo(MAP);
 
     //var marker = L.marker([43.2629, -2.95]).addTo(map);
@@ -418,6 +418,7 @@ function estilo(edificio, propiedad) {
     return {
         fillColor: calculateColor(edificio.properties[propiedad]),
         weight: 1,
-        color: "#000000"
+        color: "#000000",
+        fillOpacity: 0.6
     }
 }
