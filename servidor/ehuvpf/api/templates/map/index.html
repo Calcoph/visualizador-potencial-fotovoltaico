@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}EhukhiVPF{% endblock %}
 
@@ -24,18 +25,18 @@ class="marginless" onload="init()"
 {% block content %}
 <dialog id="legend-loader">
     <p><b>Indicador de carga</b></p>
-    <p><img src="/smap/svg/red.svg" width="25px"> No se muestran edificios nuevos, haz zoom para cargar más</p>
-    <p><img src="/smap/svg/green.svg" width="25px"> Se cargan edificios nuevos correctamente</p>
-    <button autofocus id="legend-loader-close-button">Cerrar</button>
+    <p><img src="/smap/svg/red.svg" width="25px">{% translate "No se muestran edificios nuevos, haz zoom para cargar más" %}</p>
+    <p><img src="/smap/svg/green.svg" width="25px">{% translate "Se cargan edificios nuevos correctamente" %}</p>
+    <button autofocus id="legend-loader-close-button">{% translate "Cerrar" %}</button>
 </dialog>
 <div class="interface">
     <div style="position: relative;">
         <div class="interface">
             <div id="tab-select" class="attribute-select">
-                <label><input type="radio" name="tab" value="attributes" onchange="change_tab(this.value)" checked><span>Atributos</span></label>
-                <label><input type="radio" name="tab" value="layers" onchange="change_tab(this.value)"><span>Capas</span></label>
-                <label><input disabled type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)"><span>Marcadores</span></label>
-                <label><input disabled type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)"><span>Mis edificios</span></label>
+                <label><input type="radio" name="tab" value="attributes" onchange="change_tab(this.value)" checked><span>{% translate "Atributos" %}</span></label>
+                <label><input type="radio" name="tab" value="layers" onchange="change_tab(this.value)"><span>{% translate "Capas" %}</span></label>
+                <label><input disabled type="radio" name="tab" value="marcadores" onchange="change_tab(this.value)"><span>{% translate "Marcadores" %}</span></label>
+                <label><input disabled type="radio" name="tab" value="mis edificios" onchange="change_tab(this.value)"><span>{% translate "Mis edificios" %}</span></label>
             </div>
             <template id="attributes-tab">
                 <label>
@@ -53,7 +54,7 @@ class="marginless" onload="init()"
             </div>
         </div>
         <hr>
-        <p style="max-width: 250px;">Se está mostrando el proyecto <b>{{ project.name }}</b> <a href="/map/project-list"><button>Cambiar</button></a></p>
+        <p style="max-width: 250px;">{% translate "Se está mostrando el proyecto" %} <b>{{ project.name }}</b> <a href="/map/project-list"><button>{% translate "Cambiar" %}</button></a></p>
         <table id="color-legend" class="color_legend">
             {% for color in colors %}
             <tr>
@@ -63,7 +64,7 @@ class="marginless" onload="init()"
             {% endfor %}
         </table>
 
-        <div class="bottom_floater"><a href="/map/details"><button style="padding: 5px;">Detalles sobre los datos</button></a></div>
+        <div class="bottom_floater"><a href="/map/details"><button style="padding: 5px;">{% translate "Detalles sobre los datos" %}</button></a></div>
     </div>
     <div id="map"></div>
 </div>

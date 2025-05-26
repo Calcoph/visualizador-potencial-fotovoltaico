@@ -1,23 +1,24 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Añadir capa{% endblock %}
+{% block title %}{% translate "Añadir capa" %}{% endblock %}
 
 {% block content %}
-<h1>Administración del proyecto {{ project.name }}</h1>
-<h3>Creando capa nueva</h3>
+<h1>{% translate "Administración del proyecto" %} {{ project.name }}</h1>
+<h3>{% translate "Creando capa nueva" %}</h3>
 <form method="post" action="/map/api/addLayer">
     {# TODO: Hacer esto con un form y labels #}
-    <p>Patrón en el nombre (para identificación automática de capa)</p>
+    <p>{% translate "Patrón en el nombre (para identificación automática de capa)" %}</p>
     <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
-    <p>Nombre de la capa</p>
+    <p>{% translate "Nombre de la capa" %}</p>
     <input type="text" name="layer-name"/>
-    <p>Selecciona los atributos que se mostrarán en la nueva capa</p>
+    <p>{% translate "Selecciona los atributos que se mostrarán en la nueva capa" %}</p>
     <select id="attribute-select" name="attributes" onchange="attributesChanged()" multiple>
         {% for attribute in attributes %}
             <option value="{{ attribute.pk }}">{{ attribute.display_name }} ({{ attribute.name }})</option>
         {% endfor %}
     </select>
-    <p>Selecciona el atributo que se va a utilizar para colorear los edificios</p>
+    <p>{% translate "Selecciona el atributo que se va a utilizar para colorear los edificios" %}</p>
     <select id="color-attribute-select" name="color-attribute"></select>
     <input type="submit" value="Crear capa"/>
 </form>

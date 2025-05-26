@@ -17,3 +17,4 @@ __pycache__/
 /ehuvpf-projects
 /servidor/ehuvpf/api/migrations
 /mariadb-data
+servidor/ehuvpf/locale/eu_ES/LC_MESSAGES/django.mo

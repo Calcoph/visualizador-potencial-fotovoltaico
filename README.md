@@ -39,7 +39,7 @@ Pedirá una contraseña, usa la de `.secrets/db_root_password.txt`
 Si da error *Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)* Significa que todabía no se ha inicializado la base de datos, espera un poco y vuelve a intentarlo.
 
 8. Ejecutar los comandos de [scripts/db_init.sql](scripts/db_init.sql) (manualmente, mirando los comentarios, no como script)
-9. Obtener id del contenedo de apachedjango
+9. Obtener id del contenedor de apachedjango
 
 `docker ps`
 
@@ -53,10 +53,23 @@ Si da error *Can't connect to local server through socket '/run/mysqld/mysqld.so
 
 `cd /var/www/ehuvpf`
 
-12. Inicializa la base de datos desde django
+12. Compila las traducciones
+
+`django-admin compilemessages`
+
+13. Inicializa la base de datos desde django
 
 `python3 manage.py makemigrations`
 
 `python3 manage.py migrate`
 
-13. El proyecto está listo! Puedes ir a [localhost:8080](http://localhost:8080) para comprobarlo
+14. El proyecto está listo! Puedes ir a [localhost:8080](http://localhost:8080) para comprobarlo
+
+## Traducción
+
+Al añadir/editar texto nuevo al proyecto hay que ejecutar el siguiente comando:
+
+`django-admin makemessages -l eu_ES`
+
+De esta manera se actualizará el fichero de localización. Tras traducir el texto,
+hay que ejecutar `django-admin compilemessages` para que los cambios surtan efecto.

@@ -1,18 +1,19 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Crear proyecto{% endblock %}
+{% block title %}{% translate "Crear proyecto" %}{% endblock %}
 
 {% block content %}
-<h1>Crear proyecto</h1>
+<h1>{% translate "Crear proyecto" %}</h1>
 <form action="api/createProject" method="post">
     <label>
-        Nombre del proyecto
+        {% translate "Nombre del proyecto" %}
         <br>
         <input type="text" name="name">
     </label>
     <br>
     <label>
-        Indica un texto para explicar la fuente de datos.
+        {% translate "Indica un texto para explicar la fuente de datos." %}
         <br>
         <textarea name="data_source">
         </textarea>
@@ -20,28 +21,28 @@
     <br>
     <label>
         <input type="checkbox" name="preprocessed">
-        Los datos originales han sido preprocesados
+        {% translate "Los datos originales han sido preprocesados" %}
     </label>
     <br>
     <details>
-        <summary>Información sobre el preproceso</summary>
+        <summary>{% translate "Información sobre el preproceso" %}</summary>
         <p>
             <label style="background-color: transparent;">
-                Nombre del programa/proyecto de preprocesado
+                {% translate "Nombre del programa/proyecto de preprocesado" %}
                 <br>
                 <input style="background-color: azure;" type="text" name="preprocess_name">
             </label>
         </p>
         <p>
             <label style="background-color: transparent;">
-                Link al programa/proyecto
+                {% translate "Enlace al programa/proyecto" %}
                 <br>
                 <input style="background-color:azure; color: blue; text-decoration: underline;" type="text" name="preprocess_name">
             </label>
         </p>
         <p>
             <label style="background-color: transparent;">
-                Versión del programa/proyecto
+                {% translate "Versión del programa/proyecto" %}
                 <br>
                 <input style="background-color: azure;" type="text" name="preprocess_name">
             </label>

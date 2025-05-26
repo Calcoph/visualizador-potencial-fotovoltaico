@@ -1,17 +1,17 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p>{% translate "Nombre de usuario o contraseña incorrectos. Intenta otra vez." %}</p>
 {% endif %}
 
 {% if next %}
     {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
+    <p>{% translate "Tu cuenta no tiene acceso a esta página. Para proseguir, inicie sesión con una cuenta con acceso" %}.</p>
     {% else %}
-    <p>Please login to see this page.</p>
+    <p>{% translate "Por favor inicia sesión para ver esta página" %}</p>
     {% endif %}
 {% endif %}
 

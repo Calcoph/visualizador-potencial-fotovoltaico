@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Detalles del proyecto{% endblock %}
+{% block title %}{% translate "Detalles del proyecto" %}{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/smap/css/general.css"/>
@@ -8,23 +9,23 @@
 {% endblock %}
 
 {% block content %}
-<a href="edit-project-details"><button>Editar esta página</button></a>
-<h1>Información del proyecto {{ project.name }}</h1>
+<a href="edit-project-details"><button>{% translate "Editar esta página" %}</button></a>
+<h1>{% translate "Información del proyecto" %} {{ project.name }}</h1>
 <hr>
-<h3>Fuente de datos</h3>
+<h3>{% translate "Fuente de datos" %}</h3>
 {{ project.data_source|safe }}
 <hr>
-<h3>Procesamiento de datos</h3>
+<h3>{% translate "Procesamiento de datos" %}</h3>
 {% if project.preprocess_program_name|length > 0 %}
-    <p>El resultado se ha obtenido al procesar los datos con este programa:</p>
+    <p>{% translate "El resultado se ha obtenido al procesar los datos con este programa:" %}</p>
     <p><a href="{{ project.preprocess_program_link }}">{{ project.preprocess_program_name }}</a></p>
-    <p>Utilizando la versión: <code>{{ project.preprocess_program_version }}</code></p>
+    <p>{% translate "Utilizando la versión:" %} <code>{{ project.preprocess_program_version }}</code></p>
 {% else %}
-    <p>Los datos originales no se han preprocesado o se ha seguido un método desconocido/oculto para su cálculo.</p>
+    <p>{% translate "Los datos originales no se han preprocesado o se ha seguido un método desconocido/oculto para su cálculo." %}</p>
 {% endif %}
 <hr>
-<h3>Parámetros</h3>
-<p>En el procesamiento de los datos se han usado estos parámetros con los valores indicados.</p>
+<h3>{% translate "Parámetros" %}</h3>
+<p>{% translate "En el procesamiento de los datos se han usado estos parámetros con los valores indicados." %}</p>
 {% for parameter in parameters %}
     <details>
         <summary>{{ parameter.name }}</summary>
@@ -33,13 +34,13 @@
     <br>
 {% endfor %}
 <hr>
-<h3>Atributos</h3>
-<p>Los atributos resultado tras los cálculos son los siguientes.</p>
+<h3>{% translate "Atributos" %}</h3>
+<p>{% translate "Los atributos resultado tras los cálculos son los siguientes." %}</p>
 {% for attribute in attributes %}
     <details>
         <summary>{{ attribute.display_name }}</summary>
         <p class="parameter_description">{{ attribute.description }}</p>
-    </details><span> medido en {{ attribute.unit }}</span>
+    </details><span>{% "medido en" %} {{ attribute.unit }}</span>
     <br>
 {% endfor %}
 {% endblock %}

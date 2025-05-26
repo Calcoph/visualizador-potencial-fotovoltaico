@@ -1,33 +1,34 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Editar capa{% endblock %}
+{% block title %}{% translate "Editar capa" %}{% endblock %}
 
 {% block content %}
-<h1>Administración del proyecto {{ project.name }}</h1>
-<h3>Modificando capa <span id="title_name" style="border: 1px solid black;">{{ layer.name }}</span></h3>
+<h1>{% translate "Administración del proyecto" %} {{ project.name }}</h1>
+<h3>{% translate "Modificando capa" %} <span id="title_name" style="border: 1px solid black;">{{ layer.name }}</span></h3>
 <dialog id="delete-confirm">
-    <p>Estás seguro de que quieres eliminar la capa <b>{{ layer.name }}</b>?</p>
+    <p>{% translate "Estás seguro de que quieres eliminar la capa" %} <b>{{ layer.name }}</b>?</p>
     <button onclick="deleteLayer()">Sí</button>
     <button autofocus onclick="document.getElementById('delete-confirm').close()">No</button>
 </dialog>
 <form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validateForm()">
-    <h3>Patrón en el nombre (para identificación automática de capa)</h3>
+    <h3>{% translate "Patrón en el nombre (para identificación automática de capa)" %}</h3>
     <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
-    <h3>Atributos relevantes:</h3>
+    <h3>{% translate "Atributos relevantes:" %}</h3>
     <ul id="attributes">
         {% for measure in default_measures %}
             <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="removeAttribute({{ measure.pk }})" value="Quitar"></li>
         {% endfor %}
     </ul>
     <details>
-        <summary>Añadir un atributo para mostrar en esta capa:</summary>
+        <summary>{% translate "Añadir un atributo para mostrar en esta capa:" %}</summary>
         <ul id="available-attributes">
             {% for measure in unused_measures %}
                 <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="addAttribute({{ measure.pk }})" value="Añadir"></li>
             {% endfor %}
         </ul>
     </details>
-    <h3>Atributo a colorear:</h3>
+    <h3>{% translate "Atributo a colorear:" %}</h3>
     <select id="attribute-color-selector" name="color-attribute">
         {% for measure in default_measures %}
             {% if measure.pk == color_measure.pk %}
@@ -40,7 +41,7 @@
     <table>
         <tr>
             <th style="width:50px">Color</th>
-            <th>Valor mínimo</th>
+            <th>{% translate "Valor mínimo" %}</th>
         </tr>
         {% for color_rule in color_rules %}
             <tr>
@@ -51,7 +52,7 @@
     </table>
     <input type="hidden" name="id" value="{{ layer.pk }}">
     <input type="submit" value="Confirmar cambios">
-    <button type="button" onclick="document.getElementById('delete-confirm').showModal()">Eliminar</button>
+    <button type="button" onclick="document.getElementById('delete-confirm').showModal()">{% translate "Eliminar" %}</button>
 </form>
 {% endblock %}
 

@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Editar atributo{% endblock %}
+{% block title %}{% translate "Editar atributo"%}{% endblock %}
 
 {% block content %}
-<h1>LISTA DE PROYECTOS</h1>
+<h1>{% translate "LISTA DE PROYECTOS" %}</h1>
 {% if current_project is None %}
-    <p>You don't have any project selected. Please select one from below:</p>
+    <p>{% translate "No has elegido ningún proyecto. Por favor elige uno de los siguientes:" %}</p>
 {% else %}
-    <p>Currently selected project: {{ current_project.name }}</p>
+    <p>{% translate "Proyecto seleccionado:" %} {{ current_project.name }}</p>
 {% endif %}
     <input id="next" type="hidden" value="{{ next }}">
 {% for project in projects %}
@@ -19,7 +19,7 @@
     {% endif %}
 {% endfor %}
 <br>
-<a href="create-project.html"><button>Crear proyecto</button></a>
+<a href="create-project.html"><button>{% translate "Crear proyecto" %}</button></a>
 {% endblock %}
 
 {% block after_scripts %}

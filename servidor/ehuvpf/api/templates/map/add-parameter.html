@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Añadir parámetro{% endblock %}
+{% block title %}{% translate "Añadir parámetro" %}{% endblock %}
 
 {% block content %}
-<h1>Administración del proyecto</h1>
-<h2>Parámetros existentes</h2>
+<h1>{% translate "Administración del proyecto" %}</h1>
+<h2>{% translate "Parámetros existentes"}</h2>
 <ul id="lista">
     <template id="list_element_template">
         <li></li>
@@ -31,18 +32,18 @@ for (parameter of parameters) {
     addItemToList(parameter.name)
 }
 </script>
-<h1>Nuevo parámetro:</h1>
+<h1>{% translate "Nuevo parámetro:" %}</h1>
 <form id="formAddParameter" onsubmit="return false">
     <label>
-        Nombre:<br>
+        {% translate "Nombre:" %}<br>
         <input type="text" id="name" name="name">
     </label><br>
     <label>
-        Descripción:<br>
+        {% translate "Descripción:" %}<br>
         <input type="text" id="description" name="description">
     </label><br>
     <label>
-        Valor dado: (Se recomienda especificar unidades si es apropiado)<br>
+        {% translate "Valor dado: (Se recomienda especificar unidades si es apropiado)" %}<br>
         <input type="text" id="value" name="value">
     </label><br>
     <button type="submit" onclick="addParameter()">Añadir</button>

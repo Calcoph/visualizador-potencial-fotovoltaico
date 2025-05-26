@@ -1,3 +1,5 @@
+{% load i18n %}
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,11 +15,13 @@
     <header class="header">
         <a href="/map/"><img class="header-logo" src="/smap/svg/logo-map.svg"/></a>
         <span class="header-right">
-            <a class=anchorbutton href="/admin">Administrar app</a>
-            <a class=anchorbutton href="/map/project-admin">Administrar proyecto</a>
+            <a class=anchorbutton href="/admin">{% translate "Administrar app" %}</a>
+            <a class=anchorbutton href="/map/project-admin">{% translate "Administrar proyecto" %}</a>
             <div class="login-section">
+                <button onclick="select_lang('es-ES')">ES</button>
+                <button onclick="select_lang('eu-ES')">EUS</button>
                 {% if user.is_authenticated %}
-                    <span>Hola <b>{{ user.get_username }}</b></span>&nbsp;<a class=anchorbutton href="/map/user/logout">Cerrar sesión</a>
+                    <span>Hola <b>{{ user.get_username }}</b></span>&nbsp;<a class=anchorbutton href="/map/user/logout">{% translate "Cerrar sesión" %}</a>
                 {% else %}
                     <a class=anchorbutton href="/map/user/login">login</a>
                     <a class=anchorbutton href="/map/register.html">register</a>
@@ -34,6 +38,7 @@
         {% block footer %}{% endblock %}
     </footer>
     <script src="/smap/js/error.js"></script>
+    <script src="/smap/js/lang_select.js"></script>
     {% block after_scripts %}{% endblock %}
 </body>
 </html>

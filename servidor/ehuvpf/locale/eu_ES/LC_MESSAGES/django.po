@@ -1,0 +1,497 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-26 20:29+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: api/templates/base.html:18
+msgid "Administrar app"
+msgstr "App administratu"
+
+#: api/templates/base.html:19 api/templates/map/project-admin.html:3
+msgid "Administrar proyecto"
+msgstr "Proiektua administratzea"
+
+#: api/templates/base.html:24
+msgid "Cerrar sesión"
+msgstr ""
+
+#: api/templates/map/add-attribute.html:4
+msgid "Añadir atributo"
+msgstr ""
+
+#: api/templates/map/add-attribute.html:7 api/templates/map/add-layer.html:7
+#: api/templates/map/add-parameter.html:7 api/templates/map/edit-layer.html:6
+#: api/templates/map/edit-parameter.html:6
+#: api/templates/map/project-admin.html:6
+msgid "Administración del proyecto"
+msgstr "Proiektua administratzea"
+
+#: api/templates/map/add-attribute.html:8
+msgid "Atributos existentes"
+msgstr "Dauden atributuak"
+
+#: api/templates/map/add-attribute.html:40
+#: api/templates/map/edit-attribute.html:15
+msgid ""
+"Identificador: (Este identificador es el nombre del atributo en los archivos "
+"subidos)"
+msgstr ""
+"identifikatzailea: (Identifikatzaile hau atributuaren izena da igotako "
+"artxiboetan)"
+
+#: api/templates/map/add-attribute.html:48
+#: api/templates/map/add-parameter.html:42
+#: api/templates/map/edit-attribute.html:23
+#: api/templates/map/edit-parameter.html:19
+msgid "Descripción:"
+msgstr "Deskribapena:"
+
+#: api/templates/map/add-attribute.html:52
+#: api/templates/map/edit-attribute.html:27
+msgid "Unidad:"
+msgstr "Unitatea:"
+
+#: api/templates/map/add-attribute.html:55
+msgid "Añadir"
+msgstr "Gehitu"
+
+#: api/templates/map/add-building.html:4
+msgid "Añadir datos"
+msgstr "datuak gehitu"
+
+#: api/templates/map/add-building.html:12
+msgid "AÑADIR DATOS"
+msgstr "DATUAK GEHITU"
+
+#: api/templates/map/add-building.html:13
+msgid "Atrás"
+msgstr "Atzera"
+
+#: api/templates/map/add-building.html:18
+msgid "ficheros ESRI"
+msgstr "ESRI fitxategiak"
+
+#: api/templates/map/add-building.html:21
+msgid "uno solo"
+msgstr "bakarra"
+
+#: api/templates/map/add-building.html:22
+msgid "multiples"
+msgstr "multipleak"
+
+#: api/templates/map/add-building.html:30
+msgid "Ficheros"
+msgstr "Fitxategiak"
+
+#: api/templates/map/add-layer.html:4 api/templates/map/project-admin.html:36
+msgid "Añadir capa"
+msgstr "Gehitu capa"
+
+#: api/templates/map/add-layer.html:8
+msgid "Creando capa nueva"
+msgstr "Geruza berria sortzen"
+
+#: api/templates/map/add-layer.html:11 api/templates/map/edit-layer.html:14
+msgid "Patrón en el nombre (para identificación automática de capa)"
+msgstr "Patroia izenean (geruza automatikoki identifikatzeko)"
+
+#: api/templates/map/add-layer.html:13
+msgid "Nombre de la capa"
+msgstr "Geruzaren izena"
+
+#: api/templates/map/add-layer.html:15
+msgid "Selecciona los atributos que se mostrarán en la nueva capa"
+msgstr "Aukeratu geruza berrian erakutsiko diren atributuak"
+
+#: api/templates/map/add-layer.html:21
+msgid "Selecciona el atributo que se va a utilizar para colorear los edificios"
+msgstr "Aukeratu eraikinak koloreztatzeko erabiliko den atributua"
+
+#: api/templates/map/add-parameter.html:4
+#: api/templates/map/edit-project-details.html:53
+msgid "Añadir parámetro"
+msgstr "Parametroa gehitu"
+
+#: api/templates/map/add-parameter.html:35
+msgid "Nuevo parámetro:"
+msgstr "Parametro berria:"
+
+#: api/templates/map/add-parameter.html:38
+#: api/templates/map/edit-parameter.html:15
+msgid "Nombre:"
+msgstr "Izena:"
+
+#: api/templates/map/add-parameter.html:46
+msgid "Valor dado: (Se recomienda especificar unidades si es apropiado)"
+msgstr "Emandako balioa: (Unitateak zehaztea gomendatzen da, egokia bada)"
+
+#: api/templates/map/create-project.html:4
+#: api/templates/map/create-project.html:7
+#: api/templates/map/project-list.html:22
+msgid "Crear proyecto"
+msgstr "Proiektua sortzea"
+
+#: api/templates/map/create-project.html:10
+msgid "Nombre del proyecto"
+msgstr "Proiektuaren izena"
+
+#: api/templates/map/create-project.html:16
+msgid "Indica un texto para explicar la fuente de datos."
+msgstr "Datu-iturria azaltzeko testu bat adierazten du."
+
+#: api/templates/map/create-project.html:24
+msgid "Los datos originales han sido preprocesados"
+msgstr "Jatorrizko datuak aurrez hartu dira"
+
+#: api/templates/map/create-project.html:28
+msgid "Información sobre el preproceso"
+msgstr "Aurreprozsoari buruzko informazioa"
+
+#: api/templates/map/create-project.html:31
+msgid "Nombre del programa/proyecto de preprocesado"
+msgstr "Aurreprozektatutako programaren/ proiektuaren izena"
+
+#: api/templates/map/create-project.html:38
+msgid "Enlace al programa/proyecto"
+msgstr "Esteka programa/ proiektura"
+
+#: api/templates/map/create-project.html:45
+msgid "Versión del programa/proyecto"
+msgstr "Programaren/ proiektuaren bertsioa"
+
+#: api/templates/map/details.html:4
+#: api/templates/map/edit-project-details.html:3
+msgid "Detalles del proyecto"
+msgstr "Datuei buruzko xehetasunak"
+
+#: api/templates/map/details.html:12
+msgid "Editar esta página"
+msgstr "Orrialde hau editatu"
+
+#: api/templates/map/details.html:13
+#: api/templates/map/edit-project-details.html:13
+msgid "Información del proyecto"
+msgstr "Proiektuaren informazioa"
+
+#: api/templates/map/details.html:15
+msgid "Fuente de datos"
+msgstr "Datu-iturria"
+
+#: api/templates/map/details.html:18
+#: api/templates/map/edit-project-details.html:22
+msgid "Procesamiento de datos"
+msgstr "Datuen prozesamendua"
+
+#: api/templates/map/details.html:20
+msgid "El resultado se ha obtenido al procesar los datos con este programa:"
+msgstr "Emaitza programa honekin datuak prozesatzean lortu da:"
+
+#: api/templates/map/details.html:22
+msgid "Utilizando la versión:"
+msgstr "Bertsioa erabiliz:"
+
+#: api/templates/map/details.html:24
+msgid ""
+"Los datos originales no se han preprocesado o se ha seguido un método "
+"desconocido/oculto para su cálculo."
+msgstr ""
+"Jatorrizko datuak ez dira aurrez hartu, edo metodo ezezagun/ ezkutu bat "
+"jarraitu da horiek kalkulatzeko."
+
+#: api/templates/map/details.html:27
+#: api/templates/map/edit-project-details.html:44
+msgid "Parámetros"
+msgstr "Parametroak"
+
+#: api/templates/map/details.html:28
+msgid ""
+"En el procesamiento de los datos se han usado estos parámetros con los "
+"valores indicados."
+msgstr ""
+"Datuak prozesatzeko, parametro horiek adierazitako balioekin erabili dira."
+
+#: api/templates/map/details.html:37
+#: api/templates/map/edit-project-details.html:55
+#: api/templates/map/index.html:36 api/templates/map/project-admin.html:8
+msgid "Atributos"
+msgstr "Atributuak"
+
+#: api/templates/map/details.html:38
+msgid "Los atributos resultado tras los cálculos son los siguientes."
+msgstr "Kalkuluen ondoren ateratako atributuak honako hauek dira:"
+
+#: api/templates/map/edit-attribute.html:4
+#: api/templates/map/edit-parameter.html:3
+#: api/templates/map/project-list.html:3
+msgid "Editar atributo"
+msgstr "Atributua editatu"
+
+#: api/templates/map/edit-attribute.html:7
+msgid "Editando atributo"
+msgstr "Atributua argitaratzen"
+
+#: api/templates/map/edit-attribute.html:9
+msgid "Estás seguro de que quieres eliminar el atributo"
+msgstr "Ziur zaude atributua kendu nahi duzula"
+
+#: api/templates/map/edit-attribute.html:19
+msgid "Nombre a mostrar:"
+msgstr "Erakutsi beharreko izena:"
+
+#: api/templates/map/edit-attribute.html:31
+#: api/templates/map/edit-parameter.html:27
+#: api/templates/map/edit-project-details.html:19
+#: api/templates/map/edit-project-details.html:41
+msgid "Confirmar"
+msgstr "Baieztatu"
+
+#: api/templates/map/edit-attribute.html:32
+#: api/templates/map/edit-layer.html:54
+#: api/templates/map/edit-parameter.html:28
+msgid "Eliminar"
+msgstr "Ezabatu"
+
+#: api/templates/map/edit-colors.html:4 api/templates/map/project-admin.html:45
+msgid "Editar colores"
+msgstr "Koloreak editatu"
+
+#: api/templates/map/edit-colors.html:14
+msgid "Haz click en los colores para cambiarlos."
+msgstr "Egin klik koloreetan aldatzeko."
+
+#: api/templates/map/edit-colors.html:57
+msgid "Añadir Color"
+msgstr "Kolorea gehitu"
+
+#: api/templates/map/edit-colors.html:58
+msgid "Eliminar el último color"
+msgstr "Azken kolorea ezabatzea"
+
+#: api/templates/map/edit-colors.html:59
+msgid "Confirmar cambios"
+msgstr "Aldaketak baieztatu"
+
+#: api/templates/map/edit-layer.html:3
+msgid "Editar capa"
+msgstr "Capa editatu"
+
+#: api/templates/map/edit-layer.html:7
+msgid "Modificando capa"
+msgstr "Geruza aldatzen"
+
+#: api/templates/map/edit-layer.html:9
+msgid "Estás seguro de que quieres eliminar la capa"
+msgstr "Ziur zaude geruza kendu nahi duzula"
+
+#: api/templates/map/edit-layer.html:16
+msgid "Atributos relevantes:"
+msgstr "Atributu garrantzitsuak:"
+
+#: api/templates/map/edit-layer.html:23
+msgid "Añadir un atributo para mostrar en esta capa:"
+msgstr "Gehitu atributu bat geruza honetan erakusteko:"
+
+#: api/templates/map/edit-layer.html:30
+msgid "Atributo a colorear:"
+msgstr "Koloreztatzeko atributua:"
+
+#: api/templates/map/edit-layer.html:43
+msgid "Valor mínimo"
+msgstr "Gutxieneko balioa"
+
+#: api/templates/map/edit-parameter.html:7
+msgid "Editando parámetro"
+msgstr "Parametroa editatzen"
+
+#: api/templates/map/edit-parameter.html:9
+msgid "Estás seguro de que quieres eliminar el parámetro"
+msgstr "Ziur zaude parametroa ezabatu nahi duzula"
+
+#: api/templates/map/edit-parameter.html:10
+msgid "Sí"
+msgstr "Bai"
+
+#: api/templates/map/edit-parameter.html:11
+msgid "No"
+msgstr "Ez"
+
+#: api/templates/map/edit-parameter.html:23
+msgid "Valor dado:"
+msgstr "Emandako balioa:"
+
+#: api/templates/map/edit-project-details.html:12
+msgid "Dejar de editar"
+msgstr "Argitaratzeari uztea"
+
+#: api/templates/map/edit-project-details.html:16
+msgid ""
+"En este apartado se puede insertar cualquier HTML. Por lo que sólo se puede "
+"editar con permisos de administrador."
+msgstr ""
+"Atal honetan edozein HTML txer daiteke. Beraz, administratzaile-baimenekin "
+"bakarrik editatu daiteke."
+
+#: api/templates/map/edit-project-details.html:30
+msgid "Enlace al programa de procesado de datos:"
+msgstr "Datuak prozesatzeko programara esteka:"
+
+#: api/templates/map/edit-project-details.html:38
+msgid "Versión del programa de procesado"
+msgstr "Prozesatze-programaren bertsioa"
+
+#: api/templates/map/edit-project-details.html:45
+msgid ""
+"Si el procesado de datos depende de parámetros, se pueden indicar a "
+"continuación."
+msgstr ""
+"Datuen prozesaketa parametroen araberakoa bada, jarraian adierazi daitezke"
+
+#: api/templates/map/edit-project-details.html:50
+#: api/templates/map/edit-project-details.html:61
+#: api/templates/map/project-admin.html:18
+#: api/templates/map/project-admin.html:32
+msgid "Editar"
+msgstr "Editatu"
+
+#: api/templates/map/edit-project-details.html:61
+msgid "medido en"
+msgstr "neurtua"
+
+#: api/templates/map/index.html:28
+msgid "No se muestran edificios nuevos, haz zoom para cargar más"
+msgstr "Ez da eraikin berririk erakusten, egin zoom gehiago kargatzeko"
+
+#: api/templates/map/index.html:29
+msgid "Se cargan edificios nuevos correctamente"
+msgstr "Eraikin berriak behar bezala kargatzen dira"
+
+#: api/templates/map/index.html:30
+msgid "Cerrar"
+msgstr "Itxi"
+
+#: api/templates/map/index.html:37 api/templates/map/project-admin.html:24
+msgid "Capas"
+msgstr "Kapak"
+
+#: api/templates/map/index.html:38
+msgid "Marcadores"
+msgstr "Markagailuak"
+
+#: api/templates/map/index.html:39
+msgid "Mis edificios"
+msgstr "Nire eraikinak"
+
+#: api/templates/map/index.html:57
+msgid "Se está mostrando el proyecto"
+msgstr "Proiektua erakusten ari dira"
+
+#: api/templates/map/index.html:57 api/templates/map/project-admin.html:6
+msgid "Cambiar"
+msgstr "Aldatu"
+
+#: api/templates/map/index.html:67
+msgid "Detalles sobre los datos"
+msgstr "Datuei buruzko xehetasunak"
+
+#: api/templates/map/project-admin.html:11
+#: api/templates/map/project-admin.html:27
+msgid "Nombre"
+msgstr "Izena"
+
+#: api/templates/map/project-admin.html:12
+msgid "Identificador"
+msgstr "Identifikatzailea"
+
+#: api/templates/map/project-admin.html:22
+msgid "Añadir atributos"
+msgstr "Atributuak gehitu"
+
+#: api/templates/map/project-admin.html:37
+msgid "Colores del proyecto"
+msgstr "Proiektuaren koloreak"
+
+#: api/templates/map/project-admin.html:46
+msgid "Editar información del proyecto"
+msgstr "Proiektuaren informazioa editatu"
+
+#: api/templates/map/project-admin.html:47
+msgid "Añadir edificio"
+msgstr "Gehitu eraikina"
+
+#: api/templates/map/project-list.html:6
+msgid "LISTA DE PROYECTOS"
+msgstr "PROIEKTUEN ZERRENDA"
+
+#: api/templates/map/project-list.html:8
+msgid "No has elegido ningún proyecto. Por favor elige uno de los siguientes:"
+msgstr "Ez duzu proiekturik aukeratu. Mesedez, aukeratu honako hauetako bat:"
+
+#: api/templates/map/project-list.html:10
+msgid "Proyecto seleccionado:"
+msgstr "Hautatutako proiektua:"
+
+#: api/templates/map/register.html:3
+msgid "Registra una cuenta"
+msgstr "Erregistratu kontu bat"
+
+#: api/templates/map/register.html:13
+msgid "Nombre de usuario"
+msgstr "Erabiltzaile-izena"
+
+#: api/templates/map/register.html:14
+msgid "email"
+msgstr "e-posta"
+
+#: api/templates/map/register.html:15
+msgid "contraseña"
+msgstr "pasahitza"
+
+#: api/templates/map/register.html:16
+msgid "repetir contraseña"
+msgstr "pasahitza errepikatu"
+
+#: api/templates/user/login.html:7
+msgid "Nombre de usuario o contraseña incorrectos. Intenta otra vez."
+msgstr "Erabiltzaile-izena edo pasahitz okerrak. Saia zaitez berriro."
+
+#: api/templates/user/login.html:12
+msgid ""
+"Tu cuenta no tiene acceso a esta página. Para proseguir, inicie sesión con "
+"una cuenta con acceso"
+msgstr ""
+"Zure kontuak ez du orrialde honetan sartzeko aukerarik. Jarraitzeko, hasi "
+"saioa sarbidea duen kontu batekin"
+
+#: api/templates/user/login.html:14
+msgid "Por favor inicia sesión para ver esta página"
+msgstr "Mesedez, hasi saioa orrialde hau ikusteko"
+
+#: api/templates/user/logout.html:4
+msgid "Cierre de sesión"
+msgstr "Saioaren amaiera"
+
+#: api/templates/user/logout.html:5
+msgid "Se ha cerrado la sesión correctamente"
+msgstr "Se ha cerrado la sesión correctamente"
+
+#: ehuvpf/settings.py:151
+msgid "Español"
+msgstr "Español"
+
+#: ehuvpf/settings.py:152
+msgid "Euskera"
+msgstr "Euskera"

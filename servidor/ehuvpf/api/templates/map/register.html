@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Registra una cuenta{% endblock %}
+{% block title %}{% translate "Registra una cuenta" %}{% endblock %}
 
 {% block head %}
 <link rel="stylesheet" href="/smap/css/general.css"/>
@@ -10,10 +10,10 @@
 {% block content %}
 <h1>REGISTER</h1>
 <div class="field-array">
-    <label><input type="text">Nombre de usuario</label>
-    <label><input type="text">email</label>
-    <label><input type="text">contraseña</label>
-    <label><input type="text">repetir contraseña</label>
+    <label><input type="text">{% translate "Nombre de usuario" %}</label>
+    <label><input type="text">{% translate "email" %}</label>
+    <label><input type="text">{% translate "contraseña" %}</label>
+    <label><input type="text">{% translate "repetir contraseña" %}</label>
 </div>
 {% endblock %}
 
