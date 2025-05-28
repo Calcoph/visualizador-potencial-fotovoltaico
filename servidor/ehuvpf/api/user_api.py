@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
 from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect
 
 def create_user(request: HttpRequest):
     user = request.POST.get("user")
@@ -17,13 +17,12 @@ def change_password(request: HttpRequest):
     user.set_password(password)
     user.save()
 
-def login(request: HttpRequest):
-    user = request.GET.get("username")
-    password = request.GET.get("password")
-
-    logged_user = authenticate(username=user,password=password)
-
-    return HttpResponse(logged_user.get_username())
-
 def register(request: HttpRequest):
-    return HttpResponse("TODO")
+    user = request.POST.get("username")
+    password = request.POST.get("password")
+    email = request.POST.get("email")
+
+    user = User.objects.create_user(user, email, password)
+    user.save()
+
+    return redirect("/map/user/login")

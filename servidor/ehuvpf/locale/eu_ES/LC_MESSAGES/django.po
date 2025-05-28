@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-26 20:29+0200\n"
+"POT-Creation-Date: 2025-05-28 20:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,22 +21,22 @@ msgstr ""
 msgid "Administrar app"
 msgstr "App administratu"
 
-#: api/templates/base.html:19 api/templates/map/project-admin.html:3
+#: api/templates/base.html:19 api/templates/map/project-admin.html:4
 msgid "Administrar proyecto"
 msgstr "Proiektua administratzea"
 
 #: api/templates/base.html:24
 msgid "Cerrar sesión"
-msgstr ""
+msgstr "Saioa itxi"
 
 #: api/templates/map/add-attribute.html:4
 msgid "Añadir atributo"
-msgstr ""
+msgstr "Atributua gehitu"
 
 #: api/templates/map/add-attribute.html:7 api/templates/map/add-layer.html:7
-#: api/templates/map/add-parameter.html:7 api/templates/map/edit-layer.html:6
-#: api/templates/map/edit-parameter.html:6
-#: api/templates/map/project-admin.html:6
+#: api/templates/map/add-parameter.html:7 api/templates/map/edit-layer.html:7
+#: api/templates/map/edit-parameter.html:7
+#: api/templates/map/project-admin.html:7
 msgid "Administración del proyecto"
 msgstr "Proiektua administratzea"
 
@@ -56,7 +56,7 @@ msgstr ""
 #: api/templates/map/add-attribute.html:48
 #: api/templates/map/add-parameter.html:42
 #: api/templates/map/edit-attribute.html:23
-#: api/templates/map/edit-parameter.html:19
+#: api/templates/map/edit-parameter.html:20
 msgid "Descripción:"
 msgstr "Deskribapena:"
 
@@ -97,7 +97,7 @@ msgstr "multipleak"
 msgid "Ficheros"
 msgstr "Fitxategiak"
 
-#: api/templates/map/add-layer.html:4 api/templates/map/project-admin.html:36
+#: api/templates/map/add-layer.html:4 api/templates/map/project-admin.html:37
 msgid "Añadir capa"
 msgstr "Gehitu capa"
 
@@ -105,7 +105,7 @@ msgstr "Gehitu capa"
 msgid "Creando capa nueva"
 msgstr "Geruza berria sortzen"
 
-#: api/templates/map/add-layer.html:11 api/templates/map/edit-layer.html:14
+#: api/templates/map/add-layer.html:11 api/templates/map/edit-layer.html:15
 msgid "Patrón en el nombre (para identificación automática de capa)"
 msgstr "Patroia izenean (geruza automatikoki identifikatzeko)"
 
@@ -122,7 +122,7 @@ msgid "Selecciona el atributo que se va a utilizar para colorear los edificios"
 msgstr "Aukeratu eraikinak koloreztatzeko erabiliko den atributua"
 
 #: api/templates/map/add-parameter.html:4
-#: api/templates/map/edit-project-details.html:53
+#: api/templates/map/edit-project-details.html:54
 msgid "Añadir parámetro"
 msgstr "Parametroa gehitu"
 
@@ -131,7 +131,7 @@ msgid "Nuevo parámetro:"
 msgstr "Parametro berria:"
 
 #: api/templates/map/add-parameter.html:38
-#: api/templates/map/edit-parameter.html:15
+#: api/templates/map/edit-parameter.html:16
 msgid "Nombre:"
 msgstr "Izena:"
 
@@ -141,7 +141,7 @@ msgstr "Emandako balioa: (Unitateak zehaztea gomendatzen da, egokia bada)"
 
 #: api/templates/map/create-project.html:4
 #: api/templates/map/create-project.html:7
-#: api/templates/map/project-list.html:22
+#: api/templates/map/project-list.html:23
 msgid "Crear proyecto"
 msgstr "Proiektua sortzea"
 
@@ -174,7 +174,7 @@ msgid "Versión del programa/proyecto"
 msgstr "Programaren/ proiektuaren bertsioa"
 
 #: api/templates/map/details.html:4
-#: api/templates/map/edit-project-details.html:3
+#: api/templates/map/edit-project-details.html:4
 msgid "Detalles del proyecto"
 msgstr "Datuei buruzko xehetasunak"
 
@@ -183,7 +183,7 @@ msgid "Editar esta página"
 msgstr "Orrialde hau editatu"
 
 #: api/templates/map/details.html:13
-#: api/templates/map/edit-project-details.html:13
+#: api/templates/map/edit-project-details.html:14
 msgid "Información del proyecto"
 msgstr "Proiektuaren informazioa"
 
@@ -192,7 +192,7 @@ msgid "Fuente de datos"
 msgstr "Datu-iturria"
 
 #: api/templates/map/details.html:18
-#: api/templates/map/edit-project-details.html:22
+#: api/templates/map/edit-project-details.html:23
 msgid "Procesamiento de datos"
 msgstr "Datuen prozesamendua"
 
@@ -213,7 +213,7 @@ msgstr ""
 "jarraitu da horiek kalkulatzeko."
 
 #: api/templates/map/details.html:27
-#: api/templates/map/edit-project-details.html:44
+#: api/templates/map/edit-project-details.html:45
 msgid "Parámetros"
 msgstr "Parametroak"
 
@@ -225,8 +225,8 @@ msgstr ""
 "Datuak prozesatzeko, parametro horiek adierazitako balioekin erabili dira."
 
 #: api/templates/map/details.html:37
-#: api/templates/map/edit-project-details.html:55
-#: api/templates/map/index.html:36 api/templates/map/project-admin.html:8
+#: api/templates/map/edit-project-details.html:56
+#: api/templates/map/index.html:36 api/templates/map/project-admin.html:9
 msgid "Atributos"
 msgstr "Atributuak"
 
@@ -235,8 +235,8 @@ msgid "Los atributos resultado tras los cálculos son los siguientes."
 msgstr "Kalkuluen ondoren ateratako atributuak honako hauek dira:"
 
 #: api/templates/map/edit-attribute.html:4
-#: api/templates/map/edit-parameter.html:3
-#: api/templates/map/project-list.html:3
+#: api/templates/map/edit-parameter.html:4
+#: api/templates/map/project-list.html:4
 msgid "Editar atributo"
 msgstr "Atributua editatu"
 
@@ -253,19 +253,19 @@ msgid "Nombre a mostrar:"
 msgstr "Erakutsi beharreko izena:"
 
 #: api/templates/map/edit-attribute.html:31
-#: api/templates/map/edit-parameter.html:27
-#: api/templates/map/edit-project-details.html:19
-#: api/templates/map/edit-project-details.html:41
+#: api/templates/map/edit-parameter.html:28
+#: api/templates/map/edit-project-details.html:20
+#: api/templates/map/edit-project-details.html:42
 msgid "Confirmar"
 msgstr "Baieztatu"
 
 #: api/templates/map/edit-attribute.html:32
-#: api/templates/map/edit-layer.html:54
-#: api/templates/map/edit-parameter.html:28
+#: api/templates/map/edit-layer.html:55
+#: api/templates/map/edit-parameter.html:29
 msgid "Eliminar"
 msgstr "Ezabatu"
 
-#: api/templates/map/edit-colors.html:4 api/templates/map/project-admin.html:45
+#: api/templates/map/edit-colors.html:4 api/templates/map/project-admin.html:46
 msgid "Editar colores"
 msgstr "Koloreak editatu"
 
@@ -285,59 +285,59 @@ msgstr "Azken kolorea ezabatzea"
 msgid "Confirmar cambios"
 msgstr "Aldaketak baieztatu"
 
-#: api/templates/map/edit-layer.html:3
+#: api/templates/map/edit-layer.html:4
 msgid "Editar capa"
 msgstr "Capa editatu"
 
-#: api/templates/map/edit-layer.html:7
+#: api/templates/map/edit-layer.html:8
 msgid "Modificando capa"
 msgstr "Geruza aldatzen"
 
-#: api/templates/map/edit-layer.html:9
+#: api/templates/map/edit-layer.html:10
 msgid "Estás seguro de que quieres eliminar la capa"
 msgstr "Ziur zaude geruza kendu nahi duzula"
 
-#: api/templates/map/edit-layer.html:16
+#: api/templates/map/edit-layer.html:17
 msgid "Atributos relevantes:"
 msgstr "Atributu garrantzitsuak:"
 
-#: api/templates/map/edit-layer.html:23
+#: api/templates/map/edit-layer.html:24
 msgid "Añadir un atributo para mostrar en esta capa:"
 msgstr "Gehitu atributu bat geruza honetan erakusteko:"
 
-#: api/templates/map/edit-layer.html:30
+#: api/templates/map/edit-layer.html:31
 msgid "Atributo a colorear:"
 msgstr "Koloreztatzeko atributua:"
 
-#: api/templates/map/edit-layer.html:43
+#: api/templates/map/edit-layer.html:44
 msgid "Valor mínimo"
 msgstr "Gutxieneko balioa"
 
-#: api/templates/map/edit-parameter.html:7
+#: api/templates/map/edit-parameter.html:8
 msgid "Editando parámetro"
 msgstr "Parametroa editatzen"
 
-#: api/templates/map/edit-parameter.html:9
+#: api/templates/map/edit-parameter.html:10
 msgid "Estás seguro de que quieres eliminar el parámetro"
 msgstr "Ziur zaude parametroa ezabatu nahi duzula"
 
-#: api/templates/map/edit-parameter.html:10
+#: api/templates/map/edit-parameter.html:11
 msgid "Sí"
 msgstr "Bai"
 
-#: api/templates/map/edit-parameter.html:11
+#: api/templates/map/edit-parameter.html:12
 msgid "No"
 msgstr "Ez"
 
-#: api/templates/map/edit-parameter.html:23
+#: api/templates/map/edit-parameter.html:24
 msgid "Valor dado:"
 msgstr "Emandako balioa:"
 
-#: api/templates/map/edit-project-details.html:12
+#: api/templates/map/edit-project-details.html:13
 msgid "Dejar de editar"
 msgstr "Argitaratzeari uztea"
 
-#: api/templates/map/edit-project-details.html:16
+#: api/templates/map/edit-project-details.html:17
 msgid ""
 "En este apartado se puede insertar cualquier HTML. Por lo que sólo se puede "
 "editar con permisos de administrador."
@@ -345,29 +345,29 @@ msgstr ""
 "Atal honetan edozein HTML txer daiteke. Beraz, administratzaile-baimenekin "
 "bakarrik editatu daiteke."
 
-#: api/templates/map/edit-project-details.html:30
+#: api/templates/map/edit-project-details.html:31
 msgid "Enlace al programa de procesado de datos:"
 msgstr "Datuak prozesatzeko programara esteka:"
 
-#: api/templates/map/edit-project-details.html:38
+#: api/templates/map/edit-project-details.html:39
 msgid "Versión del programa de procesado"
 msgstr "Prozesatze-programaren bertsioa"
 
-#: api/templates/map/edit-project-details.html:45
+#: api/templates/map/edit-project-details.html:46
 msgid ""
 "Si el procesado de datos depende de parámetros, se pueden indicar a "
 "continuación."
 msgstr ""
 "Datuen prozesaketa parametroen araberakoa bada, jarraian adierazi daitezke"
 
-#: api/templates/map/edit-project-details.html:50
-#: api/templates/map/edit-project-details.html:61
-#: api/templates/map/project-admin.html:18
-#: api/templates/map/project-admin.html:32
+#: api/templates/map/edit-project-details.html:51
+#: api/templates/map/edit-project-details.html:62
+#: api/templates/map/project-admin.html:19
+#: api/templates/map/project-admin.html:33
 msgid "Editar"
 msgstr "Editatu"
 
-#: api/templates/map/edit-project-details.html:61
+#: api/templates/map/edit-project-details.html:62
 msgid "medido en"
 msgstr "neurtua"
 
@@ -383,7 +383,7 @@ msgstr "Eraikin berriak behar bezala kargatzen dira"
 msgid "Cerrar"
 msgstr "Itxi"
 
-#: api/templates/map/index.html:37 api/templates/map/project-admin.html:24
+#: api/templates/map/index.html:37 api/templates/map/project-admin.html:25
 msgid "Capas"
 msgstr "Kapak"
 
@@ -399,7 +399,7 @@ msgstr "Nire eraikinak"
 msgid "Se está mostrando el proyecto"
 msgstr "Proiektua erakusten ari dira"
 
-#: api/templates/map/index.html:57 api/templates/map/project-admin.html:6
+#: api/templates/map/index.html:57 api/templates/map/project-admin.html:7
 msgid "Cambiar"
 msgstr "Aldatu"
 
@@ -407,62 +407,72 @@ msgstr "Aldatu"
 msgid "Detalles sobre los datos"
 msgstr "Datuei buruzko xehetasunak"
 
-#: api/templates/map/project-admin.html:11
-#: api/templates/map/project-admin.html:27
+#: api/templates/map/project-admin.html:12
+#: api/templates/map/project-admin.html:28
 msgid "Nombre"
 msgstr "Izena"
 
-#: api/templates/map/project-admin.html:12
+#: api/templates/map/project-admin.html:13
 msgid "Identificador"
 msgstr "Identifikatzailea"
 
-#: api/templates/map/project-admin.html:22
+#: api/templates/map/project-admin.html:23
 msgid "Añadir atributos"
 msgstr "Atributuak gehitu"
 
-#: api/templates/map/project-admin.html:37
+#: api/templates/map/project-admin.html:38
 msgid "Colores del proyecto"
 msgstr "Proiektuaren koloreak"
 
-#: api/templates/map/project-admin.html:46
+#: api/templates/map/project-admin.html:47
 msgid "Editar información del proyecto"
 msgstr "Proiektuaren informazioa editatu"
 
-#: api/templates/map/project-admin.html:47
+#: api/templates/map/project-admin.html:48
 msgid "Añadir edificio"
 msgstr "Gehitu eraikina"
 
-#: api/templates/map/project-list.html:6
+#: api/templates/map/project-list.html:7
 msgid "LISTA DE PROYECTOS"
 msgstr "PROIEKTUEN ZERRENDA"
 
-#: api/templates/map/project-list.html:8
+#: api/templates/map/project-list.html:9
 msgid "No has elegido ningún proyecto. Por favor elige uno de los siguientes:"
 msgstr "Ez duzu proiekturik aukeratu. Mesedez, aukeratu honako hauetako bat:"
 
-#: api/templates/map/project-list.html:10
+#: api/templates/map/project-list.html:11
 msgid "Proyecto seleccionado:"
 msgstr "Hautatutako proiektua:"
 
-#: api/templates/map/register.html:3
+#: api/templates/map/register.html:4
 msgid "Registra una cuenta"
 msgstr "Erregistratu kontu bat"
 
-#: api/templates/map/register.html:13
+#: api/templates/map/register.html:12
+#, fuzzy
+#| msgid "Registra una cuenta"
+msgid "Registrate"
+msgstr "Erregistratu kontu bat"
+
+#: api/templates/map/register.html:15
 msgid "Nombre de usuario"
 msgstr "Erabiltzaile-izena"
 
-#: api/templates/map/register.html:14
+#: api/templates/map/register.html:16
 msgid "email"
 msgstr "e-posta"
 
-#: api/templates/map/register.html:15
+#: api/templates/map/register.html:17
 msgid "contraseña"
 msgstr "pasahitza"
 
-#: api/templates/map/register.html:16
+#: api/templates/map/register.html:18
 msgid "repetir contraseña"
 msgstr "pasahitza errepikatu"
+
+#: api/templates/map/register.html:31
+msgid "La contraseña debe coincidir"
+msgstr ""
 
 #: api/templates/user/login.html:7
 msgid "Nombre de usuario o contraseña incorrectos. Intenta otra vez."
@@ -480,11 +490,11 @@ msgstr ""
 msgid "Por favor inicia sesión para ver esta página"
 msgstr "Mesedez, hasi saioa orrialde hau ikusteko"
 
-#: api/templates/user/logout.html:4
+#: api/templates/user/logout.html:5
 msgid "Cierre de sesión"
 msgstr "Saioaren amaiera"
 
-#: api/templates/user/logout.html:5
+#: api/templates/user/logout.html:6
 msgid "Se ha cerrado la sesión correctamente"
 msgstr "Se ha cerrado la sesión correctamente"
 

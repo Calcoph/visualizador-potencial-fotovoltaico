@@ -7,7 +7,6 @@ from . import views, user_view, user_api
 
 # /map/user/api/*
 user_api_urls = [
-    path("login", user_api.login, name="apiLogin"),
     path("register", user_api.register, name="apiRegister")
 ]
 

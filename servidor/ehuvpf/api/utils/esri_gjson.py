@@ -3,9 +3,9 @@
 
 from qgis.core import QgsVectorLayer, QgsVectorFileWriter, QgsCoordinateReferenceSystem, QgsRectangle, QgsCoordinateTransform, QgsCoordinateTransformContext
 from django.core.files.uploadedfile import UploadedFile
+from ..api import RESOLUTION
 
 TEMP_PATH = "/tmp/django/file_upload/"
-RESOLUTION = 0.1
 
 class EsriFiles:
     def __init__(self, name: str, prj: UploadedFile, dbf: UploadedFile, shx: UploadedFile, shp: UploadedFile) -> None:
