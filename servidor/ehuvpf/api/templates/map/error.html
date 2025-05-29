@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Registra una cuenta" %}{% endblock %}
+
+{% block content %}
+<h2>
+    {{ msg }}
+    <br>
+    <a href="/map/register.html"><button>{% translate "Volver a página de registro" %}</button></a>
+</h2>
+{% endblock %}
+
+{% block after_scripts %}
+{% endblock %}

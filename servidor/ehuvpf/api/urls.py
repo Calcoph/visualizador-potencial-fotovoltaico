@@ -16,7 +16,6 @@ user_urls = [
 
     path("login", auth_views.LoginView.as_view(template_name="user/login.html"), name="login"),
     path("logout", user_view.logout, name="logout"),
-    path("register", user_view.register, name="register")
 ]
 
 # /map/api/*
@@ -67,6 +66,7 @@ urlpatterns = [
     path("add-building", views.add_building, name="add-building"),
     path("project-list", views.project_list, name="project-list"),
     path("details", views.details, name="details"),
+    path("error-page", views.error_page, name="error-page"),
     path("index", views.index, name="index"),
     path("index.html", views.index, name="index"),
     re_path("\w\.html", views.static_html, name="static"),

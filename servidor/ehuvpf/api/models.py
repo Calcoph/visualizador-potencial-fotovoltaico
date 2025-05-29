@@ -92,3 +92,9 @@ class Building(models.Model):
     path = models.TextField()
     lat = models.IntegerField()
     lon = models.IntegerField()
+
+class AllowedEmail(models.Model):
+    """
+    email: str
+    """
+    email = models.TextField()

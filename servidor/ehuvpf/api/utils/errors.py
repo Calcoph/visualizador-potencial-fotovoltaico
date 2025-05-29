@@ -1,7 +1,8 @@
 from __future__ import annotations
 from http import HTTPStatus
+from django.template import loader
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, HttpRequest
 
 class ErrorKind:
     _FORBIDDEN = 0
@@ -40,3 +41,10 @@ class ApiError:
             response.status_code = HTTPStatus.UNPROCESSABLE_ENTITY
 
         return response
+
+def reponse_404(request: HttpRequest) -> HttpResponse:
+    template = loader.get_template("map/404.html")
+    response = HttpResponse(template.render({}, request))
+    response.status_code = HTTPStatus.NOT_FOUND
+
+    return response

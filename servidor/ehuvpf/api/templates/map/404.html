@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "404 NOT FOUND" %}{% endblock %}
+
+{% block content %}
+<h2>
+    {% translate "La página que buscas no está disponible" %}
+    <a href="/map/"><button>{% translate "Volver al inicio" %}</button></a>
+</h2>
+{% endblock %}
+
+{% block after_scripts %}
+{% endblock %}
