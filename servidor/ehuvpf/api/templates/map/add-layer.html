@@ -3,27 +3,43 @@
 
 {% block title %}{% translate "Añadir capa" %}{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="/smap/css/general.css"/>
+<link rel="stylesheet" href="/smap/css/add-layer.css"/>
+{% endblock %}
+
 {% block content %}
+<script src="/smap/js/add-layer.js"></script>
 <h1>{% translate "Administración del proyecto" %} {{ project.name }}</h1>
 <h3>{% translate "Creando capa nueva" %}</h3>
 <form method="post" action="/map/api/addLayer">
-    {# TODO: Hacer esto con un form y labels #}
-    <p>{% translate "Patrón en el nombre (para identificación automática de capa)" %}</p>
-    <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
-    <p>{% translate "Nombre de la capa" %}</p>
-    <input type="text" name="layer-name"/>
-    <p>{% translate "Selecciona los atributos que se mostrarán en la nueva capa" %}</p>
-    <select id="attribute-select" name="attributes" onchange="attributesChanged()" multiple>
-        {% for attribute in attributes %}
-            <option value="{{ attribute.pk }}">{{ attribute.display_name }} ({{ attribute.name }})</option>
-        {% endfor %}
-    </select>
-    <p>{% translate "Selecciona el atributo que se va a utilizar para colorear los edificios" %}</p>
-    <select id="color-attribute-select" name="color-attribute"></select>
-    <input type="submit" value="Crear capa"/>
+    <div class="field-array">
+        <label>
+            <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
+            {% translate "Patrón en el nombre (para identificación automática de capa)" %}
+        </label>
+        <label>
+            <input type="text" name="layer-name"/>
+            {% translate "Nombre de la capa" %}
+        </label>
+        <label>
+            {% translate "Selecciona los atributos que se mostrarán en la nueva capa" %}
+            <br>
+            <select id="attribute-select" name="attributes" onchange="attributesChanged()" multiple>
+                {% for attribute in attributes %}
+                <option value="{{ attribute.pk }}">{{ attribute.display_name }} ({{ attribute.name }})</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            {% translate "Selecciona el atributo que se va a utilizar para colorear los edificios" %}
+            <br>
+            <select id="color-attribute-select" name="color-attribute"></select>
+        </label>
+        <button type="submit">{% translate "Crear capa" %}</button>
+    </div>
 </form>
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/add-layer.js"></script>
+{% block after_load %}
 {% endblock %}

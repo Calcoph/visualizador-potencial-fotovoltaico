@@ -4,6 +4,7 @@
 {% block title %}{% translate "Editar atributo"%}{% endblock %}
 
 {% block content %}
+<script src="/smap/js/project_list.js"></script>
 <h1>{% translate "LISTA DE PROYECTOS" %}</h1>
 {% if current_project is None %}
     <p>{% translate "No has elegido ningún proyecto. Por favor elige uno de los siguientes:" %}</p>
@@ -23,6 +24,5 @@
 <a href="create-project.html"><button>{% translate "Crear proyecto" %}</button></a>
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/project_list.js"></script>
+{% block after_load %}
 {% endblock %}

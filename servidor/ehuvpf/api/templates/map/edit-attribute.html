@@ -4,6 +4,7 @@
 {% block title %}{% translate "Editar atributo" %}{% endblock %}
 
 {% block content %}
+<script src="/smap/js/edit-attribute.js"></script>
 <h1>{% translate "Editando atributo" %} <span id="title_name" style="border: 1px solid black;">{{ attribute.display_name }}</span>:</h1>
 <dialog id="delete-confirm">
     <p>{% translate "Estás seguro de que quieres eliminar el atributo" %} <b>{{ attribute.display_name }}</b>?</p>
@@ -34,6 +35,5 @@
 
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/edit-attribute.js"></script>
+{% block after_load %}
 {% endblock %}

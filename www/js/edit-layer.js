@@ -19,7 +19,7 @@ function removeAttribute(id) {
         window.alert(`
             Debe haber al menos 1 atributo por cada capa.
             Si quieres quitar este atributo, debes primero añadir otro.
-        `)
+        `)// TODO: Translate
         return;
     }
     let selected_id = document.getElementById("attribute-color-selector")
@@ -31,7 +31,7 @@ function removeAttribute(id) {
             No se puede eliminar el atributo a colorear.
             Si quieres quitar este atributo, debes primero
             cambiar el atributo a colorear.
-        `)
+        `)// TODO: Translate
         return;
     }
 
@@ -69,7 +69,7 @@ function domRemoveAttribute(id) {
     domMoveAttribute(
         id,
         "available-attributes",
-        "Añadir",
+        "Añadir", // TODO: Translate
         function() {addAttribute(id)}
     )
 }
@@ -78,7 +78,7 @@ function domAddAttribute(id) {
     domMoveAttribute(
         id,
         "attributes",
-        "Quitar",
+        "Quitar", // TODO: Translate
         function() {removeAttribute(id)}
     )
 }
@@ -125,7 +125,7 @@ function deleteLayer() {
 function confirm_delete_layer() {
     let name = document.getElementById("title_name").textContent
 
-    window.alert(`La capa ${name} se ha eliminado correctamente`)
+    window.alert(`La capa ${name} se ha eliminado correctamente`)// TODO: Translate
     redirectProjectAdmin()
 }
 

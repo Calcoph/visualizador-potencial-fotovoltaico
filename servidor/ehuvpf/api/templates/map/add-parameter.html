@@ -4,6 +4,7 @@
 {% block title %}{% translate "Añadir parámetro" %}{% endblock %}
 
 {% block content %}
+<script src="/smap/js/add-parameter.js"></script>
 <h1>{% translate "Administración del proyecto" %}</h1>
 <h2>{% translate "Parámetros existentes"}</h2>
 <ul id="lista">
@@ -11,6 +12,25 @@
         <li></li>
     </template>
 </ul>
+<h1>{% translate "Nuevo parámetro:" %}</h1>
+<form id="formAddParameter" onsubmit="return false">
+    <label>
+        {% translate "Nombre:" %}<br>
+        <input type="text" id="name" name="name">
+    </label><br>
+    <label>
+        {% translate "Descripción:" %}<br>
+        <input type="text" id="description" name="description">
+    </label><br>
+    <label>
+        {% translate "Valor dado: (Se recomienda especificar unidades si es apropiado)" %}<br>
+        <input type="text" id="value" name="value">
+    </label><br>
+    <button type="submit" onclick="addParameter()">{% translate "Añadir" %}</button>
+</form>
+{% endblock %}
+
+{% block after_load %}
 <script>
 let parameters = [
     {% for parameter in parameters %}
@@ -32,24 +52,4 @@ for (parameter of parameters) {
     addItemToList(parameter.name)
 }
 </script>
-<h1>{% translate "Nuevo parámetro:" %}</h1>
-<form id="formAddParameter" onsubmit="return false">
-    <label>
-        {% translate "Nombre:" %}<br>
-        <input type="text" id="name" name="name">
-    </label><br>
-    <label>
-        {% translate "Descripción:" %}<br>
-        <input type="text" id="description" name="description">
-    </label><br>
-    <label>
-        {% translate "Valor dado: (Se recomienda especificar unidades si es apropiado)" %}<br>
-        <input type="text" id="value" name="value">
-    </label><br>
-    <button type="submit" onclick="addParameter()">Añadir</button>
-</form>
-{% endblock %}
-
-{% block after_scripts %}
-<script src="/smap/js/add-parameter.js"></script>
 {% endblock %}

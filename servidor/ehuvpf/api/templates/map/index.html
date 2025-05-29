@@ -23,6 +23,9 @@ class="marginless" onload="init()"
 {% endblock %}
 
 {% block content %}
+<script src="/smap/js/map.js"></script>
+<script src="/smap/js/index_interface.js"></script>
+
 <dialog id="legend-loader">
     <p><b>Indicador de carga</b></p>
     <p><img src="/smap/svg/red.svg" width="25px">{% translate "No se muestran edificios nuevos, haz zoom para cargar más" %}</p>
@@ -70,7 +73,5 @@ class="marginless" onload="init()"
 </div>
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/map.js"></script>
-<script src="/smap/js/index_interface.js"></script>
+{% block after_load %}
 {% endblock %}

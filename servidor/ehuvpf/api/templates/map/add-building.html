@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+<script src="/smap/js/add-building.js"></script>
 <h1>{% translate "AÑADIR DATOS" %}</h1>
 <a href="index.html">{% translate "Atrás" %}</a>
 <form id="add-building-form" action="/map/api/addBuilding", method="post" enctype="multipart/form-data">
@@ -39,11 +40,11 @@
                 <option value="{{ layer.pk }}">{{ layer.name }}</option>
             {% endfor %}
         </select>
-        <input type="submit" value="Subir"/>
+        <button type="submit">{% translate "Subir" %}</button>
     </div>
 </form>
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/add-building.js"></script>
+{% block after_load %}
+<script>init()</script>
 {% endblock %}

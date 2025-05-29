@@ -12,16 +12,20 @@
     {% endblock %}
 </head>
 <body {% block body_attrs %}class="marginless"{% endblock %}>
+    <script src="/smap/js/error.js"></script>
+    <script src="/smap/js/lang_select.js"></script>
     <header class="header">
         <a href="/map/"><img class="header-logo" src="/smap/svg/logo-map.svg"/></a>
         <span class="header-right">
-            <a class=anchorbutton href="/admin">{% translate "Administrar app" %}</a>
+            {% if user.is_superuser %}
+                <a class=anchorbutton href="/admin">{% translate "Administrar app" %}</a>
+            {% endif %}
             <a class=anchorbutton href="/map/project-admin">{% translate "Administrar proyecto" %}</a>
             <div class="login-section">
                 <button onclick="select_lang('es-ES')">ES</button>
                 <button onclick="select_lang('eu-ES')">EUS</button>
                 {% if user.is_authenticated %}
-                    <span>Hola <b>{{ user.get_username }}</b></span>&nbsp;<a class=anchorbutton href="/map/user/logout">{% translate "Cerrar sesión" %}</a>
+                    <span>{% translate "Hola" %} <b>{{ user.get_username }}</b></span>&nbsp;<a class=anchorbutton href="/map/user/logout">{% translate "Cerrar sesión" %}</a>
                 {% else %}
                     <a class=anchorbutton href="/map/user/login">login</a>
                     <a class=anchorbutton href="/map/register.html">register</a>
@@ -37,8 +41,6 @@
     <footer>
         {% block footer %}{% endblock %}
     </footer>
-    <script src="/smap/js/error.js"></script>
-    <script src="/smap/js/lang_select.js"></script>
-    {% block after_scripts %}{% endblock %}
+    {% block after_load %}{% endblock %}
 </body>
 </html>

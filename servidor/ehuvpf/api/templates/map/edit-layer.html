@@ -4,6 +4,8 @@
 {% block title %}{% translate "Editar capa" %}{% endblock %}
 
 {% block content %}
+<script src="/smap/js/edit-layer.js"></script>
+
 <h1>{% translate "Administración del proyecto" %} {{ project.name }}</h1>
 <h3>{% translate "Modificando capa" %} <span id="title_name" style="border: 1px solid black;">{{ layer.name }}</span></h3>
 <dialog id="delete-confirm">
@@ -17,14 +19,14 @@
     <h3>{% translate "Atributos relevantes:" %}</h3>
     <ul id="attributes">
         {% for measure in default_measures %}
-            <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }})<input type="button" onclick="removeAttribute({{ measure.pk }})" value="Quitar"></li>
+            <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="removeAttribute({{ measure.pk }})" value="{% translate "Quitar" %}"></li>
         {% endfor %}
     </ul>
     <details>
         <summary>{% translate "Añadir un atributo para mostrar en esta capa:" %}</summary>
         <ul id="available-attributes">
             {% for measure in unused_measures %}
-                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="addAttribute({{ measure.pk }})" value="Añadir"></li>
+                <li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="addAttribute({{ measure.pk }})" value="{% translate "Añadir" %}"></li>
             {% endfor %}
         </ul>
     </details>
@@ -51,11 +53,10 @@
         {% endfor %}
     </table>
     <input type="hidden" name="id" value="{{ layer.pk }}">
-    <input type="submit" value="Confirmar cambios">
+    <button type="submit">{% translate "Confirmar cambios" %}</button>
     <button type="button" onclick="document.getElementById('delete-confirm').showModal()">{% translate "Eliminar" %}</button>
 </form>
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/edit-layer.js"></script>
-{% endblock %}
+<li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="removeAttribute({{ measure.pk }})" value="{% translate "Quitar" %}"></li>
+<li id="att_{{ measure.pk }}" name="{{ measure.display_name }} ({{ measure.name }})" value="{{ measure.pk }}">{{ measure.display_name }} ({{ measure.name }}) <input type="button" onclick="addAttribute({{ measure.pk }})" value="{% translate "Añadir" %}"></li>

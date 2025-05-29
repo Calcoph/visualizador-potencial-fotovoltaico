@@ -40,5 +40,3 @@ function deleteColor() {
     let color_list = document.getElementById("colors")
     color_list.deleteRow(color_list.rows.length - 1)
 }
-
-init()

@@ -9,19 +9,6 @@
 {% endblock %}
 
 {% block content %}
-<h1>{% translate "Registrate" %}</h1>
-<form name="registerForm" method="post" action="{% url 'apiRegister' %}" onsubmit="return validateRegisterForm()">
-    <div class="field-array">
-        <label><input type="text" name="username" required>{% translate "Nombre de usuario" %}</label>
-        <label><input type="text" name="email" required>{% translate "email" %}</label>
-        <label><input type="password" name="password" required>{% translate "contraseña" %}</label>
-        <label><input type="password" name="password-check" required>{% translate "repetir contraseña" %}</label>
-    </div>
-    <input type="submit" value="Register">
-</div>
-{% endblock %}
-
-{% block after_scripts %}
 <script>
     function validateRegisterForm() {
         let pass = document.forms["registerForm"]["password"].value;
@@ -34,4 +21,17 @@
         return true;
     }
 </script>
+<h1>{% translate "Registrate" %}</h1>
+<form name="registerForm" method="post" action="{% url 'apiRegister' %}" onsubmit="return validateRegisterForm()">
+    <div class="field-array">
+        <label><input type="text" name="username" required>{% translate "Nombre de usuario" %}</label>
+        <label><input type="text" name="email" required>{% translate "email" %}</label>
+        <label><input type="password" name="password" required>{% translate "contraseña" %}</label>
+        <label><input type="password" name="password-check" required>{% translate "repetir contraseña" %}</label>
+    </div>
+    <button type="submit">{% translate "Register" %}</button>
+</div>
+{% endblock %}
+
+{% block after_load %}
 {% endblock %}

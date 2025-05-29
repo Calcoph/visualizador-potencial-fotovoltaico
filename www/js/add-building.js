@@ -23,5 +23,3 @@ function init() {
     let input_method = document.getElementById("add-building-form")["inputmethod"]
     select_input(input_method.value)
 }
-
-init()

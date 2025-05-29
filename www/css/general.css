@@ -97,13 +97,13 @@ summary {
     border-radius: 7px;
 }
 
-button {
+button, input[type=button] {
     background-color: #56d856;
     border-radius: 6px;
     border: 1px solid #3c963c;
 }
 
-button:hover {
+button:hover, input[type=button]:hover {
     background-color: #3c963c;
 }
 

@@ -4,6 +4,7 @@
 {% block title %}{% translate "Crear proyecto" %}{% endblock %}
 
 {% block content %}
+<script src="/smap/js/project_list.js"></script>
 <h1>{% translate "Crear proyecto" %}</h1>
 <form action="api/createProject" method="post">
     <label>
@@ -49,10 +50,9 @@
         </p>
     </details>
     <br>
-    <input style="margin-left: 100px;margin-top: 1.5em;" type="submit" value="Crear proyecto">
+    <button style="margin-left: 100px;margin-top: 1.5em;" type="submit">{% translate "Crear proyecto" %}</button>
 </form>
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/project_list.js"></script>
+{% block after_load %}
 {% endblock %}

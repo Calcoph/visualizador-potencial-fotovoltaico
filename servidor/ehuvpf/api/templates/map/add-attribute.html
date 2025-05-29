@@ -4,6 +4,7 @@
 {% block title %}{% translate "Añadir atributo" %}{% endblock %}
 
 {% block content %}
+<script src="/smap/js/add-attribute.js"></script>
 <h1>{% translate "Administración del proyecto" %}</h1>
 <h2>{% translate "Atributos existentes" %}</h2>
 <ul id="list">
@@ -34,7 +35,7 @@ for (attribute of attributes) {
     addItemToList(attribute.display_name, attribute.name)
 }
 </script>
-<h1>Nuevo atributo:</h1>
+<h1>{% translate "Nuevo atributo:" %}</h1>
 <form id="formAddAttribute" onsubmit="return false">
     <label>
         {% translate "Identificador: (Este identificador es el nombre del atributo en los archivos subidos)" %}<br>
@@ -56,6 +57,5 @@ for (attribute of attributes) {
 </form>
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/add-attribute.js"></script>
+{% block after_load %}
 {% endblock %}

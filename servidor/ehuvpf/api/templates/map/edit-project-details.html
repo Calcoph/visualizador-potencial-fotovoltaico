@@ -10,6 +10,7 @@
 
 
 {% block content %}
+<script src="/smap/js/edit-project-details.js"></script>
 <a href="/map/details"><button>{% translate "Dejar de editar" %}</button></a>
 <h1>{% translate "Información del proyecto" %} {{ project.name }}</h1>
 <hr>
@@ -64,6 +65,5 @@
 {% endfor %}
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/edit-project-details.js"></script>
+{% block after_load %}
 {% endblock %}

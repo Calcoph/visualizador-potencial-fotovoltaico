@@ -4,6 +4,7 @@
 {% block title %}{% translate "Editar atributo" %}{% endblock %}
 
 {% block content %}
+<script src="/smap/js/edit-parameter.js"></script>
 <h2>{% translate "Administración del proyecto" %} {{ project.name }}</h2>
 <h1>{% translate "Editando parámetro" %} <span id="title_name" style="border: 1px solid black;">{{ parameter.name }}</span>:</h1>
 <dialog id="delete-confirm">
@@ -31,6 +32,5 @@
 
 {% endblock %}
 
-{% block after_scripts %}
-<script src="/smap/js/edit-parameter.js"></script>
+{% block after_load %}
 {% endblock %}
