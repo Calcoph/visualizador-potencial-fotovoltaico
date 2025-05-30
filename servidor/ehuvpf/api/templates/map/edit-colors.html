@@ -10,12 +10,12 @@
 
 {% block content %}
 <script src="/smap/js/edit-colors.js"></script>
-<form method="post" action="/map/api/updateColors">
+<form method="post" action="/map/api/updateColors"><!-- TODO: Ajax -->
     <p>
         {% translate "Haz click en los colores para cambiarlos." %}
     </p>
     <p>
-        {% translate "Haz click en las flechas para cambiar el orden." %"}
+        {% translate "Haz click en las flechas para cambiar el orden." %}
     </p>
     <table id="colors">
         <template id="color_template">
@@ -29,11 +29,10 @@
         </template>
     </table>
 <script>
-// TODO: No longer need the index of indexed_color
 let colors = [
 {% for indexed_color in colors %}
 {
-    color: "{{indexed_color.1.hex}}"
+    color: "{{indexed_color.hex}}"
 },
 {% endfor %}
 ]

@@ -12,7 +12,8 @@ def get_project(request: HttpRequest) -> Project | None:
 
 def set_project(request: HttpRequest, id):
     try:
-        Project.objects.get(pk=id)
+        if Project.objects.get(pk=id) == None:
+            return False
         request.session[SESSION_PROJECT_ID] = id
         return True
     except:

@@ -25,23 +25,24 @@ class AddParameterParams:
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        param_name = "name"
         try:
+            # Required parameters
+            param_name = "name"
             name = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            if name == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
-        param_name = "description"
-        try:
+            param_name = "description"
             description = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "value"
-        try:
+            if description == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "value"
             value = request.POST.get(param_name)
+            if value == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
         return AddParameterParams(name, description, value)
 
@@ -81,32 +82,33 @@ class EditParameterParams:# TODO: Delete this class
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        param_name = "name"
         try:
+            # Required parameters
+            param_name = "name"
             name = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "description"
-        try:
-            description = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "value"
-        try:
-            value = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        parameter_id_param_name = "id"
-        try:
-            id = request.POST.get(parameter_id_param_name)
-        except:
-            return ApiError(endpoint, f'"{parameter_id_param_name}" is required', ErrorKind.bad_request())
+            if name == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
-        try:
+            param_name = "description"
+            description = request.POST.get(param_name)
+            if description == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "value"
+            value = request.POST.get(param_name)
+            if value == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            parameter_id_param_name = "id"
+            id = request.POST.get(parameter_id_param_name)
+            if id == None:
+                return ApiError(endpoint, f'"{parameter_id_param_name}" is required', ErrorKind.bad_request())
+
             parameter = Parameter.objects.get(pk=id)
+            if parameter == None:
+                return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.bad_request())
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
         # Integrity check
         if parameter.project.pk != project.pk:
@@ -147,17 +149,18 @@ class DeleteParameterParams:# TODO: Delete this class
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        parameter_id_param_name = "id"
         try:
+            # Required parameters
+            parameter_id_param_name = "id"
             id = request.POST.get(parameter_id_param_name)
-        except:
-            return ApiError(endpoint, f'"{parameter_id_param_name}" is required', ErrorKind.bad_request())
+            if id == None:
+                return ApiError(endpoint, f'"{parameter_id_param_name}" is required', ErrorKind.bad_request())
 
-        try:
             parameter = Parameter.objects.get(pk=id)
+            if parameter == None:
+                return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.bad_request())
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
         # Integrity check
         if parameter.project.pk != project.pk:

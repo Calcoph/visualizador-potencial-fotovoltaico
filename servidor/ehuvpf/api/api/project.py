@@ -39,22 +39,24 @@ class EditPreprocessInfoParams:# TODO: Delete this class
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        param_name = "preprocess_link"
         try:
+            # Required parameters
+            param_name = "preprocess_link"
             preprocess_link = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "preprocess_name"
-        try:
+            if preprocess_link == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "preprocess_name"
             preprocess_name = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "preprocess_version"
-        try:
+            if preprocess_name == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "preprocess_version"
             preprocess_version = request.POST.get(param_name)
+            if preprocess_version == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
         return EditPreprocessInfoParams(preprocess_link, preprocess_name, preprocess_version)
 
@@ -88,12 +90,14 @@ class EditDataSourceParams:# TODO: Delete this class
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        param_name = "data_source"
         try:
+            # Required parameters
+            param_name = "data_source"
             data_source = request.POST.get(param_name)
+            if data_source == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
         return EditDataSourceParams(data_source)
 

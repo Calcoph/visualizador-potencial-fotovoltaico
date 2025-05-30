@@ -6,15 +6,16 @@
 {% block content %}
 <script src="/smap/js/edit-layer.js"></script>
 
-<h1>{% translate "Administración del proyecto" %} {{ project.name }}</h1>
+<h1>{% translate "Administración del proyecto" %} <b>{{ project.name }}</b></h1>
 <h3>{% translate "Modificando capa" %} <span id="title_name" style="border: 1px solid black;">{{ layer.name }}</span></h3>
 <dialog id="delete-confirm">
     <p>{% translate "Estás seguro de que quieres eliminar la capa" %} <b>{{ layer.name }}</b>?</p>
     <button onclick="deleteLayer()">Sí</button>
     <button autofocus onclick="document.getElementById('delete-confirm').close()">No</button>
 </dialog>
-<form method="post" action="/map/api/editLayer" id="edit-layer-form" onsubmit="return validateForm()">
+<form id="edit-layer-form" onsubmit="return false">
     <h3>{% translate "Patrón en el nombre (para identificación automática de capa)" %}</h3>
+    <p>{% translate "Ten en cuenta que cambiar este valor no cambiará la capa de los datos que ya se hayan añadido al sistema" %}</p>
     <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
     <h3>{% translate "Atributos relevantes:" %}</h3>
     <ul id="attributes">
@@ -53,7 +54,7 @@
         {% endfor %}
     </table>
     <input type="hidden" name="id" value="{{ layer.pk }}">
-    <button type="submit">{% translate "Confirmar cambios" %}</button>
+    <button type="submit" onclick="editLayer()">{% translate "Confirmar cambios" %}</button>
     <button type="button" onclick="document.getElementById('delete-confirm').showModal()">{% translate "Eliminar" %}</button>
 </form>
 {% endblock %}

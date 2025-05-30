@@ -12,7 +12,7 @@ function editAttribute() {
             if (this.status == 200) {
                 confirm_edit_attribute(displayName)
             } else {
-                let error = get_error_string(this) // from error.js
+                let error = get_error_string(this) // de error.js
                 window.alert(error)
             }
         }
@@ -23,6 +23,8 @@ function editAttribute() {
 function confirm_edit_attribute(displayName) {
     let titleNameNode = document.getElementById("title_name");
     titleNameNode.innerHTML = displayName
+
+    window.alert("Atributo editado correctamente") // TODO: Translate
 }
 
 function deleteAttribute() {
@@ -37,7 +39,7 @@ function deleteAttribute() {
             if (this.status == 200) {
                 confirm_delete_attribute()
             } else {
-                let error = get_error_string(this) // from error.js
+                let error = get_error_string(this) // de error.js
                 window.alert(error)
             }
         }
@@ -50,7 +52,7 @@ function deleteAttribute() {
 function confirm_delete_attribute() {
     let name = document.getElementById("title_name").textContent
 
-    window.alert(`El atributo ${name} se ha eliminado correctamente`)
+    window.alert(`El atributo ${name} se ha eliminado correctamente`) // TODO: Translate
     redirectProjectAdmin()
 }
 

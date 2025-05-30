@@ -5,15 +5,16 @@
 
 {% block head %}
 <link rel="stylesheet" href="/smap/css/general.css"/>
-<link rel="stylesheet" href="/smap/css/add-layer.css"/>
+<link rel="stylesheet" href="/smap/css/field-array.css"/>
 {% endblock %}
 
 {% block content %}
+<script src="/smap/js/error.js"></script>
 <script src="/smap/js/add-layer.js"></script>
-<h1>{% translate "Administración del proyecto" %} {{ project.name }}</h1>
+<h1>{% translate "Administración del proyecto" %} <b>{{ project.name }}</b></h1>
 <h3>{% translate "Creando capa nueva" %}</h3>
-<form method="post" action="/map/api/addLayer">
-    <div class="field-array">
+<form id="formAddLayer" onsubmit="return false">
+    <div class="field-array-center">
         <label>
             <input name="name-pattern" type="text" value="{{ layer.name_pattern }}">
             {% translate "Patrón en el nombre (para identificación automática de capa)" %}
@@ -36,7 +37,7 @@
             <br>
             <select id="color-attribute-select" name="color-attribute"></select>
         </label>
-        <button type="submit">{% translate "Crear capa" %}</button>
+        <button type="submit" onclick="addLayer()">{% translate "Crear capa" %}</button>
     </div>
 </form>
 {% endblock %}

@@ -24,6 +24,12 @@ const COLOR_SET = {
 /** @type {Array<number}} */
 let CURRENT_MINIMUMS = []
 
+function init_ui() {
+    document.getElementById("legend-loader-close-button").addEventListener("click", function() {
+        document.getElementById("legend-loader").close()
+    })
+}
+
 function init_map() {
     MAP = L.map('map', {
         "crs": L.CRS.EPSG3857 // Just to make sure the default never changes
@@ -59,11 +65,6 @@ function init_map() {
         onRemove: function(map) {
 
         }
-    })
-
-    // TODO: Mover esto a otra función (no tiene mucho que ver con la inicialización del mapa)
-    document.getElementById("legend-loader-close-button").addEventListener("click", function() {
-        document.getElementById("legend-loader").close()
     })
 
     L.control.loadState = function(opts) {

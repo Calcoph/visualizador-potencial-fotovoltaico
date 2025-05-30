@@ -6,21 +6,23 @@
 {% block head %}
 <link rel="stylesheet" href="/smap/css/general.css"/>
 <link rel="stylesheet" href="/smap/css/add-building.css"/>
+<link rel="stylesheet" href="/smap/css/field-array.css"/>
 {% endblock %}
 
 {% block content %}
 <script src="/smap/js/add-building.js"></script>
 <h1>{% translate "AÑADIR DATOS" %}</h1>
-<a href="index.html">{% translate "Atrás" %}</a>
-<form id="add-building-form" action="/map/api/addBuilding", method="post" enctype="multipart/form-data">
-    <div class="row field-array">
+<a href="index.html"><button>{% translate "Atrás" %}</button></a>
+<form id="add-building-form" action="/map/api/addBuilding", method="post" enctype="multipart/form-data"> <!-- TODO: display something nicer -->
+    <div class="row field-array-center">
         <div>
             <label><input type="radio" name="filetype" disabled>.geojson</label>
             <label title=".prj, .dbf, .shx y .shp"><input type="radio" name="filetype" checked>{% translate "ficheros ESRI" %}</label>
         </div>
-        <textarea name="aa" id="t_area" cols="30" rows="10" disabled></textarea>
+        <span style="height: 10px;"></span>
         <label><input type="radio" name="inputmethod" value="single" checked onchange="select_input('single')">{% translate "uno solo" %}</label>
         <label><input type="radio" name="inputmethod" value="multiple" onchange="select_input('multiple')">{% translate "multiples" %}</label>
+        <span style="height: 10px;"></span>
         <template id="single_layer_template">
             <label>.prj<input type="file" name="prj"></label>
             <label>.dbf<input type="file" name="dbf"></label>
@@ -35,11 +37,7 @@
         <div id="files" class="field-array">
             {# This div is going to be filled by javascipt, don't delete #}
         </div>
-        <select name="layer">
-            {% for layer in layers %}
-                <option value="{{ layer.pk }}">{{ layer.name }}</option>
-            {% endfor %}
-        </select>
+        <span style="height: 10px;"></span>
         <button type="submit">{% translate "Subir" %}</button>
     </div>
 </form>

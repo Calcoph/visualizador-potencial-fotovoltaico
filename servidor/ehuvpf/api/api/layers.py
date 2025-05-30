@@ -27,65 +27,62 @@ class EditLayerParams:
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        layer_param_name = "id"
         try:
+            # Required parameters
+            layer_param_name = "id"
             layer = request.POST.get(layer_param_name)
-        except:
-            return ApiError(endpoint, f'"{layer_param_name}" is required', ErrorKind.bad_request())
-        param_name = "name-pattern"
-        try:
+            if layer == None:
+                return ApiError(endpoint, f'"{layer_param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "name-pattern"
             name_pattern = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        attribute_param_name = "attribute"
-        try:
+            if name_pattern == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            attribute_param_name = "attribute"
             attributes = request.POST.getlist(attribute_param_name)
-        except:
-            return ApiError(endpoint, f'"{attribute_param_name}" is required', ErrorKind.bad_request())
-        color_attribute_param_name = "color-attribute"
-        try:
+            if attributes == None:
+                return ApiError(endpoint, f'"{attribute_param_name}" is required', ErrorKind.bad_request())
+
+            color_attribute_param_name = "color-attribute"
             color_attribute = request.POST.get(color_attribute_param_name)
-        except:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" is required', ErrorKind.bad_request())
-        color_rule_param_name = "color_rule"
-        try:
+            if color_attribute == None:
+                return ApiError(endpoint, f'"{color_attribute_param_name}" is required', ErrorKind.bad_request())
+
+            color_rule_param_name = "color_rule"
             color_rules = request.POST.getlist(color_rule_param_name)
-        except:
-            return ApiError(endpoint, f'"{color_rule_param_name}" is required', ErrorKind.bad_request())
+            if color_rules == None:
+                return ApiError(endpoint, f'"{color_rule_param_name}" is required', ErrorKind.bad_request())
 
-        new_color_rules = []
-        for color_rule in color_rules:
-            try:
+            new_color_rules = []
+            for color_rule in color_rules:
                 new_color_rule = float(color_rule.replace(",", "."))
-            except:
-                return ApiError(endpoint, f'"{color_rule_param_name}" must be a list of floats, got: {color_rule}', ErrorKind.bad_request())
-            new_color_rules.append(new_color_rule)
+                if new_color_rule == None:
+                    return ApiError(endpoint, f'"{color_rule_param_name}" must be a list of floats, got: {color_rule}', ErrorKind.bad_request())
+                new_color_rules.append(new_color_rule)
 
-        try:
             layer = Layer.objects.get(pk=layer)
-        except:
-            return ApiError(endpoint, f'"{layer_param_name}" must be the id of an existing layer', ErrorKind.bad_request())
-        if layer.project.pk != project.pk:
-            return ApiError(endpoint, f'"{layer_param_name}" must be the id of a layer of the selected project', ErrorKind.bad_request())
+            if layer == None:
+                return ApiError(endpoint, f'"{layer_param_name}" must be the id of an existing layer', ErrorKind.bad_request())
+            if layer.project.pk != project.pk:
+                return ApiError(endpoint, f'"{layer_param_name}" must be the id of a layer of the selected project', ErrorKind.bad_request())
 
-        try:
             color_attribute = Measure.objects.get(pk=color_attribute)
-        except:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
-        if color_attribute.project.pk != project.pk:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
+            if color_attribute == None:
+                return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
+            if color_attribute.project.pk != project.pk:
+                return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
 
-        attribute_list = []
-        for attribute_id in attributes:
-            try:
+            attribute_list = []
+            for attribute_id in attributes:
                 attribute = Measure.objects.get(pk=attribute_id)
-            except:
-                return ApiError(endpoint, f'"{attribute_id}" is not the id of an existing attribute', ErrorKind.bad_request())
-            if attribute.project.pk != project.pk:
-                return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
-            attribute_list.append(attribute)
-
+                if attribute == None:
+                    return ApiError(endpoint, f'"{attribute_id}" is not the id of an existing attribute', ErrorKind.bad_request())
+                if attribute.project.pk != project.pk:
+                    return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
+                attribute_list.append(attribute)
+        except:
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
         return EditLayerParams(layer, name_pattern, attribute_list, color_attribute, new_color_rules)
 
 @permission_required(Permission.LayerEdit)
@@ -129,19 +126,20 @@ class DeleteLayerParams:
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        param_name = "id"
         try:
+            # Required parameters
+            param_name = "id"
             id = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            if id == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
-        try:
             layer = Layer.objects.get(pk=id)
+            if layer == None:
+                return ApiError(endpoint, f'"{param_name}" must be the id of an existing layer', ErrorKind.bad_request())
+            if layer.project.pk != project.pk:
+                return ApiError(endpoint, f'"{param_name}" must be the id of a layer of the selected project', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{param_name}" must be the id of an existing layer', ErrorKind.bad_request())
-        if layer.project.pk != project.pk:
-            return ApiError(endpoint, f'"{param_name}" must be the id of a layer of the selected project', ErrorKind.bad_request())
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
         return DeleteLayerParams(layer)
 
@@ -181,44 +179,44 @@ class AddLayerParams:# TODO: Delete this class
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        param_name = "layer-name"
         try:
+            # Required parameters
+            param_name = "layer-name"
             layer_name = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "attributes"
-        try:
+            if layer_name == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "attributes"
             attributes = request.POST.getlist(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        color_attribute_param_name = "color-attribute"
-        try:
+            if attributes == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            color_attribute_param_name = "color-attribute"
             color_attribute = request.POST.get(color_attribute_param_name)
-        except:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" is required', ErrorKind.bad_request())
-        param_name = "name-pattern"
-        try:
+            if color_attribute == None:
+                return ApiError(endpoint, f'"{color_attribute_param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "name-pattern"
             name_pattern = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            if name_pattern == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
 
-        try:
             color_attribute = Measure.objects.get(pk=color_attribute)
-        except:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
-        if color_attribute.project.pk != project.pk:
-            return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
+            if color_attribute == None:
+                return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
+            if color_attribute.project.pk != project.pk:
+                return ApiError(endpoint, f'"{color_attribute_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
 
-        attribute_list = []
-        for attribute_id in attributes:
-            try:
+            attribute_list = []
+            for attribute_id in attributes:
                 attribute = Measure.objects.get(pk=attribute_id)
-            except:
-                return ApiError(endpoint, f'"{attribute_id}" is not the id of an existing attribute', ErrorKind.bad_request())
-            if attribute.project.pk != project.pk:
-                return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
-            attribute_list.append(attribute)
+                if attribute == None:
+                    return ApiError(endpoint, f'"{attribute_id}" is not the id of an existing attribute', ErrorKind.bad_request())
+                if attribute.project.pk != project.pk:
+                    return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
+                attribute_list.append(attribute)
+        except:
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
         return AddLayerParams(layer_name, attribute_list, color_attribute, name_pattern)
 

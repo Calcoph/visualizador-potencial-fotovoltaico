@@ -8,6 +8,7 @@ class ErrorKind:
     _FORBIDDEN = 0
     _BAD_REQUEST = 1
     _UNPROCESSABLE = 2
+    _INTERNAL_SERVER_ERROR = 3
 
     def __init__(self, id: int) -> None:
         self.id = id
@@ -20,6 +21,9 @@ class ErrorKind:
 
     def unprocessable() -> ErrorKind:
         return ErrorKind(ErrorKind._UNPROCESSABLE)
+
+    def internal_server_error() -> ErrorKind:
+        return ErrorKind(ErrorKind._INTERNAL_SERVER_ERROR)
 
 class ApiError:
     def __init__(self, endpoint: str, reason: str, error_kind: ErrorKind) -> None:
@@ -39,6 +43,8 @@ class ApiError:
             response.status_code = HTTPStatus.BAD_REQUEST
         if self.error_kind.id == ErrorKind._UNPROCESSABLE:
             response.status_code = HTTPStatus.UNPROCESSABLE_ENTITY
+        if self.error_kind.id == ErrorKind._INTERNAL_SERVER_ERROR:
+            response.status_code = HTTPStatus.INTERNAL_SERVER_ERROR
 
         return response
 

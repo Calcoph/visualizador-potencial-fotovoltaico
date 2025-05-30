@@ -5,7 +5,7 @@
 
 {% block content %}
 <script src="/smap/js/edit-parameter.js"></script>
-<h2>{% translate "Administración del proyecto" %} {{ project.name }}</h2>
+<h2>{% translate "Administración del proyecto" %} <b>{{ project.name }}</b></h2>
 <h1>{% translate "Editando parámetro" %} <span id="title_name" style="border: 1px solid black;">{{ parameter.name }}</span>:</h1>
 <dialog id="delete-confirm">
     <p>{% translate "Estás seguro de que quieres eliminar el parámetro" %} <b>{{ parametro.name }}</b>?</p>

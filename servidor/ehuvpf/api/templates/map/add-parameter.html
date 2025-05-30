@@ -5,7 +5,7 @@
 
 {% block content %}
 <script src="/smap/js/add-parameter.js"></script>
-<h1>{% translate "Administración del proyecto" %}</h1>
+<h1>{% translate "Administración del proyecto" %} <b>{{ project.name }}</b></h1>
 <h2>{% translate "Parámetros existentes"}</h2>
 <ul id="lista">
     <template id="list_element_template">

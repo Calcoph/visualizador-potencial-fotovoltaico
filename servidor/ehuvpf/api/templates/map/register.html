@@ -6,6 +6,7 @@
 {% block head %}
 <link rel="stylesheet" href="/smap/css/general.css"/>
 <link rel="stylesheet" href="/smap/css/login.css"/>
+<link rel="stylesheet" href="/smap/css/field-array.css"/>
 {% endblock %}
 
 {% block content %}
@@ -15,7 +16,7 @@
         let pass_check = document.forms["registerForm"]["password-check"].value;
 
         if (pass != pass_check) {
-            alert("{% translate "La contraseña debe coincidir" %}");
+            alert("{% translate 'La contraseña debe coincidir' %}");
             return false;
         }
         return true;

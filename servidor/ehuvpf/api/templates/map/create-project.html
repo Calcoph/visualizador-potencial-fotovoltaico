@@ -6,7 +6,7 @@
 {% block content %}
 <script src="/smap/js/project_list.js"></script>
 <h1>{% translate "Crear proyecto" %}</h1>
-<form action="api/createProject" method="post">
+<form action="api/createProject" method="post"><!-- TODO: ajax -->
     <label>
         {% translate "Nombre del proyecto" %}
         <br>
@@ -25,7 +25,7 @@
         {% translate "Los datos originales han sido preprocesados" %}
     </label>
     <br>
-    <details>
+    <details><!-- TODO: No mostrar esto si el checkbox está desactivado -->
         <summary>{% translate "Información sobre el preproceso" %}</summary>
         <p>
             <label style="background-color: transparent;">

@@ -29,6 +29,9 @@ def register(request: HttpRequest):
     try:
         allowed_email = AllowedEmail.objects.get(email=email)
     except Exception:
+        allowed_email = None
+
+    if allowed_email == None:
         return redirect("/map/error-page?msg=%s" % _("Esta dirección de email no está autorizada para crear una cuenta. Contacta con la administración de la página si crees que esto es un error."))
 
     if User.objects.filter(username=user).exists():

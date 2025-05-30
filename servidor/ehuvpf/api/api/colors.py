@@ -48,7 +48,7 @@ def update_colors(request: HttpRequest):
 
     update_colors_impl(project, colors)
 
-    return HttpResponse(colors)
+    return HttpResponse(colors) # TODO: This is not an appropiate response
 
 def update_colors_impl(project: Project, colors: list[str]):
     colores_proyecto = list(Color.objects.filter(project=project))

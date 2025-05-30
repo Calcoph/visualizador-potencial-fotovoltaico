@@ -87,6 +87,30 @@ function getForm() {
     return document.getElementById("edit-layer-form")
 }
 
+function editLayer() {
+    if (!validateForm()) {
+        return
+    }
+
+    let form_data = new FormData(getForm())
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/map/api/editLayer", true);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                confirmEditLayer()
+            } else {
+                let error = get_error_string(this) // from error.js
+                window.alert(error)
+            }
+        }
+    }
+    xhttp.send(form_data)
+
+    document.getElementById('delete-confirm').close()
+}
+
 function validateForm() {
     let form = getForm()
     let attributes = document.getElementById("attributes")
@@ -98,6 +122,10 @@ function validateForm() {
         form.appendChild(hidden_attribute)
     }
     return true
+}
+
+function confirmEditLayer() {
+    alert("Layer edited") // TODO: Translate
 }
 
 function deleteLayer() {

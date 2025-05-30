@@ -92,7 +92,7 @@ def edit_colors(request: HttpRequest):
     colors.sort(key=lambda color: color.strength)
     context = {
         "project": project,
-        "colors": enumerate(colors)
+        "colors": colors
     }
 
     return HttpResponse(template.render(context, request))
@@ -118,6 +118,7 @@ def add_attribute(request: HttpRequest):
     template = loader.get_template("map/add-attribute.html")
     attributes = Measure.objects.filter(project=project)
     context = {
+        "project": project,
         "attributes": attributes,
     }
     return HttpResponse(template.render(context, request))
@@ -141,6 +142,7 @@ def add_parameter(request: HttpRequest):
     template = loader.get_template("map/add-parameter.html")
     parameters = Parameter.objects.filter(project=project)
     context = {
+        "project": project,
         "parameters": parameters,
     }
     return HttpResponse(template.render(context, request))
@@ -161,11 +163,8 @@ def edit_parameter(request: HttpRequest):
 @permission_required(Permission.BuildingAdd)
 @project_required
 def add_building(request: HttpRequest):
-    project = get_project(request)
     template = loader.get_template("map/add-building.html")
-    layers = Layer.objects.filter(project=project)
     context = {
-        "layers": layers,
     }
     return HttpResponse(template.render(context, request))
 
@@ -225,7 +224,6 @@ def project_list(request: HttpRequest):
     try:
         next = request.GET.get("next")
     except:
-        print("No next")
         next = ""
     if next == None:
         next = ""

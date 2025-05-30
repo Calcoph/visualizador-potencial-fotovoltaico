@@ -50,27 +50,30 @@ class AddAttributeParams:
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        param_name = "name"
         try:
+            # Required parameters
+            param_name = "name"
             name = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "display_name"
-        try:
+
+            if name == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "display_name"
             display_name = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "description"
-        try:
+            if display_name == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "description"
             description = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "unit"
-        try:
+            if description == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "unit"
             unit = request.POST.get(param_name)
+            if unit == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
         return AddAttributeParams(name, display_name, description, unit)
 
@@ -112,38 +115,38 @@ class EditAttributeParams:
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        param_name = "name"
         try:
+            # Required parameters
+            param_name = "name"
             name = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "display_name"
-        try:
+            if name == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "display_name"
             display_name = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "description"
-        try:
+            if display_name == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "description"
             description = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        param_name = "unit"
-        try:
+            if description == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            param_name = "unit"
             unit = request.POST.get(param_name)
-        except:
-            return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
-        attribute_id_param_name = "id"
-        try:
+            if unit == None:
+                return ApiError(endpoint, f'"{param_name}" is required', ErrorKind.bad_request())
+
+            attribute_id_param_name = "id"
             id = request.POST.get(attribute_id_param_name)
-        except:
-            return ApiError(endpoint, f'"{attribute_id_param_name}" is required', ErrorKind.bad_request())
+            if id == None:
+                return ApiError(endpoint, f'"{attribute_id_param_name}" is required', ErrorKind.bad_request())
 
-        try:
             attribute = Measure.objects.get(pk=id)
+            if attribute == None:
+                return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
-
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
         # Integrity check
         if attribute.project.pk != project.pk:
             return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())
@@ -184,18 +187,18 @@ class DeleteAttributeParams:
         if request.method != method:
             return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Required parameters
-        attribute_id_param_name = "id"
         try:
+            # Required parameters
+            attribute_id_param_name = "id"
             id = request.POST.get(attribute_id_param_name)
-        except:
-            return ApiError(endpoint, f'"{attribute_id_param_name}" is required', ErrorKind.bad_request())
+            if id == None:
+                return ApiError(endpoint, f'"{attribute_id_param_name}" is required', ErrorKind.bad_request())
 
-        try:
             attribute = Measure.objects.get(pk=id)
+            if attribute == None:
+                return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
         except:
-            return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an existing attribute', ErrorKind.bad_request())
-
+            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
         # Integrity check
         if attribute.project.pk != project.pk:
             return ApiError(endpoint, f'"{attribute_id_param_name}" must be the id of an attribute of the selected project', ErrorKind.bad_request())

@@ -1,6 +1,7 @@
 let current_tab = undefined
 
 function init() {
+    init_ui()
     init_map()
     set_current_tab()
     refrescar_tab()

@@ -47,3 +47,24 @@ function recreate_color_select_list(selectedColor) {
         colorOptionAmount += 1
     }
 }
+
+function addLayer() {
+    let form_data = new FormData(document.getElementById("formAddLayer"))
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/map/api/addLayer", true);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                confirmAddLayer(nombre)
+            } else {
+                let error = get_error_string(this)
+                window.alert(error)
+            }
+        }
+    }
+    xhttp.send(form_data)
+}
+
+function confirmAddLayer() {
+    alert("Capa añadida") // TODO: Translate
+}
