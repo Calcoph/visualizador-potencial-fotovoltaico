@@ -9,7 +9,6 @@ from ..models import Layer, Project, Color
 from ..utils.session_handler import get_project
 from ..utils.decorators import project_required_api
 
-# @permission_required(Permission.ColorView) # Commented out because this should be accessible by anyone
 @project_required_api
 def get_colors(request: HttpRequest):
     project = get_project(request)

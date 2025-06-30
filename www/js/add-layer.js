@@ -55,7 +55,7 @@ function addLayer() {
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4) {
             if (this.status == 200) {
-                confirmAddLayer(nombre)
+                confirmAddLayer()
             } else {
                 let error = get_error_string(this)
                 window.alert(error)

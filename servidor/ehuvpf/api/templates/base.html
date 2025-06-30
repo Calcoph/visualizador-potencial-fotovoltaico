@@ -20,7 +20,9 @@
             {% if user.is_superuser %}
                 <a class=anchorbutton href="/admin">{% translate "Administrar app" %}</a>
             {% endif %}
-            <a class=anchorbutton href="/map/project-admin">{% translate "Administrar proyecto" %}</a>
+            {% if perms.AdminEditProject %}
+                <a class=anchorbutton href="/map/project-admin">{% translate "Administrar proyecto" %}</a>
+            {% endif %}
             <div class="login-section">
                 <button onclick="select_lang('es-ES')">ES</button>
                 <button onclick="select_lang('eu-ES')">EUS</button>

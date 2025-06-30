@@ -13,7 +13,7 @@
 <script src="/smap/js/add-building.js"></script>
 <h1>{% translate "AÑADIR DATOS" %}</h1>
 <a href="index.html"><button>{% translate "Atrás" %}</button></a>
-<form id="add-building-form" action="/map/api/addBuilding", method="post" enctype="multipart/form-data"> <!-- TODO: display something nicer -->
+<form id="add-building-form" enctype="multipart/form-data" onsubmit="return false">
     <div class="row field-array-center">
         <div>
             <label><input type="radio" name="filetype" disabled>.geojson</label>
@@ -38,9 +38,10 @@
             {# This div is going to be filled by javascipt, don't delete #}
         </div>
         <span style="height: 10px;"></span>
-        <button type="submit">{% translate "Subir" %}</button>
+        <button type="submit" onclick="submitData()">{% translate "Subir" %}</button>
     </div>
 </form>
+<p id="lastLayerResults"></p>
 {% endblock %}
 
 {% block after_load %}

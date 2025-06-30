@@ -23,3 +23,26 @@ function init() {
     let input_method = document.getElementById("add-building-form")["inputmethod"]
     select_input(input_method.value)
 }
+
+function submitData() {
+    let form_data = new FormData(document.getElementById("add-building-form"))
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/map/api/addBuilding", true);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                confirmSubmitData(this.response)
+            } else {
+                document.getElementById("lastLayerResults").innerText = ""
+                let error = get_error_string(this)
+                window.alert(error)
+            }
+        }
+    }
+    xhttp.send(form_data)
+}
+
+function confirmSubmitData(response) {
+    document.getElementById("lastLayerResults").innerText = "Automatically selected layers:\n" + response // TODO: Translate
+    alert("Datos Añadidos") // TODO: Translate
+}

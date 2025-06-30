@@ -21,6 +21,9 @@ class Project(models.Model):
             (Permission.permission_name(Permission.PreprocessingInfoEdit), "Permission for editing the preprocessing info of the project"),
         ]
 
+    def __str__(self):
+        return f"{self.name}"
+
 class Color(models.Model):
     """
     project: Project
@@ -31,6 +34,9 @@ class Color(models.Model):
     hex = models.TextField()
     strength = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.hex} ({self.strength})"
+
 class ColorRule(models.Model):
     """
     color: Color
@@ -38,6 +44,9 @@ class ColorRule(models.Model):
     """
     color = models.ForeignKey(Color, on_delete=models.CASCADE)
     minimum = models.FloatField()
+
+    def __str__(self):
+        return f"{self.color.hex} > {str(self.minimum)}"
 
 class Measure(models.Model):
     """
@@ -53,6 +62,9 @@ class Measure(models.Model):
     description = models.TextField()
     unit = models.TextField()
 
+    def __str__(self):
+        return f"{self.display_name}"
+
 class Parameter(models.Model):
     """
     project: Project
@@ -64,6 +76,9 @@ class Parameter(models.Model):
     name = models.TextField()
     description = models.TextField()
     value = models.TextField() # It is a text in case there are non-numeric parameters
+
+    def __str__(self):
+        return f"{self.name}"
 
 class Layer(models.Model):
     """
@@ -81,6 +96,9 @@ class Layer(models.Model):
     name = models.TextField()
     name_pattern = models.TextField()
 
+    def __str__(self):
+        return f"{self.name}"
+
 class Building(models.Model):
     """
     layer: Layer
@@ -93,8 +111,14 @@ class Building(models.Model):
     lat = models.IntegerField()
     lon = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.lat},{self.lon} ({self.layer})"
+
 class AllowedEmail(models.Model):
     """
     email: str
     """
     email = models.TextField()
+
+    def __str__(self):
+        return f"{self.email}"

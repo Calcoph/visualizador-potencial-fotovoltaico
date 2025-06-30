@@ -288,22 +288,27 @@ def add_building(request: HttpRequest):
         return parameters.to_response()
     else:
         files = get_files(parameters)
-        add_building_impl(project, files)
-        return HttpResponse("Successfully saved")
+        response = add_building_impl(project, files)
+        return response
 
 def add_building_impl(project: Project, files: list[EsriFiles]):
+    endpoint = "add_building"
+
     layers = Layer.objects.filter(project=project)
+    patterns = []
+    for layer in layers:
+        patterns.append(layer.name_pattern)
+
+    selected_layers = []
     for esri_files in files:
         selected_layer = None
-        patterns = []
         for layer in layers:
-            patterns.append(layer.name_pattern)
             if layer.name_pattern in esri_files.name:
                 selected_layer = layer
                 break
 
         if selected_layer is None:
-            return redirect("/map/error-page?msg=%s" % _("#TODO: This text"))
+            return ApiError(endpoint, f"No layer matches the names of the submitted files: {esri_files.name}", ErrorKind.bad_request()).to_response() # TODO: Translate
             # old text: raise Exception(f"{patterns}\n{esri_files.name}")
         path = f"{PROJECT_PATH}/{project.pk}/{selected_layer.name}"
         makedirs(path, exist_ok=True)
@@ -315,3 +320,8 @@ def add_building_impl(project: Project, files: list[EsriFiles]):
         # Update database
         building = Building(layer=selected_layer, path=output_path, lat=lat, lon=lon)
         building.save()
+
+        selected_layers.append(f"{esri_files.name}: {selected_layer.name}")
+
+    response = ",".join(selected_layers)
+    return HttpResponse(response)
