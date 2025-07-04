@@ -137,49 +137,41 @@ def edit_parameter_impl(parameters: EditParameterParams):
 
     parameter.save()
 
-class DeleteParameterParams:# TODO: Delete this class
-    def __init__(self, parameter: Parameter) -> None:
-        self.parameter = parameter
+def delete_parameter_validate(request: HttpRequest, project: Project) -> Parameter | ApiError:
+    endpoint = "delete_parameter"
 
-    def validate(request: HttpRequest, project: Project) -> DeleteParameterParams | ApiError:
-        endpoint = "delete_parameter"
+    # Method check
+    method = "POST"
+    if request.method != method:
+        return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
 
-        # Method check
-        method = "POST"
-        if request.method != method:
-            return ApiError(endpoint, f'method must be "{method}"', ErrorKind.bad_request())
+    try:
+        # Required parameters
+        parameter_id_param_name = "id"
+        id = request.POST.get(parameter_id_param_name)
+        if id == None:
+            return ApiError(endpoint, f'"{parameter_id_param_name}" is required', ErrorKind.bad_request())
 
-        try:
-            # Required parameters
-            parameter_id_param_name = "id"
-            id = request.POST.get(parameter_id_param_name)
-            if id == None:
-                return ApiError(endpoint, f'"{parameter_id_param_name}" is required', ErrorKind.bad_request())
+        parameter = Parameter.objects.get(pk=id)
+        if parameter == None:
+            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.bad_request())
+    except:
+        return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
-            parameter = Parameter.objects.get(pk=id)
-            if parameter == None:
-                return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of an existing parameter', ErrorKind.bad_request())
-        except:
-            return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
+    # Integrity check
+    if parameter.project.pk != project.pk:
+        return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of a parameter of the selected project', ErrorKind.bad_request())
 
-        # Integrity check
-        if parameter.project.pk != project.pk:
-            return ApiError(endpoint, f'"{parameter_id_param_name}" must be the id of a parameter of the selected project', ErrorKind.bad_request())
-
-        return DeleteParameterParams(parameter)
+    return parameter
 
 @permission_required(Permission.ParameterDelete)
 @project_required_api
 def delete_parameter(request: HttpRequest):
     project = get_project(request)
 
-    parameters = AddParameterParams.validate(request, project)
-    if isinstance(parameters, ApiError):
-        return parameters.to_response()
+    parameter = delete_parameter_validate(request, project)
+    if isinstance(parameter, ApiError):
+        return parameter.to_response()
     else:
-        delete_parameter_impl(parameters)
+        parameter.delete()
         return HttpResponse("Success")
-
-def delete_parameter_impl(parameters: DeleteParameterParams):
-    parameter = parameters.parameter
-    parameter.delete()

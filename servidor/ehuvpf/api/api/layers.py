@@ -113,7 +113,6 @@ def edit_layer_impl(params: EditLayerParams):
         rule.minimum = new_minimum
         rule.save()
 
-    # TODO: Asegurarse que name_pattern no es subset de otro patrón
     layer.name_pattern = params.name_pattern
     layer.color_measure = params.color_attribute
 
