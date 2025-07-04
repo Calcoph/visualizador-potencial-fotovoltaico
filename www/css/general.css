@@ -88,7 +88,7 @@ details *:not(summary) {
     change the rest. (if inside <details>)
 */
 details *:not(input, summary, button) {
-    background-color: #308030;
+    background-color: #a8e1a8;
 }
 
 summary {

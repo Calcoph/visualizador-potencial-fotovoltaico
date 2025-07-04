@@ -6,10 +6,4 @@ Añadir anti-csrf
 
 Añadir transacciones django
 
-en la lista de colores en el admin de proyecto: ordenar según strength
-
 En prácticamente todos los inputs/edits hay que handlear el return en vez de simplemente que se enseñe un json/success/whatever que no es una página html
-
-No permitir capas con nombres repetidos
-
-renombrar add-building a add-data

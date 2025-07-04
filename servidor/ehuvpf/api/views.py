@@ -24,7 +24,8 @@ def project_admin(request: HttpRequest):
 def project_admin_impl(project: Project):
     attributes = Measure.objects.filter(project=project)
     layers = Layer.objects.filter(project=project)
-    colors = Color.objects.filter(project=project)
+    colors = list(Color.objects.filter(project=project))
+    colors.sort(key=lambda color: color.strength)
     context = {
         "project": project,
         "attributes": attributes,
@@ -58,17 +59,6 @@ def edit_layer_impl(project: Project, layer: Layer) -> dict[str]:
     color_measure = layer.color_measure
 
     color_rules = list(layer.color_rules.all())
-    colors = list(Color.objects.filter(project=project))
-    if len(colors) != len(color_rules):
-        # Añade los nuevos colores a la capa (si los hay)
-        # TODO: Hacer esto desde /map/api/ al cambiar colores en vez de desde vista
-        colors.sort(key=lambda color: color.strength)
-        while len(colors) != len(color_rules):
-            strength = len(color_rules)
-            new_color = ColorRule(color=colors[strength], minimum=0.0)
-            new_color.save()
-            layer.color_rules.add(new_color)
-            color_rules.append(new_color)
 
     context = {
         "project": project,

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import permission_required
 
 from ..utils.user import Permission
 
-from ..models import Layer, Project, Color
+from ..models import ColorRule, Layer, Project, Color
 from ..utils.session_handler import get_project
 from ..utils.decorators import project_required_api
 
@@ -63,7 +63,11 @@ def update_colors_impl(project: Project, colors: list[str]):
             # Añade un nuevo color
             new_color = Color(project=project, hex=color, strength=strength)
             new_color.save()
-            # TODO: haz un color rule para cada capa para este color
+
+            for layer in Layer.objects.filter(project=project):
+                new_color_rule = ColorRule(color=new_color, minimum=0.0)
+                new_color_rule.save()
+                layer.color_rules.add(new_color_rule)
 
     # Borra los colores con strength > len(colors) (no se ha enviado estos colores)
     i = len(colors)

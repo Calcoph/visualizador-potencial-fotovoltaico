@@ -177,7 +177,6 @@ class AddLayerParams:# TODO: Delete this class
         self.name_pattern = name_pattern
 
     def validate(request: HttpRequest, project: Project) -> AddLayerParams | ApiError:
-        # TODO Make sure that no other layer exists with this name on this project
         endpoint = "add_layer"
 
         # Method check
