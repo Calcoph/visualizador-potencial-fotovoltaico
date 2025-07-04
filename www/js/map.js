@@ -24,6 +24,8 @@ const COLOR_SET = {
 /** @type {Array<number}} */
 let CURRENT_MINIMUMS = []
 
+const DEFAULT_COORDS = [43.2629, -2.95];
+
 function init_ui() {
     document.getElementById("legend-loader-close-button").addEventListener("click", function() {
         document.getElementById("legend-loader").close()
@@ -33,7 +35,7 @@ function init_ui() {
 function init_map() {
     MAP = L.map('map', {
         "crs": L.CRS.EPSG3857 // Just to make sure the default never changes
-    }).setView([43.2629, -2.95], 14);
+    }).setView(DEFAULT_COORDS, 14);
 
     // colorset won't automatically be initialized at this time, have to wait asyc AJAX
     let colorset_promise = init_colorset()
@@ -139,6 +141,34 @@ function update_map(map, event) {
         }
         update_loaded_chunk_list(chunks)
         load_chunks(chunks)
+    }
+}
+
+/**
+ *
+ * @param {L.Map} map
+ * @param {L.Event} event
+ */
+function clamp_map(map, event) {
+    center = map.getCenter();
+    if (center.lng > 180) {
+        console.log("Moved out of bounds. Teleporting")
+        long = center.lng - 360
+        while (long > 180) {
+            long = long - 360
+        }
+        map.setView([center.lat, long], map.getZoom())
+        return;
+    }
+
+    if (center.lng < -180) {
+        console.log("Moved out of bounds. Teleporting")
+        long = center.lng + 360
+        while (long < -180) {
+            long = long + 360
+        }
+        map.setView([center.lat, long], map.getZoom())
+        return;
     }
 }
 
@@ -367,6 +397,7 @@ function on_first_layer_loaded() {
 
     MAP.on("zoom", (event) => update_zoom(MAP, event))
     MAP.on("move", (event) => update_map(MAP, event))
+    MAP.on("moveend", (event) => clamp_map(MAP, event))
 }
 
 function on_layer_loaded() {
