@@ -65,10 +65,10 @@ def edit_layer_impl(project: Project, layer: Layer) -> dict[str]:
         colors.sort(key=lambda color: color.strength)
         while len(colors) != len(color_rules):
             strength = len(color_rules)
-            nuevo_color = ColorRule(color=colors[strength], minimum=0.0)
-            nuevo_color.save()
-            layer.color_rules.add(nuevo_color)
-            color_rules.append(nuevo_color)
+            new_color = ColorRule(color=colors[strength], minimum=0.0)
+            new_color.save()
+            layer.color_rules.add(new_color)
+            color_rules.append(new_color)
 
     context = {
         "project": project,

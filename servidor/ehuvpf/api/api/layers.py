@@ -81,6 +81,13 @@ class EditLayerParams:
                 if attribute.project.pk != project.pk:
                     return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
                 attribute_list.append(attribute)
+
+            layers = Layer.objects.filter(project=project)
+            for layer in layers:
+                if layer.pk == layer:
+                    continue # Don't check pattern conflicts with self
+                if name_pattern in layer.name_pattern or layer.name_pattern in name_pattern:
+                    return ApiError(endpoint, f'"{name_pattern}" conflicts with pattern "{layer.name_pattern}" of layer "{layer.name}"', ErrorKind.bad_request())
         except:
             return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
         return EditLayerParams(layer, name_pattern, attribute_list, color_attribute, new_color_rules)
@@ -215,6 +222,13 @@ class AddLayerParams:# TODO: Delete this class
                 if attribute.project.pk != project.pk:
                     return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
                 attribute_list.append(attribute)
+
+            layers = Layer.objects.filter(project=project)
+            for layer in layers:
+                if name_pattern in layer.name_pattern or layer.name_pattern in name_pattern:
+                    return ApiError(endpoint, f'"{name_pattern}" conflicts with pattern "{layer.name_pattern}" of layer "{layer.name}"', ErrorKind.bad_request())
+                if layer_name == layer.name:
+                    return ApiError(endpoint, f'Layer "{layer.name}" already exists', ErrorKind.bad_request())
         except:
             return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
@@ -233,7 +247,6 @@ def add_layer(request: HttpRequest):
         return HttpResponse("Success")
 
 def add_layer_impl(project: Project, params: AddLayerParams):
-    # TODO: Asegurarse que name_pattern no es subset de otro patrón
     # TODO: Hacer un color rule por cada color del proyecto
     new_layer = Layer(project=project, color_measure=params.color_attribute, name=params.layer_name, name_pattern=params.name_pattern)
     new_layer.save()

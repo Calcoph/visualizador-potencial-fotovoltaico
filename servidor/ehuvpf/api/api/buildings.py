@@ -310,7 +310,7 @@ def add_building_impl(project: Project, files: list[EsriFiles]):
         if selected_layer is None:
             return ApiError(endpoint, f"No layer matches the names of the submitted files: {esri_files.name}", ErrorKind.bad_request()).to_response() # TODO: Translate
             # old text: raise Exception(f"{patterns}\n{esri_files.name}")
-        path = f"{PROJECT_PATH}/{project.pk}/{selected_layer.name}"
+        path = f"{PROJECT_PATH}/{project.pk}/{selected_layer.name}" # TODO: input sanitization
         makedirs(path, exist_ok=True)
 
         save_esri(esri_files)
