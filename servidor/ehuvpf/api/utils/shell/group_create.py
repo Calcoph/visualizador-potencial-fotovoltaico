@@ -11,7 +11,7 @@ from django.contrib.auth.models import Permission as DjPermission
 djpermission = lambda x: DjPermission.objects.get(codename=Permission.permission_name(x))
 
 data_contributor_permissions = [
-    djpermission(Permission.BuildingAdd),
+    djpermission(Permission.DataAdd),
     djpermission(Permission.AdminEditProject)
 ]
 data_contributor = Group(name="data_contributor")

@@ -290,12 +290,12 @@ function load_chunks(chunks) {
     for (chunk of chunks) {
         LOADED_CHUNKS[SELECTED_LAYER].push(chunk)
 
-        fetch(`/map/api/getBuildings?layer=${SELECTED_LAYER}&lat=${chunk.lat}&lon=${chunk.lon}`)
+        fetch(`/map/api/getData?layer=${SELECTED_LAYER}&lat=${chunk.lat}&lon=${chunk.lon}`)
             .then(response => response.json())
             .then((json) => {
                 let destination_layer = LAYERS[json.layer]
-                for (building of json.buildings) {
-                    destination_layer.addData(building)
+                for (datum of json.data) {
+                    destination_layer.addData(datum)
                 }
             })
     }
@@ -303,18 +303,18 @@ function load_chunks(chunks) {
 
 /**
  *
- * @param {any} building The GeoJSON object
+ * @param {any} datum The GeoJSON object
  * @param {L.GeoJSON} layer The GeoJSON layer
  */
-function init_building(building, layer) {
-    popup_string = get_popup_content(building)
+function init_data(datum, layer) {
+    popup_string = get_popup_content(datum)
     layer.bindPopup(popup_string)
 }
 
-function get_popup_content(building) {
+function get_popup_content(datum) {
     let popup_string = ""
     for (const attribute of SELECTED_ATTRIBUTES) {
-        let properties = building.properties
+        let properties = datum.properties
         let property = properties[attribute.name]
         if (property) {
             popup_string += attribute.display_name + ": " + property.toString() + "<br>"
@@ -328,7 +328,7 @@ function get_popup_content(building) {
     return popup_string
 }
 
-function update_building_popups() {
+function update_data_popups() {
     LAYERS[SELECTED_LAYER].eachLayer(function(layer) {
         layer.setPopupContent(get_popup_content(layer.feature))
     })
@@ -346,7 +346,7 @@ function update_selected_attributes() {
             })
         }
     }
-    update_building_popups()
+    update_data_popups()
 }
 
 /**
@@ -371,7 +371,7 @@ function add_layers(colorset_promise) {
                 () => {
                     for (const layer of json.layers) {
                         let newLayer = L.geoJSON(null, {
-                            onEachFeature: init_building,
+                            onEachFeature: init_data,
                             style: (edificio) => estilo(edificio, layer.color_measure)
                         })
 

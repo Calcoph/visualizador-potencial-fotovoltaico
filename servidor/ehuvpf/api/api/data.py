@@ -12,21 +12,21 @@ from . import PROJECT_PATH, RESOLUTION
 from ..utils.errors import ApiError, ErrorKind
 
 from ..utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
-from ..utils.testing import generate_placeholder_building
+from ..utils.testing import generate_placeholder_data
 from ..utils.user import Permission
 
-from ..models import Layer, Building, Project
+from ..models import Layer, Data, Project
 from ..utils.session_handler import get_project
 from ..utils.decorators import project_required_api
 
-class GetBuildingsParams:
+class GetDataParams:
     def __init__(self, layer: Layer, lat: int, lon: int) -> None:
         self.layer = layer
         self.lat = lat
         self.lon = lon
 
-    def validate(request: HttpRequest, project: Project) -> GetBuildingsParams | ApiError:
-        endpoint = "get_buildings"
+    def validate(request: HttpRequest, project: Project) -> GetDataParams | ApiError:
+        endpoint = "get_data"
 
         # Method check
         method = "GET"
@@ -70,42 +70,41 @@ class GetBuildingsParams:
         if layer.project.pk != project.pk:
             return ApiError(endpoint, f'"{layer_param_name}" must be the id of a layer of the selected project', ErrorKind.bad_request())
 
-        return GetBuildingsParams(layer, lat, lon)
+        return GetDataParams(layer, lat, lon)
 
-# @permission_required(Permission.BuildingView) # Commented out because this should be accessible by anyone
 @project_required_api
-def get_buildings(request: HttpRequest):
+def get_data(request: HttpRequest):
     project = get_project(request)
 
-    parameters = GetBuildingsParams.validate(request, project)
+    parameters = GetDataParams.validate(request, project)
     if isinstance(parameters, ApiError):
         return parameters.to_response()
     else:
-        response = get_buildings_impl(parameters)
+        response = get_data_impl(parameters)
         return JsonResponse(response)
 
-def get_buildings_impl(parameters: GetBuildingsParams):
-    buildings = Building.objects.filter(layer=parameters.layer, lat=parameters.lat, lon=parameters.lon)
-    json_buildings = []
-    for building in buildings:
-        with open(building.path, "r") as f:
-            building = json.load(f)
-            json_buildings.append(building)
+def get_data_impl(parameters: GetDataParams):
+    data = Data.objects.filter(layer=parameters.layer, lat=parameters.lat, lon=parameters.lon)
+    json_data = []
+    for datum in data:
+        with open(datum.path, "r") as f:
+            datum = json.load(f)
+            json_data.append(datum)
 
     resp = {
         "layer": parameters.layer.pk,
-        "buildings": json_buildings
+        "data": json_data
     }
 
     return resp
 
-class GetPlaceholderBuildingsParams:
+class GetPlaceholderDataParams:
     def __init__(self, lat: int, lon: int) -> None:
         self.lat = lat
         self.lon = lon
 
-    def validate(request: HttpRequest) -> GetPlaceholderBuildingsParams | ApiError:
-        endpoint = "get_placeholder_buildings"
+    def validate(request: HttpRequest) -> GetPlaceholderDataParams | ApiError:
+        endpoint = "get_placeholder_data"
 
         # Method check
         method = "GET"
@@ -136,39 +135,39 @@ class GetPlaceholderBuildingsParams:
         except:
             return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
-        return GetPlaceholderBuildingsParams(lat, lon)
+        return GetPlaceholderDataParams(lat, lon)
 
-def get_placeholder_buildings(request: HttpRequest):
-    parameters = GetPlaceholderBuildingsParams.validate(request)
+def get_placeholder_data(request: HttpRequest):
+    parameters = GetPlaceholderDataParams.validate(request)
     if isinstance(parameters, ApiError):
         return parameters.to_response()
     else:
-        response = get_placeholder_buildings_impl(parameters)
+        response = get_placeholder_data_impl(parameters)
         return JsonResponse(response)
 
-def get_placeholder_buildings_impl(parameters: GetPlaceholderBuildingsParams) -> dict[str]:
+def get_placeholder_data_impl(parameters: GetPlaceholderDataParams) -> dict[str]:
     # Resolution adjustment
     lat = parameters.lat * RESOLUTION
     lon = parameters.lon * RESOLUTION
-    buildings = []
+    data = []
     STEPS = 10
     for x in range(0, STEPS):
         for y in range(0, STEPS):
             t_lat = lat + (x / STEPS) * RESOLUTION
             t_lon = lon + (y / STEPS) * RESOLUTION
-            buildings.append(generate_placeholder_building(t_lat, t_lon))
+            data.append(generate_placeholder_data(t_lat, t_lon))
 
-    json_buildings = {
-        "buildings": buildings
+    json_data = {
+        "data": data
     }
 
-    return json_buildings
+    return json_data
 
 class InputMethod:
     SINGLE = "single"
     MULTIPLE = "multiple"
 
-def get_files(parameters: AddBuildingParams) -> list[EsriFiles]:
+def get_files(parameters: AddDataParams) -> list[EsriFiles]:
     files = []
     for (file_name, layer_files) in parameters.files.items():
         files.append(
@@ -183,12 +182,12 @@ def get_files(parameters: AddBuildingParams) -> list[EsriFiles]:
 
     return files
 
-class AddBuildingParams:
+class AddDataParams:
     def __init__(self, files: dict[str, dict[str, UploadedFile]]) -> None:
         self.files = files
 
-    def validate(request: HttpRequest) -> AddBuildingParams | ApiError:
-        endpoint = "add_building"
+    def validate(request: HttpRequest) -> AddDataParams | ApiError:
+        endpoint = "add_data"
 
         # Method check
         method = "POST"
@@ -276,23 +275,23 @@ class AddBuildingParams:
         except:
             return ApiError(endpoint, "Unknown internal server error", ErrorKind.internal_server_error())
 
-        return AddBuildingParams(files)
+        return AddDataParams(files)
 
-@permission_required(Permission.BuildingAdd)
+@permission_required(Permission.DataAdd)
 @project_required_api
-def add_building(request: HttpRequest):
+def add_data(request: HttpRequest):
     project = get_project(request)
 
-    parameters = AddBuildingParams.validate(request)
+    parameters = AddDataParams.validate(request)
     if isinstance(parameters, ApiError):
         return parameters.to_response()
     else:
         files = get_files(parameters)
-        response = add_building_impl(project, files)
+        response = add_data_impl(project, files)
         return response
 
-def add_building_impl(project: Project, files: list[EsriFiles]):
-    endpoint = "add_building"
+def add_data_impl(project: Project, files: list[EsriFiles]):
+    endpoint = "add_data"
 
     layers = Layer.objects.filter(project=project)
     patterns = []
@@ -318,8 +317,8 @@ def add_building_impl(project: Project, files: list[EsriFiles]):
         (output_path, lat, lon) = convert_esri_to_geojson(esri_files.name, new_path)
 
         # Update database
-        building = Building(layer=selected_layer, path=output_path, lat=lat, lon=lon)
-        building.save()
+        data = Data(layer=selected_layer, path=output_path, lat=lat, lon=lon)
+        data.save()
 
         selected_layers.append(f"{esri_files.name}: {selected_layer.name}")
 

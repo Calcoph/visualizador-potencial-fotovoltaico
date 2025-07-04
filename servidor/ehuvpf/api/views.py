@@ -160,10 +160,10 @@ def edit_parameter(request: HttpRequest):
     }
     return HttpResponse(template.render(context, request))
 
-@permission_required(Permission.BuildingAdd)
+@permission_required(Permission.DataAdd)
 @project_required
-def add_building(request: HttpRequest):
-    template = loader.get_template("map/add-building.html")
+def add_data(request: HttpRequest):
+    template = loader.get_template("map/add-data.html")
     context = {
     }
     return HttpResponse(template.render(context, request))

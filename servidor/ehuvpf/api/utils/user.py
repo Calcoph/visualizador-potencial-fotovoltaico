@@ -35,10 +35,10 @@ class Permission:
     LayerDelete = "api.delete_layer"
     LayerView = "api.view_layer"
 
-    BuildingAdd = "api.add_building"
-    BuildingEdit = "api.change_building"
-    BuildingDelete = "api.delete_building"
-    BuildingView = "api.view_building"
+    DataAdd = "api.add_data"
+    DataEdit = "api.change_data"
+    DataDelete = "api.delete_data"
+    DataView = "api.view_data"
 
     def permission_name(permission: str):
          # Split to remove the "api." at the start of the permission

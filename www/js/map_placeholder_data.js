@@ -18,7 +18,7 @@ function init_map() {
     /** @type {L.GeoJSON} */
 
     geojson_layer = L.geoJSON(null, {
-        onEachFeature: init_building
+        onEachFeature: init_data
     });
     LAYERS["geojson"] = geojson_layer
 
@@ -276,12 +276,12 @@ function load_chunks(chunks) {
     for (chunk of chunks) {
         LOADED_CHUNKS.push(chunk)
 
-        fetch(`/map/api/getPlaceholderBuildings?lat=${chunk.lat}&lon=${chunk.lon}`)
+        fetch(`/map/api/getPlaceholderData?lat=${chunk.lat}&lon=${chunk.lon}`)
             .then(response => response.json())
             .then((json) => {
                 let geojson_layer = LAYERS["geojson"]
-                for (building of json.buildings) {
-                    geojson_layer.addData(building)
+                for (datum of json.data) {
+                    geojson_layer.addData(datum)
                 }
             })
     }
@@ -289,9 +289,9 @@ function load_chunks(chunks) {
 
 /**
  *
- * @param {any} building The GeoJSON object
+ * @param {any} datum The GeoJSON object
  * @param {L.GeoJSON} layer The GeoJSON layer
  */
-function init_building(building, layer) {
-    layer.bindPopup(building.properties._sum.toString())
+function init_data(datum, layer) {
+    layer.bindPopup(datum.properties._sum.toString())
 }

@@ -69,31 +69,31 @@ msgstr "Unitatea:"
 msgid "Añadir"
 msgstr "Gehitu"
 
-#: api/templates/map/add-building.html:4
+#: api/templates/map/add-data.html:4
 msgid "Añadir datos"
 msgstr "datuak gehitu"
 
-#: api/templates/map/add-building.html:12
+#: api/templates/map/add-data.html:12
 msgid "AÑADIR DATOS"
 msgstr "DATUAK GEHITU"
 
-#: api/templates/map/add-building.html:13
+#: api/templates/map/add-data.html:13
 msgid "Atrás"
 msgstr "Atzera"
 
-#: api/templates/map/add-building.html:18
+#: api/templates/map/add-data.html:18
 msgid "ficheros ESRI"
 msgstr "ESRI fitxategiak"
 
-#: api/templates/map/add-building.html:21
+#: api/templates/map/add-data.html:21
 msgid "uno solo"
 msgstr "bakarra"
 
-#: api/templates/map/add-building.html:22
+#: api/templates/map/add-data.html:22
 msgid "multiples"
 msgstr "multipleak"
 
-#: api/templates/map/add-building.html:30
+#: api/templates/map/add-data.html:30
 msgid "Ficheros"
 msgstr "Fitxategiak"
 

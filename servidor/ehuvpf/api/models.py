@@ -99,7 +99,7 @@ class Layer(models.Model):
     def __str__(self):
         return f"{self.name}"
 
-class Building(models.Model):
+class Data(models.Model):
     """
     layer: Layer
     path: str

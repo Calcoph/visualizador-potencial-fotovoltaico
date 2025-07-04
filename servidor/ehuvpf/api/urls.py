@@ -1,7 +1,7 @@
 from django.urls import include, path, re_path
 from django.contrib.auth import views as auth_views
 
-from .api import attributes as api_attributes, buildings as api_buildings, colors as api_colors, layers as api_layers, parameters as api_parameters, project as api_project
+from .api import attributes as api_attributes, data as api_data, colors as api_colors, layers as api_layers, parameters as api_parameters, project as api_project
 
 from . import views, user_view, user_api
 
@@ -22,9 +22,9 @@ user_urls = [
 api_urls = [
     path("createProject", api_project.create_project, name="createProject"),
 
-    path("getBuildings", api_buildings.get_buildings, name="getBuildings"),
-    path("getPlaceholderBuildings", api_buildings.get_placeholder_buildings, name="getPlaceholderBuildings"),
-    path("addBuilding", api_buildings.add_building, name="addBuilding"),
+    path("getData", api_data.get_data, name="getData"),
+    path("getPlaceholderData", api_data.get_placeholder_data, name="getPlaceholderData"),
+    path("addData", api_data.add_data, name="addData"),
 
     path("getAttributes", api_attributes.get_attributes, name="getAttributes"),
     path("addAttribute", api_attributes.add_attribute, name="newAttribute"),
@@ -63,7 +63,7 @@ urlpatterns = [
     path("edit-colors", views.edit_colors, name="edit-colors"),
     path("edit-project-details", views.edit_project_details, name="edit-project-details"),
     path("add-layer", views.add_layer, name="add-layer"),
-    path("add-building", views.add_building, name="add-building"),
+    path("add-data", views.add_data, name="add-data"),
     path("project-list", views.project_list, name="project-list"),
     path("details", views.details, name="details"),
     path("error-page", views.error_page, name="error-page"),

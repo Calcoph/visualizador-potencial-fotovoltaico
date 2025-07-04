@@ -20,14 +20,14 @@ function swap_template(id) {
 }
 
 function init() {
-    let input_method = document.getElementById("add-building-form")["inputmethod"]
+    let input_method = document.getElementById("add-data-form")["inputmethod"]
     select_input(input_method.value)
 }
 
 function submitData() {
-    let form_data = new FormData(document.getElementById("add-building-form"))
+    let form_data = new FormData(document.getElementById("add-data-form"))
     let xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "/map/api/addBuilding", true);
+    xhttp.open("POST", "/map/api/addData", true);
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4) {
             if (this.status == 200) {

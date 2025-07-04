@@ -5,15 +5,15 @@
 
 {% block head %}
 <link rel="stylesheet" href="/smap/css/general.css"/>
-<link rel="stylesheet" href="/smap/css/add-building.css"/>
+<link rel="stylesheet" href="/smap/css/add-data.css"/>
 <link rel="stylesheet" href="/smap/css/field-array.css"/>
 {% endblock %}
 
 {% block content %}
-<script src="/smap/js/add-building.js"></script>
+<script src="/smap/js/add-data.js"></script>
 <h1>{% translate "AÑADIR DATOS" %}</h1>
 <a href="index.html"><button>{% translate "Atrás" %}</button></a>
-<form id="add-building-form" enctype="multipart/form-data" onsubmit="return false">
+<form id="add-data-form" enctype="multipart/form-data" onsubmit="return false">
     <div class="row field-array-center">
         <div>
             <label><input type="radio" name="filetype" disabled>.geojson</label>
