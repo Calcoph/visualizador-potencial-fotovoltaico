@@ -10,7 +10,7 @@
 
 {% block content %}
 <script src="/smap/js/edit-colors.js"></script>
-<form method="post" action="/map/api/updateColors"><!-- TODO: Ajax -->
+<form id="edit-colors-form" onsubmit="return false">
     <p>
         {% translate "Haz click en los colores para cambiarlos." %}
     </p>
@@ -56,7 +56,7 @@ for (color of colors) {
 </script>
     <input type="button" value="{% translate "Añadir Color" %}" onclick="addItemToList('#808080')">
     <input type="button" value="{% translate "Eliminar el último color" %}" onclick="deleteColor()"><br>
-    <button type="submit">{% translate "Confirmar cambios" %}</button>
+    <button type="submit" onclick="editColors()">{% translate "Confirmar cambios" %}</button>
 </form>
 {% endblock %}
 

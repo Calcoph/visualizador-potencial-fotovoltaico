@@ -40,3 +40,25 @@ function deleteColor() {
     let color_list = document.getElementById("colors")
     color_list.deleteRow(color_list.rows.length - 1)
 }
+
+function editColors() {
+    let form_data = new FormData(document.getElementById("edit-colors-form"))
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/map/api/updateColors", true);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+            if (this.status == 200) {
+                confirmEditColors()
+            } else {
+                let error = get_error_string(this) // from error.js
+                window.alert(error)
+            }
+        }
+    }
+    xhttp.send(form_data)
+}
+
+function confirmEditColors() {
+    alert("Colors edited") // TODO: Translate
+}
