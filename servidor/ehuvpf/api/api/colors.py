@@ -4,6 +4,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import permission_required
 
 from ..utils.user import Permission
+from ..utils.errors import ApiError
 
 from ..models import ColorRule, Layer, Project, Color
 from ..utils.session_handler import get_project
@@ -42,18 +43,31 @@ def get_colors_impl(project: Project):
 @permission_required(Permission.ColorEdit)
 @project_required_api
 def update_colors(request: HttpRequest):
+    endpoint = "update_colors"
+
     colors = request.POST.getlist("color")
     project = get_project(request)
 
+    # validate color format
+    for color in colors:
+        if len(color) != 7: # 7 = len("#RrGgBb")
+            return ApiError(endpoint, f'Color "{color}" is invalid. It must be of the pattern "#RrGgBb"').to_response()
+
+        if color[0] != "#":
+            return ApiError(endpoint, f'Color "{color}" is invalid. It must be of the pattern "#RrGgBb"').to_response()
+
+        for hex in color[1:]:
+            if hex.lower() not in ['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f']:
+                return ApiError(endpoint, f'Color "{color}" is invalid. It must be of the pattern "#RrGgBb" where "RrGgBb" are hexadecimal characters').to_response()
+
     update_colors_impl(project, colors)
 
-    return HttpResponse(colors) # TODO: This is not an appropiate response
+    return HttpResponse("Success")
 
 def update_colors_impl(project: Project, colors: list[str]):
     colores_proyecto = list(Color.objects.filter(project=project))
     colores_proyecto.sort(key=lambda color: color.strength)
     for (strength, color) in enumerate(colors):
-        # TODO: validate color
         if strength < len(colores_proyecto):
             # Edita un color existente
             color_existente = colores_proyecto[strength]

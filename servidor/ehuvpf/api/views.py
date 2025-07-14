@@ -50,7 +50,6 @@ def edit_layer(request: HttpRequest):
 def edit_layer_impl(project: Project, layer: Layer) -> dict[str]:
     attributes = Measure.objects.filter(project=project)
     default_measures = layer.default_measures.all()
-    # TODO: hacer este fitro con un query en vez de manualmente
     default_measures_pks = list(map(lambda x: x.pk, default_measures))
     unused_measures = []
     for measure in attributes:
