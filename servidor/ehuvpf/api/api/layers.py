@@ -7,7 +7,7 @@ from ..utils.errors import ApiError, ErrorKind
 
 from ..utils.user import Permission
 
-from ..models import Layer, Measure, Project, ColorRule
+from ..models import Color, Layer, Measure, Project, ColorRule
 from ..utils.session_handler import get_project
 from ..utils.decorators import project_required_api
 
@@ -84,7 +84,7 @@ class EditLayerParams:
 
             layers = Layer.objects.filter(project=project)
             for layer in layers:
-                if layer.pk == layer:
+                if layer.pk == layer.pk:
                     continue # Don't check pattern conflicts with self
                 if name_pattern in layer.name_pattern or layer.name_pattern in name_pattern:
                     return ApiError(endpoint, f'"{name_pattern}" conflicts with pattern "{layer.name_pattern}" of layer "{layer.name}"', ErrorKind.bad_request())
@@ -169,7 +169,7 @@ def delete_layer_impl(params: DeleteLayerParams):
 
     layer.delete()
 
-class AddLayerParams:# TODO: Delete this class
+class AddLayerParams:
     def __init__(self, layer_name: str, attribute_list: list[Measure], color_attribute: Measure, name_pattern: str) -> None:
         self.layer_name = layer_name
         self.attribute_list = attribute_list
@@ -245,9 +245,12 @@ def add_layer(request: HttpRequest):
         return HttpResponse("Success")
 
 def add_layer_impl(project: Project, params: AddLayerParams):
-    # TODO: Hacer un color rule por cada color del proyecto
     new_layer = Layer(project=project, color_measure=params.color_attribute, name=params.layer_name, name_pattern=params.name_pattern)
     new_layer.save()
+    for color in Color.objects.filter(project=project):
+        new_rule = ColorRule(color=color, minimum=0.0)
+        new_rule.save()
+        new_layer.color_rules.add(new_rule)
     new_layer.default_measures.set(params.attribute_list)
 
 # @permission_required(Permission.LayerView) # Commented out because this should be accessible by anyone

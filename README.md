@@ -1,4 +1,4 @@
-## Inicializar el proyecto
+# Inicializar el proyecto
 
 1. Crea una carpeta con los ficheros secretos
 
@@ -65,11 +65,26 @@ Si da error *Can't connect to local server through socket '/run/mysqld/mysqld.so
 
 14. El proyecto está listo! Puedes ir a [localhost:8080](http://localhost:8080) para comprobarlo
 
+# Hacer cambios en el código fuente
+
 ## Traducción
 
-Al añadir/editar texto nuevo al proyecto hay que ejecutar el siguiente comando:
+Al añadir/editar texto nuevo al proyecto hay que ejecutar el siguiente comando en el contenedor de django:
 
 `django-admin makemessages -l eu_ES`
 
 De esta manera se actualizará el fichero de localización. Tras traducir el texto,
 hay que ejecutar `django-admin compilemessages` para que los cambios surtan efecto.
+
+## Datos
+
+Al cambiar los modelos de datos es necesario actualizar la base de datos para reflejar estos cambios.
+
+Tras realizar algún cambio en el fichero `models.py` el modelo del código no se corresponderá con la base datos.
+
+Es muy importante antes de proceder hacer una copia de la base de datos, ya que si la migración al nuevo modelo no se hace con cuidado se pueden perder datos.
+
+Para hacer la migración, primero hay que entrar al contenedor de django.
+
+1. Ejecutar `python3 manage.py makemigrations` para generar archivos de migración.
+2. Ejecutar `python3 manage.py migrate` para ajecutar los archivos de migración.

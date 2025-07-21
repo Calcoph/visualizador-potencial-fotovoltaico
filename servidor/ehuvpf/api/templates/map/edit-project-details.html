@@ -23,17 +23,14 @@
 <hr>
 <h3>{% translate "Procesamiento de datos" %}</h3>
 <form id="formEditPreprocessInfo" onsubmit="return false">
-    <p>{% translate "Si se han Procesado los datos
-        originales se indicar aquí la información
-        sobre el programa principal utilizado para
-        el procesado. De nos er así deja los campos vacíos" %}
+    <p>{% translate "Si se han Procesado los datos originales se indicar aquí la información sobre el programa principal utilizado para el procesado. De no ser así deja los campos vacíos" %}
     </p>
     <label>
         {% translate "Enlace al programa de procesado de datos:" %}<br>
         <input id="preprocess_link" name="preprocess_link" value="{{ project.preprocess_program_link }}" type="text">
     </label><br>
     <label>
-        {% translate "Nombre del programa de procesado:" %"}<br>
+        {% translate "Nombre del programa de procesado:" %}<br>
         <input id="preprocess_name" name="preprocess_name" value="{{ project.preprocess_program_name }}" type="text">
     </label><br>
     <label>
@@ -55,7 +52,7 @@
 <a href="add-parameter"><button>{% translate "Añadir parámetro" %}</button></a>
 <hr>
 <h3>{% translate "Atributos" %}</h3>
-<p>{% translate "Aquí se muestran los atributos que tienen las capas." %"}</p>
+<p>{% translate "Aquí se muestran los atributos que tienen las capas." %}</p>
 {% for attribute in attributes %}
     <details>
         <summary>{{ attribute.display_name }}</summary>

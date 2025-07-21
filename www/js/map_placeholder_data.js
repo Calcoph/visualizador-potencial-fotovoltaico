@@ -135,7 +135,6 @@ function add_placeholder_data(layer) {
  * @param {L.Event} event
  */
 function update_map(map, event) {
-    // TODO: Volver al origen si el usuario se va demasiado lejos
     if (UPDATES_ENABLED) {
         console.log("Updating map")
 

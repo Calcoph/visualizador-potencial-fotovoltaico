@@ -1,0 +1,18 @@
+.details_input_label {
+    background-color: transparent;
+}
+
+.details_input {
+    background-color: azure;
+}
+
+.details_link_input {
+    background-color: azure;
+    color: blue;
+    text-decoration: underline;
+}
+
+.offset_submit {
+    margin-left: 100px;
+    margin-top: 1.5em;
+}

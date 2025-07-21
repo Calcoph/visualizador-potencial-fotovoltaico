@@ -3,10 +3,15 @@
 
 {% block title %}{% translate "Crear proyecto" %}{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="/smap/css/general.css"/>
+<link rel="stylesheet" href="/smap/css/project_list.css"/>
+{% endblock %}
+
 {% block content %}
 <script src="/smap/js/project_list.js"></script>
 <h1>{% translate "Crear proyecto" %}</h1>
-<form action="api/createProject" method="post"><!-- TODO: ajax -->
+<form id="create-project-form" onsubmit="return false">
     <label>
         {% translate "Nombre del proyecto" %}
         <br>
@@ -21,36 +26,38 @@
     </label>
     <br>
     <label>
-        <input type="checkbox" name="preprocessed">
+        <input type="checkbox" name="preprocessed" onclick="preprocessCheckbox()" id="preprocess-checkbox">
         {% translate "Los datos originales han sido preprocesados" %}
     </label>
     <br>
-    <details><!-- TODO: No mostrar esto si el checkbox está desactivado -->
-        <summary>{% translate "Información sobre el preproceso" %}</summary>
-        <p>
-            <label style="background-color: transparent;">
-                {% translate "Nombre del programa/proyecto de preprocesado" %}
-                <br>
-                <input style="background-color: azure;" type="text" name="preprocess_name">
-            </label>
-        </p>
-        <p>
-            <label style="background-color: transparent;">
-                {% translate "Enlace al programa/proyecto" %}
-                <br>
-                <input style="background-color:azure; color: blue; text-decoration: underline;" type="text" name="preprocess_name">
-            </label>
-        </p>
-        <p>
-            <label style="background-color: transparent;">
-                {% translate "Versión del programa/proyecto" %}
-                <br>
-                <input style="background-color: azure;" type="text" name="preprocess_name">
-            </label>
-        </p>
-    </details>
+    <div id="preprocess-input" hidden>
+        <details>
+            <summary>{% translate "Información sobre el preproceso" %}</summary>
+            <p>
+                <label class="details_input_label">
+                    {% translate "Nombre del programa/proyecto de preprocesado" %}
+                    <br>
+                    <input class="details_input" type="text" name="preprocess_name">
+                </label>
+            </p>
+            <p>
+                <label class="details_input_label">
+                    {% translate "Enlace al programa/proyecto" %}
+                    <br>
+                    <input class="details_link_input" type="text" name="preprocess_link">
+                </label>
+            </p>
+            <p>
+                <label class="details_input_label">
+                    {% translate "Versión del programa/proyecto" %}
+                    <br>
+                    <input class="details_input" type="text" name="preprocess_version">
+                </label>
+            </p>
+        </details>
+    </div>
     <br>
-    <button style="margin-left: 100px;margin-top: 1.5em;" type="submit">{% translate "Crear proyecto" %}</button>
+    <button class="offset_submit" type="submit" onclick="createProject()">{% translate "Crear proyecto" %}</button>
 </form>
 {% endblock %}
 

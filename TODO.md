@@ -5,5 +5,3 @@ Cambiar SECRET_KEY de django y hacerla secreta (con `python3 manage.py shell -c 
 Añadir anti-csrf
 
 Añadir transacciones django
-
-En prácticamente todos los inputs/edits hay que handlear el return en vez de simplemente que se enseñe un json/success/whatever que no es una página html

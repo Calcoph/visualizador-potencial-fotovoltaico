@@ -62,8 +62,3 @@ def convert_esri_to_geojson(layer_path: str, output_path: str) -> tuple[str, int
     # TODO: Is this function really needed?
     layer_path = f"{TEMP_PATH}{layer_path}.shp"
     return esri_to_geojson(layer_path, output_path)
-
-if __name__ == "__main__":
-    layer_path = "EIB_eroei_filt"
-
-    convert_esri_to_geojson(layer_path, "a.geojson")

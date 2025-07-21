@@ -16,16 +16,19 @@ from ..utils.decorators import project_required_api
 @permission_required(Permission.ProjectAdd)
 def create_project(request: HttpRequest):
     name = request.POST.get("name")
+    # TODO: Many missing form fields
 
-    create_project_impl(name)
+    project = create_project_impl(name)
 
-    return HttpResponse("Success")
+    return HttpResponse(project.pk)
 
-def create_project_impl(name: str):
+def create_project_impl(name: str) -> Project:
     project = Project(name=name)
     project.save()
 
-class EditPreprocessInfoParams:# TODO: Delete this class
+    return project
+
+class EditPreprocessInfoParams:
     def __init__(self, link: str, name: str, version: str) -> None:
         self.link = link
         self.name = name
@@ -78,7 +81,7 @@ def edit_preprocess_info_impl(project: Project, parameters: EditPreprocessInfoPa
     project.preprocess_program_version = parameters.version
     project.save()
 
-class EditDataSourceParams:# TODO: Delete this class
+class EditDataSourceParams:
     def __init__(self, data_source: str) -> None:
         self.data_source = data_source
 

@@ -67,7 +67,7 @@ def add_parameter_impl(parameters: AddParameterParams, project: Project):
     )
     parameter.save()
 
-class EditParameterParams:# TODO: Delete this class
+class EditParameterParams:
     def __init__(self, name: str, description: str, value: str, parameter: Parameter) -> None:
         self.name = name
         self.description = description
