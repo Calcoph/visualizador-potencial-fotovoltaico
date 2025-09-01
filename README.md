@@ -7,6 +7,17 @@ Esta carpeta debe llamarse `.secrets` y estar en el root del proyecto (al mismo 
 Dentro de `.secrets` deben encontrarse los siguientes ficheros:
 * `db_django_password.txt`: debe contener la contraseña del usuario que usará el servidor web para conectarse a la base de datos.
 * `db_root_password.txt`: debe contener la contraseña del usuario root (administrador) de la base de datos.
+* `db.cnf`: Debe contener esto (cambiar el valor de contraseña por el contenido de db_django_password.txt):
+
+```
+[client]
+host = db
+database = ehuvpf
+user = django
+password = <valor de db_django_password.txt>
+default-character-set = utf8
+```
+
 
 2. Crea el directorio donde se va a almacenar la base de datos
 
@@ -64,6 +75,27 @@ Si da error *Can't connect to local server through socket '/run/mysqld/mysqld.so
 `python3 manage.py migrate`
 
 14. El proyecto está listo! Puedes ir a [localhost:8080](http://localhost:8080) para comprobarlo
+
+# Configuración y administración
+
+Para configurar la página, sigue estos pasos.
+
+Primero crearemos un usuario administrador:
+
+`python3 manage.py createsuperuser`
+
+Una vez tengamos ese usuario, podremos iniciar sesión en la página web con todos los permisos disponibles, incluida la página de administración.
+
+## Registrar usuarios
+
+Para registrar usuarios, primero es necesario añadir los emails de los usuarios que se van a registrar a la lista de emails permitidos.
+Para ello, es necesario iniciar sesión con el usuario administrador y entrar en la página de admionistración "Administrar App". Una vez estemos en la página de administración, hay que hacer click en "Allowed emails" y añadirlos.
+
+Una vez los emails han sido añadidos, cada usuario tendrá que hacer click en "registrarse" y rellenar sus datos, incluyendo el email que se ha añadido a la lista.
+
+Una vez se ha creado un usuario, el administrador puede modificar sus permisos desde la página de administración. Seleccionando el usuario que se quiere modificar.
+
+Es posible crear grupos de permisos, para poder agrupar los usuarios con los mismos permisos en el mismo grupo. De esta manera si se editan los permisos del grupo, tambien se editarán los de los usuarios miembros.
 
 # Hacer cambios en el código fuente
 
