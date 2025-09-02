@@ -22,7 +22,7 @@ function confirm_add_attribute(display_name, name) {
     addItemToList(display_name, name)
 
     get_form().reset()
-    window.alert("Atributo añadido correctamente") // TODO: Translate
+    window.alert(gettext("Atributo añadido correctamente"))
 }
 
 function get_form() {

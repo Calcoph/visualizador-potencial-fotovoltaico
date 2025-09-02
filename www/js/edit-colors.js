@@ -60,5 +60,5 @@ function editColors() {
 }
 
 function confirmEditColors() {
-    alert("Colors edited") // TODO: Translate
+    alert(gettext("Colors edited"))
 }

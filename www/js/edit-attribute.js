@@ -24,7 +24,7 @@ function confirm_edit_attribute(displayName) {
     let titleNameNode = document.getElementById("title_name");
     titleNameNode.innerHTML = displayName
 
-    window.alert("Atributo editado correctamente") // TODO: Translate
+    window.alert(gettext("Atributo editado correctamente"))
 }
 
 function deleteAttribute() {

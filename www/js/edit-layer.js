@@ -16,10 +16,10 @@ function addColorAttribute(id, attributeName) {
 function removeAttribute(id) {
     let attributeList = document.getElementById("attributes")
     if (attributeList.children.length <= 1) {
-        window.alert(`
+        window.alert(gettext(`
             Debe haber al menos 1 atributo por cada capa.
             Si quieres quitar este atributo, debes primero añadir otro.
-        `)// TODO: Translate
+        `))
         return;
     }
     let selected_id = document.getElementById("attribute-color-selector")
@@ -27,11 +27,11 @@ function removeAttribute(id) {
         .value
 
     if (selected_id == id) {
-        window.alert(`
+        window.alert(gettext(`
             No se puede eliminar el atributo a colorear.
             Si quieres quitar este atributo, debes primero
             cambiar el atributo a colorear.
-        `)// TODO: Translate
+        `))
         return;
     }
 
@@ -69,7 +69,7 @@ function domRemoveAttribute(id) {
     domMoveAttribute(
         id,
         "available-attributes",
-        "Añadir", // TODO: Translate
+        gettext("Añadir"),
         function() {addAttribute(id)}
     )
 }
@@ -78,7 +78,7 @@ function domAddAttribute(id) {
     domMoveAttribute(
         id,
         "attributes",
-        "Quitar", // TODO: Translate
+        gettext("Quitar"),
         function() {removeAttribute(id)}
     )
 }
@@ -125,7 +125,7 @@ function validateForm() {
 }
 
 function confirmEditLayer() {
-    alert("Layer edited") // TODO: Translate
+    alert(gettext("Layer edited")) // TODO: not english
 }
 
 function deleteLayer() {

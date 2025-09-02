@@ -5,7 +5,7 @@ function edit_preprocess_info() {
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4) {
             if (this.status == 200) {
-                window.alert("Se ha modificado la información de preprocesado adecuadamente.")
+                window.alert(gettext("Se ha modificado la información de preprocesado adecuadamente."))
             } else {
                 let error = get_error_string(this)
                 window.alert(error)
@@ -22,7 +22,7 @@ function edit_data_source() {
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4) {
             if (this.status == 200) {
-                window.alert("Se ha modificado la información sobre la fuente de datos adecuadamente.")
+                window.alert(gettext("Se ha modificado la información sobre la fuente de datos adecuadamente."))
             } else {
                 let error = get_error_string(this)
                 window.alert(error)

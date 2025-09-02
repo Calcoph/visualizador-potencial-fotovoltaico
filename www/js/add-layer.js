@@ -66,5 +66,5 @@ function addLayer() {
 }
 
 function confirmAddLayer() {
-    alert("Capa añadida") // TODO: Translate
+    alert(gettext("Capa añadida"))
 }

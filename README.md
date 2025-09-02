@@ -105,8 +105,18 @@ Al añadir/editar texto nuevo al proyecto hay que ejecutar el siguiente comando 
 
 `django-admin makemessages -l eu_ES`
 
-De esta manera se actualizará el fichero de localización. Tras traducir el texto,
-hay que ejecutar `django-admin compilemessages` para que los cambios surtan efecto.
+Si se cambia algún texto en ficheros javascript (`.js`), habrá que ejecutar la siguiente secuencia de comandos:
+
+```
+cd ../map/js
+django-admin makemessages -l eu_ES --domain=djangojs
+cd ../../ehuvpf
+mv ../map/js/locale/eu_ES/LC_MESSAGES/djangojs.po locale/eu_ES/LC_MESSAGES/djangojs.po
+```
+
+Estos comandos generarán los archivos de localización `django.po` y `djangojs.po` respectivamente, en `locale/eu_ES/LC_MESSAGES`. Habrá que editar estos 2 archivos manualmente para traducir el texto.
+
+Una vez traducido, hay que ejecutar `django-admin compilemessages` para que los cambios surtan efecto.
 
 ## Datos
 

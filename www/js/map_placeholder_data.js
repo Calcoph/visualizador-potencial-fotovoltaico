@@ -75,7 +75,7 @@ function update_zoom(map, event) {
             UPDATES_ENABLED = false
             var loader_svg = document.getElementById("loader_svg")
             loader_svg.src = "/smap/svg/red.svg"
-            loader_svg.title = "No se muestran más edificios, haz zoom para que se empiecen a cargar"
+            loader_svg.title = gettext("No se muestran más edificios, haz zoom para que se empiecen a cargar")
         }
     } else {
         if (!UPDATES_ENABLED) {
@@ -84,7 +84,7 @@ function update_zoom(map, event) {
             UPDATES_ENABLED = true
             var loader_svg = document.getElementById("loader_svg")
             loader_svg.src = "/smap/svg/green.svg"
-            loader_svg.title = "Los edificios han sido cargados"
+            loader_svg.title = gettext("Los edificios han sido cargados")
         }
     }
 }

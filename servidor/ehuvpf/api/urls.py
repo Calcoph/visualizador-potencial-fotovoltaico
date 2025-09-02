@@ -1,5 +1,7 @@
 from django.urls import include, path, re_path
 from django.contrib.auth import views as auth_views
+from django.views.i18n import JavaScriptCatalog
+from django.views.decorators.cache import cache_page
 
 from .api import attributes as api_attributes, data as api_data, colors as api_colors, layers as api_layers, parameters as api_parameters, project as api_project
 
@@ -70,4 +72,5 @@ urlpatterns = [
     path("index", views.index, name="index"),
     path("index.html", views.index, name="index"),
     re_path("\w\.html", views.static_html, name="static"),
+    path("jsi18n/", cache_page(86400)(JavaScriptCatalog.as_view()), name="javascript-catalog")
 ]

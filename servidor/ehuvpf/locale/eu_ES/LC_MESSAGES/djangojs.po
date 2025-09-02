@@ -1,0 +1,96 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-02 19:55+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: add-attribute.js:25
+msgid "Atributo añadido correctamente"
+msgstr "Atributu erantsia behar bezala"
+
+#: add-data.js:47
+msgid "Datos Añadidos"
+msgstr "Datu Erantsiak"
+
+#: add-layer.js:69
+msgid "Capa añadida"
+msgstr "Kapa gehitua"
+
+#: edit-attribute.js:27
+msgid "Atributo editado correctamente"
+msgstr "Atributu zuzena"
+
+#: edit-colors.js:63
+msgid "Colors edited"
+msgstr "Kolore edited"
+
+#: edit-layer.js:19
+msgid ""
+"\n"
+"            Debe haber al menos 1 atributo por cada capa.\n"
+"            Si quieres quitar este atributo, debes primero añadir otro.\n"
+"        "
+msgstr ""
+"\n"
+"            Gutxienez atributu bat egon behar da geruza bakoitzeko.\n"
+"            Atributu hau kendu nahi baduzu, beste bat gehitu behar duzu lehenik.\n"
+"        "
+
+#: edit-layer.js:30
+msgid ""
+"\n"
+"            No se puede eliminar el atributo a colorear.\n"
+"            Si quieres quitar este atributo, debes primero\n"
+"            cambiar el atributo a colorear.\n"
+"        "
+msgstr ""
+"\n"
+"            Ezin da kendu koloreztatu beharreko atributua.\n"
+"            Atributu hau kendu nahi baduzu, lehenik eta behin,\n"
+"            koloreztatzeko atributua aldatu behar duzu.\n"
+"        "
+
+#: edit-layer.js:72
+msgid "Añadir"
+msgstr "Gehitu"
+
+#: edit-layer.js:81
+msgid "Quitar"
+msgstr "Kendu"
+
+#: edit-layer.js:128
+msgid "Layer edited"
+msgstr ""
+
+#: edit-project-details.js:8
+msgid "Se ha modificado la información de preprocesado adecuadamente."
+msgstr "Aldez aurretik agindutako informazioa behar bezala aldatu da."
+
+#: edit-project-details.js:25
+msgid "Se ha modificado la información sobre la fuente de datos adecuadamente."
+msgstr "Datu-iturriari buruzko informazioa behar bezala aldatu da."
+
+#: map.js:107 map_placeholder_data.js:78
+msgid "No se muestran más edificios, haz zoom para que se empiecen a cargar"
+msgstr "Ez dira eraikin gehiago agertzen, egin zoom-a kargatzen has daitezen"
+
+#: map.js:116 map_placeholder_data.js:87
+msgid "Los edificios han sido cargados"
+msgstr "Eraikinak kargatu egin dituzte"
+
+#: map.js:325
+msgid "Selecciona al menos un atributo"
+msgstr "Aukeratu gutxienez atributu bat"
