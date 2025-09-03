@@ -19,62 +19,82 @@ default-character-set = utf8
 ```
 
 
-2. Crea el directorio donde se va a almacenar la base de datos
+1. Crea el directorio donde se va a almacenar la base de datos
 
-`mkdir ~/db-data`
+    `mkdir ~/db-data`
 
-3. Crear el directorio donde se almacenarán los proyectos
+1. Crear el directorio donde se almacenarán los proyectos
 
-`mkdir ehuvpf-projects`
+    `mkdir ehuvpf-projects`
 
-4. Crea y ejecuta los contenedores docker
+1. Crea el directorio donde se va a almacenar la base de datos de OpenStreetMaps
 
-`docker-compose up -d --build`
+    `mkdir ~/osm-data`
 
-5. Obtener id del contenedor de db
+1. Descarga los datos de OpenStreetmaps. Por ejemplo para obtener los datos del país vasco:
 
-`docker ps`
+    `wget https://download.geofabrik.de/europe/spain/pais-vasco-latest.osm.pbf`
 
-*Copia el id del contenedor de db*
+1. Tras haber descargado el archivo `.osm.pbf`, copia la ruta *absoluta* del archivo, y úsala en el siguiente comando para importar los datos a la base de datos de OpenStreetMaps
 
-6. Entrar a la consola del contenedor db
+    ```
+    docker run
+        -v <ruta absoluta del archivo .osm.pbf>:/data/region.osm.pbf
+        -v /root/osm-data:/data/database/
+        overv/openstreetmap-tile-server
+        import
+    ```
 
-`docker exec -it <id del contenedor de db> bash`
+    Este comando utiliza la misma imagen docker que usaremos más tarde de servidor del mapa para importar los datos. Una vez completada la importación, se puede quitar la imagen con `docker rm <id del contenedor>`
 
-7. Intentar conectarse a la base de datos
+1. Crea y ejecuta los contenedores docker
 
-`mysql -p`
+    `docker-compose up -d --build`
 
-Pedirá una contraseña, usa la de `.secrets/db_root_password.txt`
+1. Obtener id del contenedor de db
 
-Si da error *Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)* Significa que todabía no se ha inicializado la base de datos, espera un poco y vuelve a intentarlo.
+    `docker ps`
 
-8. Ejecutar los comandos de [scripts/db_init.sql](scripts/db_init.sql) (manualmente, mirando los comentarios, no como script)
-9. Obtener id del contenedor de apachedjango
+    *Copia el id del contenedor de db*
 
-`docker ps`
+1. Entrar a la consola del contenedor db
 
-*Copia el id del contenedor de apachedjango*
+    `docker exec -it <id del contenedor de db> bash`
 
-10. Entrar a la consola del contenedor apachedjango
+1. Intentar conectarse a la base de datos
 
-`docker exec -it <id del contenedor de apachedjango> bash`
+    `mysql -p`
 
-11. Ve a /var/www/ehuvpf
+    Pedirá una contraseña, usa la de `.secrets/db_root_password.txt`
 
-`cd /var/www/ehuvpf`
+    Si da error *Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)* Significa que todabía no se ha inicializado la base de datos, espera un poco y vuelve a intentarlo.
 
-12. Compila las traducciones
+1. Ejecutar los comandos de [scripts/db_init.sql](scripts/db_init.sql) (manualmente, mirando los comentarios, no como script)
+1. Obtener id del contenedor de apachedjango
 
-`django-admin compilemessages`
+    `docker ps`
 
-13. Inicializa la base de datos desde django
+    *Copia el id del contenedor de apachedjango*
 
-`python3 manage.py makemigrations`
+1. Entrar a la consola del contenedor apachedjango
 
-`python3 manage.py migrate`
+    `docker exec -it <id del contenedor de apachedjango> bash`
 
-14. El proyecto está listo! Puedes ir a [localhost:8080](http://localhost:8080) para comprobarlo
+1. Ve a /var/www/ehuvpf
+
+    `cd /var/www/ehuvpf`
+
+1. Compila las traducciones
+
+    `django-admin compilemessages`
+
+1. Inicializa la base de datos desde django
+
+    `python3 manage.py makemigrations`
+
+    `python3 manage.py migrate`
+
+1. El proyecto está listo! Puedes ir a [localhost:8080](http://localhost:8080) para comprobarlo
 
 # Configuración y administración
 

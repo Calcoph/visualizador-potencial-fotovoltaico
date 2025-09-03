@@ -22,6 +22,14 @@ services:
     volumes:
       - ~/db-data:/var/lib/mysql
 
+  tiles:
+    image: overv/openstreetmap-tile-server
+    ports:
+      - "8081:80"
+    volumes:
+      - ~/osm-data:/data/database
+    command: "run"
+
 secrets:
   db_root_password:
     file: ./.secrets/db_root_password.txt
