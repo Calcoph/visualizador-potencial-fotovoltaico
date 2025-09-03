@@ -29,7 +29,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "192.168.1.89",
     "88.14.232.40",
-    "localhost"
+    "localhost",
+    "ehukhivpf.com"
 ]
 
 
