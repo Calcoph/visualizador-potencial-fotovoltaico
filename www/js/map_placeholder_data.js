@@ -25,7 +25,7 @@ function init_map() {
     geojson_layer.addTo(MAP)
     add_placeholder_data(geojson_layer)
 
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('http://ehukhivpf.com:8081/tile/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(MAP);

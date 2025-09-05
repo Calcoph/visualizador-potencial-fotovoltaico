@@ -47,6 +47,18 @@ default-character-set = utf8
 
     Este comando utiliza la misma imagen docker que usaremos más tarde de servidor del mapa para importar los datos. Una vez completada la importación, se puede quitar la imagen con `docker rm <id del contenedor>`
 
+1. Obten un certificado TLS para la página. Las instrucciones para esto quedan fuera del alcance de este documento.
+
+    Si esto no es posible, habrá que modificar apache2/000-default.conf para permitir conexiones HTTP, que por defecto redirigen a la versión HTTPS de la página.
+
+1. Cambier el nombre de dominio en la configuración. En este repositorio se asume que el dominio es "ehukhivpf.com".
+
+    Hay menciones al dominio en los siguientes archivos: `apache2/apache2.conf`, `apache2/sites-available/000-default.conf`, `servidor/ehuvpf/ehuvpf/settings.py`
+
+1. Asegurar de que el certificado TLS y la clave privada están en `/etc/letsencrypt/live/ehukhivpf.com/fullchain.pem` y `/etc/letsencrypt/live/ehukhivpf.com/privkey.pem` respectivamente.
+
+    Si se desea cambiar la ruta, habrá que editar `compose.yaml`
+
 1. Crea y ejecuta los contenedores docker
 
     `docker-compose up -d --build`

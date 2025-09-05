@@ -8,6 +8,8 @@ services:
       - ./www:/var/www/map
       - ./servidor/ehuvpf:/var/www/ehuvpf
       - ./ehuvpf-projects:/var/lib/ehuvpf/ehuvpf-projects
+      - /etc/letsencrypt/live/ehukhivpf.com/fullchain.pem:/etc/letsencrypt/live/ehukhivpf.com/fullchain.pem
+      - /etc/letsencrypt/live/ehukhivpf.com/privkey.pem:/etc/letsencrypt/live/ehukhivpf.com/privkey.pem
     command: apachectl -D FOREGROUND
     environment:
       QT_QPA_PLATFORM: offscreen
