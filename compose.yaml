@@ -2,7 +2,7 @@ services:
   apachedjango:
     build: .
     ports:
-      - "8080:80"
+      - "80:80"
       - "8000:8000"
       - "443:443"
     volumes:

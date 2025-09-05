@@ -40,7 +40,7 @@ RUN make
 RUN make install
 #RUN make clean
 
-# Update apache2.conf to include mod_wsgi
+# Update apache2.conf
 COPY apache2/apache2.conf /etc/apache2/apache2.conf
 COPY apache2/sites-available /etc/apache2/sites-available
 
@@ -49,9 +49,5 @@ RUN mkdir /tmp/django
 RUN mkdir /tmp/django/file_upload
 
 RUN chown -R www-data:www-data /tmp/django
-
-RUN a2dissite 000-default.conf
-
-RUN apachectl stop
 
 WORKDIR /var/www/ehuvpf/
