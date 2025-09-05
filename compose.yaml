@@ -4,6 +4,7 @@ services:
     ports:
       - "8080:80"
       - "8000:8000"
+      - "443:443"
     volumes:
       - ./www:/var/www/map
       - ./servidor/ehuvpf:/var/www/ehuvpf
