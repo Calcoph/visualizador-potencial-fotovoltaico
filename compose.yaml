@@ -1,6 +1,6 @@
 services:
   apachedjango:
-    build: .
+    build: ./docker/apachedjango
     ports:
       - "80:80"
       - "8000:8000"
@@ -16,10 +16,10 @@ services:
       QT_QPA_PLATFORM: offscreen
       TZ: Europe/Madrid
   db:
-    image: mysql:8.3.0
+    build: ./docker/db
     user: root
     environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db_root_password
     secrets:
       - db_root_password
     volumes:

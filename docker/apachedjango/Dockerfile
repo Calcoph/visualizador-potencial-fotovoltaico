@@ -3,8 +3,8 @@ FROM ubuntu:22.04
 # Remove /var/www/
 RUN rm -rf /var/www/
 
-COPY ./.secrets/db_django_password.txt /etc/secrets/db_django_password.txt
-COPY ./.secrets/db.cnf /etc/secrets/db.cnf
+COPY .secrets/db_django_password.txt /etc/secrets/db_django_password.txt
+COPY .secrets/db.cnf /etc/secrets/db.cnf
 
 RUN apt-get update
 

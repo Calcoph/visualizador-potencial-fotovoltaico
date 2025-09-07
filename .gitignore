@@ -12,10 +12,13 @@
 /documentación/Entidad-relacion.png
 __pycache__/
 /.secrets/
+/docker/apachedjango/.secrets
+/docker/db/.secrets
 /db-data/
 *.code-workspace
 /ehuvpf-projects
 /servidor/ehuvpf/api/migrations
 /mariadb-data
-servidor/ehuvpf/locale/eu_ES/LC_MESSAGES/django.mo
-servidor/ehuvpf/locale/eu_ES/LC_MESSAGES/djangojs.mo
+/servidor/ehuvpf/locale/eu_ES/LC_MESSAGES/django.mo
+/servidor/ehuvpf/locale/eu_ES/LC_MESSAGES/djangojs.mo
+/pais-vasco-latest.osm.pbf

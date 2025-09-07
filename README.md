@@ -1,57 +1,12 @@
 # Inicializar el proyecto
 
-1. Crea una carpeta con los ficheros secretos
+1. Obten un certificado TLS para la página. Las instrucciones para esto quedan fuera del alcance de este documento. Asegúrate que el campo "Common Name" es el dominio de la página web
 
-Esta carpeta debe llamarse `.secrets` y estar en el root del proyecto (al mismo nivel que este README.md).
-
-Dentro de `.secrets` deben encontrarse los siguientes ficheros:
-* `db_django_password.txt`: debe contener la contraseña del usuario que usará el servidor web para conectarse a la base de datos.
-* `db_root_password.txt`: debe contener la contraseña del usuario root (administrador) de la base de datos.
-* `db.cnf`: Debe contener esto (cambiar el valor de contraseña por el contenido de db_django_password.txt):
-
-```
-[client]
-host = db
-database = ehuvpf
-user = django
-password = <valor de db_django_password.txt>
-default-character-set = utf8
-```
-
-
-1. Crea el directorio donde se va a almacenar la base de datos
-
-    `mkdir ~/db-data`
-
-1. Crear el directorio donde se almacenarán los proyectos
-
-    `mkdir ehuvpf-projects`
-
-1. Crea el directorio donde se va a almacenar la base de datos de OpenStreetMaps
-
-    `mkdir ~/osm-data`
-
-1. Descarga los datos de OpenStreetmaps. Por ejemplo para obtener los datos del país vasco:
-
-    `wget https://download.geofabrik.de/europe/spain/pais-vasco-latest.osm.pbf`
-
-1. Tras haber descargado el archivo `.osm.pbf`, copia la ruta *absoluta* del archivo, y úsala en el siguiente comando para importar los datos a la base de datos de OpenStreetMaps
-
-    ```
-    docker run
-        -v <ruta absoluta del archivo .osm.pbf>:/data/region.osm.pbf
-        -v /root/osm-data:/data/database/
-        overv/openstreetmap-tile-server
-        import
-    ```
-
-    Este comando utiliza la misma imagen docker que usaremos más tarde de servidor del mapa para importar los datos. Una vez completada la importación, se puede quitar la imagen con `docker rm <id del contenedor>`
-
-1. Obten un certificado TLS para la página. Las instrucciones para esto quedan fuera del alcance de este documento.
+    Para entornos de desarrollo, bastaría con un certificado auto-firmado.
 
     Si esto no es posible, habrá que modificar apache2/000-default.conf para permitir conexiones HTTP, que por defecto redirigen a la versión HTTPS de la página.
 
-1. Cambier el nombre de dominio en la configuración. En este repositorio se asume que el dominio es "ehukhivpf.com".
+1. Cambiar el nombre de dominio en la configuración. En este repositorio se asume que el dominio es "ehukhivpf.com".
 
     Hay menciones al dominio en los siguientes archivos: `apache2/apache2.conf`, `apache2/sites-available/000-default.conf`, `servidor/ehuvpf/ehuvpf/settings.py`
 
@@ -59,29 +14,19 @@ default-character-set = utf8
 
     Si se desea cambiar la ruta, habrá que editar `compose.yaml`
 
+1. Ejecuta el script de inicialización, que hará lo siguiente:
+
+    * Crear directorios necesarios para el proyecto
+    * Descargar los el mapa del país vasco de OpenStreetMaps (https://download.geofabrik.de/europe/spain/pais-vasco-latest.osm.pbf)
+    * Importar el mapa a la base de datos
+
+    Asegúrate de que estás en la carpeta principal del proyecto (es decir, si ejecutas `ls | grep README.md` deberías ver este fichero) y ejecuta el script:
+    `./scripts/init_site.sh`
+
 1. Crea y ejecuta los contenedores docker
 
-    `docker-compose up -d --build`
+    `docker compose up -d --build`
 
-1. Obtener id del contenedor de db
-
-    `docker ps`
-
-    *Copia el id del contenedor de db*
-
-1. Entrar a la consola del contenedor db
-
-    `docker exec -it <id del contenedor de db> bash`
-
-1. Intentar conectarse a la base de datos
-
-    `mysql -p`
-
-    Pedirá una contraseña, usa la de `.secrets/db_root_password.txt`
-
-    Si da error *Can't connect to local server through socket '/run/mysqld/mysqld.sock' (2)* Significa que todabía no se ha inicializado la base de datos, espera un poco y vuelve a intentarlo.
-
-1. Ejecutar los comandos de [scripts/db_init.sql](scripts/db_init.sql) (manualmente, mirando los comentarios, no como script)
 1. Obtener id del contenedor de apachedjango
 
     `docker ps`
