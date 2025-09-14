@@ -22,3 +22,4 @@ __pycache__/
 /servidor/ehuvpf/locale/eu_ES/LC_MESSAGES/django.mo
 /servidor/ehuvpf/locale/eu_ES/LC_MESSAGES/djangojs.mo
 /pais-vasco-latest.osm.pbf
+log.txt

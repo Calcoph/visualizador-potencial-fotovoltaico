@@ -2,7 +2,7 @@
 
 1. Obten un certificado TLS para la página. Las instrucciones para esto quedan fuera del alcance de este documento. Asegúrate que el campo "Common Name" es el dominio de la página web
 
-    Para entornos de desarrollo, bastaría con un certificado auto-firmado.
+    Para entornos de desarrollo, bastaría con un certificado auto-firmado. Instrucciones: https://www.baeldung.com/openssl-self-signed-cert
 
     Si esto no es posible, habrá que modificar apache2/000-default.conf para permitir conexiones HTTP, que por defecto redirigen a la versión HTTPS de la página.
 
@@ -27,31 +27,7 @@
 
     `docker compose up -d --build`
 
-1. Obtener id del contenedor de apachedjango
-
-    `docker ps`
-
-    *Copia el id del contenedor de apachedjango*
-
-1. Entrar a la consola del contenedor apachedjango
-
-    `docker exec -it <id del contenedor de apachedjango> bash`
-
-1. Ve a /var/www/ehuvpf
-
-    `cd /var/www/ehuvpf`
-
-1. Compila las traducciones
-
-    `django-admin compilemessages`
-
-1. Inicializa la base de datos desde django
-
-    `python3 manage.py makemigrations`
-
-    `python3 manage.py migrate`
-
-1. El proyecto está listo! Puedes ir a [localhost:8080](http://localhost:8080) para comprobarlo
+1. El proyecto está listo! Puedes ir a [localhost:443](https://localhost:443) para comprobarlo. Debido al posible cambio de nombre de dominio, habrá que editar `www/js/map.js` para cargar el mapa desde `localhost:8081` en vez de `ehukhivpf.com:8081`.
 
 # Configuración y administración
 

@@ -9,3 +9,4 @@ GRANT INDEX ON ehuvpf.* TO 'django'@'%';
 GRANT REFERENCES ON ehuvpf.* TO 'django'@'%';
 GRANT UPDATE ON ehuvpf.* TO 'django'@'%';
 GRANT DELETE ON ehuvpf.* TO 'django'@'%';
+GRANT DROP ON ehuvpf.* TO 'django'@'%';

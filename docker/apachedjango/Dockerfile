@@ -6,6 +6,9 @@ RUN rm -rf /var/www/
 COPY .secrets/db_django_password.txt /etc/secrets/db_django_password.txt
 COPY .secrets/db.cnf /etc/secrets/db.cnf
 
+RUN chmod 744 /etc/secrets/db.cnf
+RUN chmod 744 /etc/secrets/db_django_password.txt
+
 RUN apt-get update
 
 # Install python

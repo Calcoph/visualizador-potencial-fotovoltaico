@@ -11,10 +11,12 @@ services:
       - ./ehuvpf-projects:/var/lib/ehuvpf/ehuvpf-projects
       - /etc/letsencrypt/live/ehukhivpf.com/fullchain.pem:/etc/letsencrypt/live/ehukhivpf.com/fullchain.pem
       - /etc/letsencrypt/live/ehukhivpf.com/privkey.pem:/etc/letsencrypt/live/ehukhivpf.com/privkey.pem
-    command: apachectl -D FOREGROUND
+    command: /var/www/ehuvpf/run.sh
     environment:
       QT_QPA_PLATFORM: offscreen
       TZ: Europe/Madrid
+    depends_on:
+      - db
   db:
     build: ./docker/db
     user: root
@@ -24,7 +26,6 @@ services:
       - db_root_password
     volumes:
       - ~/db-data:/var/lib/mysql
-
   tiles:
     image: overv/openstreetmap-tile-server
     ports:
