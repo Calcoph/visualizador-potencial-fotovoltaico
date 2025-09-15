@@ -38,13 +38,13 @@ def esri_to_geojson(layer_path: str, output_path: str) -> tuple[str, int, int]:
 
     # Get the center of the layer
     bounding_box = QgsRectangle()
-    destination_crs = QgsCoordinateReferenceSystem("EPSG:4326")# 4326 is the standard longitude/latitude, which is whate leaflet returns
+    destination_crs = QgsCoordinateReferenceSystem("EPSG:4326")# 4326 is the standard longitude/latitude, which is what leaflet returns
     # Save to geojson
     QgsVectorFileWriter.writeAsVectorFormat(layer, output_path, "utf-8", destination_crs, "GeoJSON")
 
     source_crs = layer.crs()
     # Need to transform the coordinate system to lat/long since we don't know the layer's crs
-    # But we know what will leaflet use
+    # But we know what leaflet will use
     crs_transform = QgsCoordinateTransform(source_crs, destination_crs, QgsCoordinateTransformContext())
     for feature in layer.getFeatures():
         geometry = feature.geometry()

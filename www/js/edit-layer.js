@@ -125,7 +125,7 @@ function validateForm() {
 }
 
 function confirmEditLayer() {
-    alert(gettext("Layer edited")) // TODO: not english
+    alert(gettext("Capa editada"))
 }
 
 function deleteLayer() {
@@ -153,7 +153,7 @@ function deleteLayer() {
 function confirm_delete_layer() {
     let name = document.getElementById("title_name").textContent
 
-    window.alert(`La capa ${name} se ha eliminado correctamente`)// TODO: Translate
+    window.alert(interpolate(gettext("La capa %s se ha eliminado correctamente"), name))
     redirectProjectAdmin()
 }
 

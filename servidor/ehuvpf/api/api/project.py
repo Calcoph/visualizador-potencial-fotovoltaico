@@ -16,14 +16,29 @@ from ..utils.decorators import project_required_api
 @permission_required(Permission.ProjectAdd)
 def create_project(request: HttpRequest):
     name = request.POST.get("name")
-    # TODO: Many missing form fields
+    preprocessed = request.POST.get("preprocessed", default="off")
+    data_source = request.POST.get("data_source", default="")
 
-    project = create_project_impl(name)
+    if preprocessed == "on":
+        preprocessed = True
+    else:
+        preprocessed = False
+
+    if preprocessed:
+        preprocess_name = request.POST.get("preprocess_name", default="")
+        preprocess_link = request.POST.get("preprocess_link", default="")
+        preprocess_version = request.POST.get("preprocess_version", default="")
+    else:
+        preprocess_name = ""
+        preprocess_link = ""
+        preprocess_version = ""
+
+    project = create_project_impl(name, data_source, preprocess_name, preprocess_link, preprocess_version)
 
     return HttpResponse(project.pk)
 
-def create_project_impl(name: str) -> Project:
-    project = Project(name=name)
+def create_project_impl(name: str, data_source: str, preprocess_name: str, preprocess_link: str, preprocess_version: str) -> Project:
+    project = Project(name=name, data_source=data_source, preprocess_program_name=preprocess_name, preprocess_program_link=preprocess_link, preprocess_program_version=preprocess_version)
     project.save()
 
     return project

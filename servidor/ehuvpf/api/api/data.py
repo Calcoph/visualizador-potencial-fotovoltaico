@@ -307,10 +307,13 @@ def add_data_impl(project: Project, files: list[EsriFiles]):
                 break
 
         if selected_layer is None:
-            return ApiError(endpoint, f"No layer matches the names of the submitted files: {esri_files.name}", ErrorKind.bad_request()).to_response() # TODO: Translate
-            # old text: raise Exception(f"{patterns}\n{esri_files.name}")
+            return ApiError(endpoint, f"No layer matches the names of the submitted files: {esri_files.name}", ErrorKind.bad_request()).to_response()
+
         path = f"{PROJECT_PATH}/{project.pk}/{selected_layer.name}" # TODO: input sanitization
         makedirs(path, exist_ok=True)
+
+        # TODO: Sanitize esri_files.name
+        # TODO: Handle the case of esri_file.name already existing
 
         save_esri(esri_files)
         new_path = path + f"/{esri_files.name}.geojson"

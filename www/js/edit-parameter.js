@@ -38,7 +38,7 @@ function deleteParameter() {
 function confirm_delete_parameter() {
     let name = document.getElementById("title_name").textContent
 
-    window.alert(`El parámetro ${name} se ha eliminado correctamente`) // TODO: Translate
+    window.alert(interpolate(gettext("El parámetro %s se ha eliminado correctamente"), name))
     redirectProjectAdmin()
 }
 

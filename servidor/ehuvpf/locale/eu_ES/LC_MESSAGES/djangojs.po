@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-02 19:55+0200\n"
+"POT-Creation-Date: 2025-09-15 06:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,23 +19,32 @@ msgstr ""
 
 #: add-attribute.js:25
 msgid "Atributo añadido correctamente"
-msgstr "Atributu erantsia behar bezala"
+msgstr "Atributua behar bezala gehitu da"
+
+#: add-data.js:46
+msgid "Capas seleccionadas automáticamente:\n"
+msgstr "Automatikoki hautatutako geruzak:\n"
 
 #: add-data.js:47
 msgid "Datos Añadidos"
-msgstr "Datu Erantsiak"
+msgstr "Gehitutako datuak"
 
 #: add-layer.js:69
 msgid "Capa añadida"
-msgstr "Kapa gehitua"
+msgstr "Gehitutako geruza"
 
 #: edit-attribute.js:27
 msgid "Atributo editado correctamente"
-msgstr "Atributu zuzena"
+msgstr "Atributua behar bezala editatu da"
+
+#: edit-attribute.js:55
+#, javascript-format
+msgid "El atributo %s se ha eliminado correctamente"
+msgstr "%s atributua behar bezala kendu da"
 
 #: edit-colors.js:63
-msgid "Colors edited"
-msgstr "Kolore edited"
+msgid "Colores editados"
+msgstr "Editatutako koloreak"
 
 #: edit-layer.js:19
 msgid ""
@@ -46,8 +55,9 @@ msgid ""
 msgstr ""
 "\n"
 "            Gutxienez atributu bat egon behar da geruza bakoitzeko.\n"
-"            Atributu hau kendu nahi baduzu, beste bat gehitu behar duzu lehenik.\n"
+"            Atributu hau kendu nahi baduzu, lehenik beste bat gehitu behar duzu.\n"
 "        "
+
 
 #: edit-layer.js:30
 msgid ""
@@ -58,10 +68,11 @@ msgid ""
 "        "
 msgstr ""
 "\n"
-"            Ezin da kendu koloreztatu beharreko atributua.\n"
-"            Atributu hau kendu nahi baduzu, lehenik eta behin,\n"
-"            koloreztatzeko atributua aldatu behar duzu.\n"
+"            Koloreztatu beharreko atributua ezin da kendu.\n"
+"            Atributu hau kendu nahi baduzu, lehenik atributua\n"
+"            kolore bihurtu behar duzu.\n"
 "        "
+
 
 #: edit-layer.js:72
 msgid "Añadir"
@@ -72,25 +83,49 @@ msgid "Quitar"
 msgstr "Kendu"
 
 #: edit-layer.js:128
-msgid "Layer edited"
-msgstr ""
+msgid "Capa editada"
+msgstr "Editatutako geruza"
+
+#: edit-layer.js:156
+#, javascript-format
+msgid "La capa %s se ha eliminado correctamente"
+msgstr "%s geruza behar bezala ezabatu da"
+
+#: edit-parameter.js:41
+#, javascript-format
+msgid "El parámetro %s se ha eliminado correctamente"
+msgstr "%s parametroa behar bezala kendu da."
 
 #: edit-project-details.js:8
 msgid "Se ha modificado la información de preprocesado adecuadamente."
-msgstr "Aldez aurretik agindutako informazioa behar bezala aldatu da."
+msgstr "Aurreprozesatzeko informazioa behar bezala aldatu da."
 
 #: edit-project-details.js:25
 msgid "Se ha modificado la información sobre la fuente de datos adecuadamente."
-msgstr "Datu-iturriari buruzko informazioa behar bezala aldatu da."
+msgstr "Datu-iturriaren informazioa behar bezala aldatu da."
+
+#: error.js:12
+#, javascript-format
+msgid "When accessing %s, %s"
+msgstr "%s atzitzean, %s"
+
+#: error.js:16
+#, javascript-format
+msgid ""
+"Error %s: %s\n"
+"No changes have been made"
+msgstr ""
+"%s errorea: %s\n"
+"Ez da aldaketarik egin"
 
 #: map.js:107 map_placeholder_data.js:78
 msgid "No se muestran más edificios, haz zoom para que se empiecen a cargar"
-msgstr "Ez dira eraikin gehiago agertzen, egin zoom-a kargatzen has daitezen"
+msgstr "Ez da eraikin gehiago erakusten, handitu irudia kargatzen hasten diren ikusteko."
 
 #: map.js:116 map_placeholder_data.js:87
 msgid "Los edificios han sido cargados"
-msgstr "Eraikinak kargatu egin dituzte"
+msgstr "Eraikinak kargatu dira."
 
 #: map.js:325
 msgid "Selecciona al menos un atributo"
-msgstr "Aukeratu gutxienez atributu bat"
+msgstr "Hautatu gutxienez atributu bat"

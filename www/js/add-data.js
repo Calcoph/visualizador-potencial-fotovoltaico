@@ -43,6 +43,6 @@ function submitData() {
 }
 
 function confirmSubmitData(response) {
-    document.getElementById("lastLayerResults").innerText = "Automatically selected layers:\n" + response // TODO: Translate
+    document.getElementById("lastLayerResults").innerText = gettext("Capas seleccionadas automáticamente:\n") + response
     alert(gettext("Datos Añadidos"))
 }

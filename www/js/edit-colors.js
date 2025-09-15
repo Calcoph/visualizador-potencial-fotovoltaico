@@ -60,5 +60,5 @@ function editColors() {
 }
 
 function confirmEditColors() {
-    alert(gettext("Colors edited"))
+    alert(gettext("Colores editados"))
 }
