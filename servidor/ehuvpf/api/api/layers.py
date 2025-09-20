@@ -3,10 +3,9 @@ from __future__ import annotations
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import permission_required
 
+from ..utils.esri_gjson import escape_filename
 from ..utils.errors import ApiError, ErrorKind
-
 from ..utils.user import Permission
-
 from ..models import Color, Layer, Measure, Project, ColorRule
 from ..utils.session_handler import get_project
 from ..utils.decorators import project_required_api
@@ -60,6 +59,11 @@ class EditLayerParams:
                 if new_color_rule == None:
                     return ApiError(endpoint, f'"{color_rule_param_name}" must be a list of floats, got: {color_rule}', ErrorKind.bad_request())
                 new_color_rules.append(new_color_rule)
+
+            # sanitize layer name and name pattern since they are going to be used for paths
+            escped_name_pattern = escape_filename(name_pattern)
+            if escped_name_pattern != name_pattern:
+                return ApiError(endpoint, f'Pattern "{name_pattern}" is not valid. It probably contains invalid characters', ErrorKind.bad_request())
 
             layer = Layer.objects.get(pk=layer)
             if layer == None:
@@ -220,6 +224,15 @@ class AddLayerParams:
                 if attribute.project.pk != project.pk:
                     return ApiError(endpoint, f'"{attribute_id}" is not the id of an attribute of the selected project', ErrorKind.bad_request())
                 attribute_list.append(attribute)
+
+            # sanitize layer name and name pattern since they are going to be used for paths
+            escped_name_pattern = escape_filename(name_pattern)
+            if escped_name_pattern != name_pattern:
+                return ApiError(endpoint, f'Pattern "{name_pattern}" is not valid. It probably contains invalid characters', ErrorKind.bad_request())
+
+            escaped_layer_name = escape_filename(layer_name)
+            if escaped_layer_name != layer_name:
+                return ApiError(endpoint, f'Name "{layer_name}" is not valid. It probably contains invalid characters', ErrorKind.bad_request())
 
             layers = Layer.objects.filter(project=project)
             for layer in layers:

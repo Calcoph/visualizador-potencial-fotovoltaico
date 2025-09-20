@@ -11,7 +11,7 @@ from . import PROJECT_PATH, RESOLUTION
 
 from ..utils.errors import ApiError, ErrorKind
 
-from ..utils.esri_gjson import EsriFiles, convert_esri_to_geojson, save_esri
+from ..utils.esri_gjson import EsriFiles, esri_to_geojson, save_esri
 from ..utils.testing import generate_placeholder_data
 from ..utils.user import Permission
 
@@ -309,15 +309,14 @@ def add_data_impl(project: Project, files: list[EsriFiles]):
         if selected_layer is None:
             return ApiError(endpoint, f"No layer matches the names of the submitted files: {esri_files.name}", ErrorKind.bad_request()).to_response()
 
-        path = f"{PROJECT_PATH}/{project.pk}/{selected_layer.name}" # TODO: input sanitization
+        path = f"{PROJECT_PATH}/{project.pk}/{selected_layer.name}"
         makedirs(path, exist_ok=True)
 
-        # TODO: Sanitize esri_files.name
         # TODO: Handle the case of esri_file.name already existing
 
         save_esri(esri_files)
         new_path = path + f"/{esri_files.name}.geojson"
-        (output_path, lat, lon) = convert_esri_to_geojson(esri_files.name, new_path)
+        (output_path, lat, lon) = esri_to_geojson(esri_files.name, new_path)
 
         # Update database
         data = Data(layer=selected_layer, path=output_path, lat=lat, lon=lon)

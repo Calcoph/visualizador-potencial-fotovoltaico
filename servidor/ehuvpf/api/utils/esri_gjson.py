@@ -7,16 +7,42 @@ from ..api import RESOLUTION
 
 TEMP_PATH = "/tmp/django/file_upload/"
 
+def escape_filename(inp: str) -> str:
+    # Even though this program is meant to run on linux. Better to be conservative and ban windows-ilegal characters
+    # Note that this doesn't make every filename windows safe since windows also has special reserved "name patterns" such as CON.*
+
+    bad_characters = "<>:\"/\\|?*"
+    for i in range(0, 32):
+        bad_characters += chr(i)
+
+    escaped_name = ""
+    for c in inp:
+        if c in bad_characters:
+            escaped_name += "_" # Replace with safe "_" character
+        else:
+            escaped_name += c
+
+    # This is meant to protect from "." and ".." and ""
+    all_dots = True
+    for c in escaped_name:
+        if c != ".":
+            all_dots = False
+            break
+
+    if all_dots:
+        return "_"
+
+    return escaped_name
+
 class EsriFiles:
     def __init__(self, name: str, prj: UploadedFile, dbf: UploadedFile, shx: UploadedFile, shp: UploadedFile) -> None:
-        self.name = name
+        self.name = escape_filename(name)
         self.prj = prj
         self.dbf = dbf
         self.shx = shx
         self.shp = shp
 
 def save_esri(esri_files: EsriFiles):
-    # TODO: potential vulnerability: unsanitized path
     # TODO: potential vulnerability: 2 uploads with the same path name might conflict
     path = f"{TEMP_PATH}{esri_files.name}"
     with open(path + ".prj", "wb+") as f:
@@ -33,6 +59,8 @@ def save_esri(esri_files: EsriFiles):
             f.write(chunk)
 
 def esri_to_geojson(layer_path: str, output_path: str) -> tuple[str, int, int]:
+    layer_path = f"{TEMP_PATH}{layer_path}.shp"
+
     # Read the files in TEMP_PATH
     layer: QgsVectorLayer = QgsVectorLayer(layer_path, "", "ogr")
 
@@ -57,8 +85,3 @@ def esri_to_geojson(layer_path: str, output_path: str) -> tuple[str, int, int]:
     lon = int(center.y() / RESOLUTION)
 
     return (output_path, lat, lon)
-
-def convert_esri_to_geojson(layer_path: str, output_path: str) -> tuple[str, int, int]:
-    # TODO: Is this function really needed?
-    layer_path = f"{TEMP_PATH}{layer_path}.shp"
-    return esri_to_geojson(layer_path, output_path)

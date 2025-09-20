@@ -3,6 +3,8 @@
 # executed using the django shell.
 # Check this directory's README.md for more info.
 
+# TODO: Automate the execution of this script on run.sh
+
 from django.contrib.auth.models import Group, User
 
 from api.utils.user import Permission
