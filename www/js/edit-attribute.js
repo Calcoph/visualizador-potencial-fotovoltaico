@@ -52,7 +52,7 @@ function deleteAttribute() {
 function confirm_delete_attribute() {
     let name = document.getElementById("title_name").textContent
 
-    window.alert(interpolate(gettext("El atributo %s se ha eliminado correctamente"), name))
+    window.alert(interpolate(gettext("El atributo %s se ha eliminado correctamente"), [name]))
     redirectProjectAdmin()
 }
 

@@ -153,7 +153,7 @@ function deleteLayer() {
 function confirm_delete_layer() {
     let name = document.getElementById("title_name").textContent
 
-    window.alert(interpolate(gettext("La capa %s se ha eliminado correctamente"), name))
+    window.alert(interpolate(gettext("La capa %s se ha eliminado correctamente"), [name]))
     redirectProjectAdmin()
 }
 
