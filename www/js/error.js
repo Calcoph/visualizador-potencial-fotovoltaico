@@ -9,9 +9,9 @@ function get_error_string(response) {
         if (error_json.endpoint === undefined || error_json.reason === undefined) {
             throw "Err"
         }
-        error = interpolate(gettext("When accessing %s, %s"), [error_json.endpoint, error_json.reason]) // TODO: No english
+        error = `When accessing ${error_json.endpoint}, ${error_json.reason}`
     } catch(err) {
         error = response.statusText
     }
-    return interpolate(gettext("Error %s: %s\nNo changes have been made"), [response.status, error]) // TODO: No english
+    return `Error ${response.status}: ${error}\nNo changes have been made`
 }
